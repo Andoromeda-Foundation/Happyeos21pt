@@ -1,0 +1,23 @@
+.display-text {
+  color: white;
+}
+.big-display-text {
+  color: white;
+  font-size: 1.2em;
+}
+.tip-text {
+  font-weight: 600;
+  font-size: 0.6em;
+  margin-bottom: 0.75em;
+  text-transform: uppercase;
+  color: #9b9fae;
+}
+.choose-text {
+  color: #02f292;
+  font-size: 1.2em;
+}
+.login-button {
+  width: 80%;
+  display: block;
+  margin: auto;
+}
