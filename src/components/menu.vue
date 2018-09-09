@@ -11,6 +11,7 @@
       <div id="menu-section-container">
         <el-button type="text" class="menu-item" @click="store.currentGame = 'dice'">{{$t('Dice')}}</el-button>
         <el-button type="text" class="menu-item" @click="store.currentGame = 'blackJack'">{{$t('BlackJack')}}</el-button>
+        <el-button type="text" class="menu-item" @click="store.currentGame = 'otc'">{{$t('Otc')}}</el-button>      
       </div>
       <div id="menu-section-container">
         <el-button type="text" class="menu-item" @click="changeNetwork()">{{store.network}}</el-button>

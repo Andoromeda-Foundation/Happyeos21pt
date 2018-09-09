@@ -4,6 +4,7 @@
     <div id="game">
       <dice-game v-if="store.currentGame === 'dice'"></dice-game>
       <black-jack-game v-else-if="store.currentGame === 'blackJack'"></black-jack-game>
+      <otc-game v-if="store.currentGame === 'otc'"></otc-game>      
     </div>
   </div>
 </template>
@@ -13,12 +14,14 @@ import menu from './components/menu.vue';
 import * as store from './store.js';
 import diceGame from './components/dice/game.vue';
 import blackJackGame from './components/blackJack/game.vue';
+import otcGame from './components/otc/game.vue';
 
 export default {
   components: {
     'vip-menu': menu,
     'dice-game': diceGame,
     'black-jack-game': blackJackGame,
+    'otc-game': otcGame,
   },
   data() {
       return {
