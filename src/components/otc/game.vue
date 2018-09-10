@@ -2,7 +2,15 @@
     <div>
         <div class="game-container">
             <!-- 第四行 -->
-
+<<<<<<< HEAD
+			<form id="search">
+				Bid <el-input v-model.number="bid"></el-input>
+			</form>
+			<form id="search">
+				Memo <el-input v-model.number="memo"></el-input>
+			</form>  			
+							
+=======
 			<span class="display-text" style="margin-left: 30px;">
 				Bid: <el-input v-model="bid" class="bet-amount-input"></el-input>
 			</span>
@@ -11,6 +19,8 @@
 				Target Token Contract: <el-input v-model="target_token_contract" class="bet-amount-input"></el-input>
 			</span>								
 
+>>>>>>> b3335bd9dbfd873ad39af408d20b1b30e9d4f87f
+            <el-row class="account-info">
                 <el-col :span="8" class="account-info-section">
                     <div class="account-container">
                         <img class="navbar-coin" src="../../assets/eos-logo.png">
@@ -19,10 +29,11 @@
                 </el-col>
                 <el-col :span="8" class="account-info-section">
                   <el-button type="primary" class="login-button" @click="initIdentity()" v-if="!store.account">{{$t('LOGIN')}}</el-button>
+<<<<<<< HEAD
                   <el-button type="primary" class="login-button" @click="ask()" v-else v-loading="loading">{{$t('Ask Asset')}}</el-button>
+=======
                   <el-button type="primary" class="login-button" @click="ask_order()" v-else v-loading="loading">{{$t('ROLL DICE')}}</el-button>
-                  <el-button type="primary" class="login-button" @click="ask_order()" v-else v-loading="loading">{{$t('ROLL DICE')}}</el-button>
-
+>>>>>>> b3335bd9dbfd873ad39af408d20b1b30e9d4f87f
                 </el-col>
                 <el-col :span="8" class="account-info-section">
                     <div class="account-container">
@@ -32,16 +43,28 @@
                     </div>
                 </el-col>
             </el-row>
-	
+
+<<<<<<< HEAD
+			<div class="xt-content-wrap">
+
+			<transition-group name="list" tag="p">
+				<div id="panel-wrap" v-for="item in listOfOrders" :key="item.id">
+					<xt-panel :type="2" :listItem="item"></xt-panel>
+				</div>
+			</transition-group>
+
+			</div>			
 
 
+
+=======
+>>>>>>> b3335bd9dbfd873ad39af408d20b1b30e9d4f87f
         </div>
         <MarketView class="market-container" />
     </div>
 </template>
 
 <script>
-<<<<<<< HEAD
 <<<<<<< HEAD
 import * as store from '../../store.js';
 import xtPanel from '../elements/XtPanel.vue'
@@ -82,13 +105,6 @@ import { getOrders } from "./orders";
 import OrderView from "./order";
 import MarketView from "./market";
 export default {
-=======
-import * as store from "../../store.js";
-import { getOrders } from "./orders";
-import OrderView from "./order";
-import MarketView from "./market";
-export default {
->>>>>>> b3335bd9dbfd873ad39af408d20b1b30e9d4f87f
   components: {
     OrderView,
     MarketView
@@ -116,9 +132,6 @@ export default {
         this.range = 6;
       } else if (newRange > 93) {
         this.range = 93;
-<<<<<<< HEAD
->>>>>>> b3335bd9dbfd873ad39af408d20b1b30e9d4f87f
-=======
 >>>>>>> b3335bd9dbfd873ad39af408d20b1b30e9d4f87f
       }
     }
@@ -151,7 +164,6 @@ export default {
       }
     },
 
-<<<<<<< HEAD
 <<<<<<< HEAD
 		ask() {
 			this.store.eos.transfer(this.store.account.name, "eosotcbackup", `${this.bid}`, `${this.memo}`)
@@ -187,8 +199,6 @@ export default {
             const r = setInterval(() => {
               this.store.eos.getTableRows(true, "happyeosdice", this.store.account.name, "result", "0").then((data) => {
 =======
-=======
->>>>>>> b3335bd9dbfd873ad39af408d20b1b30e9d4f87f
     roll: function() {
       this.loading = true;
       let memo = `bet ${
@@ -217,9 +227,6 @@ export default {
                 "0"
               )
               .then(data => {
-<<<<<<< HEAD
->>>>>>> b3335bd9dbfd873ad39af408d20b1b30e9d4f87f
-=======
 >>>>>>> b3335bd9dbfd873ad39af408d20b1b30e9d4f87f
                 const ans = data.rows[0].roll_number;
                 // roll点值为0-99
