@@ -3,10 +3,11 @@
         <div class="game-container">
             <!-- 第四行 -->
 			<span class="display-text" style="margin-left: 30px;">
-				Bid: <el-input v-model.number="bid" class="bet-amount-input"></el-input>
+				Bid: <el-input v-model="bid" class="bet-amount-input"></el-input>
 			</span>
 			<span class="display-text" style="margin-left: 30px;">
-				Ask: <el-input v-model.number="memo" class="bet-amount-input"></el-input>
+				Ask: <el-input v-model="ask" class="bet-amount-input"></el-input>
+				Target Token Contract: <el-input v-model="target_token_contract" class="bet-amount-input"></el-input>
 			</span>								
 
             <el-row class="account-info">
@@ -18,7 +19,7 @@
                 </el-col>
                 <el-col :span="8" class="account-info-section">
                   <el-button type="primary" class="login-button" @click="initIdentity()" v-if="!store.account">{{$t('LOGIN')}}</el-button>
-                  <el-button type="primary" class="login-button" @click="roll()" v-else v-loading="loading">{{$t('ROLL DICE')}}</el-button>
+                  <el-button type="primary" class="login-button" @click="ask_order()" v-else v-loading="loading">{{$t('ROLL DICE')}}</el-button>
                 </el-col>
                 <el-col :span="8" class="account-info-section">
                     <div class="account-container">
@@ -28,113 +29,128 @@
                     </div>
                 </el-col>
             </el-row>
+
         </div>
+        <MarketView class="market-container" />
     </div>
 </template>
 
 <script>
-import * as store from '../../store.js';
-
+import * as store from "../../store.js";
+import { getOrders } from "./orders";
+import OrderView from "./order";
+import MarketView from "./market";
 export default {
-    data() {
-      return {
-        store: store.store,
-        range: 50,
-        betAmount: 1,
-        isShowBetDialog: false,
-        loading: false,
-        choose: 'small',
-      };
+  components: {
+    OrderView,
+    MarketView
+  },
+  data() {
+    return {
+      store: store.store,
+      range: 50,
+      betAmount: 1,
+      isShowBetDialog: false,
+      loading: false,
+      choose: "small",
+      ask: "1.0000 HPY",
+      bid: "1.0000 EOS",
+      target_token_contract: 'happyeosslot'
+    };
+  },
+  computed: {
+  },
+  async created() {
+  },
+  watch: {
+    range(newRange, oldRange) {
+      if (newRange < 6) {
+        this.range = 6;
+      } else if (newRange > 93) {
+        this.range = 93;
+      }
+    }
+  },
+  methods: {
+    initIdentity() {
+      store.initIdentity();
     },
-    computed: {
-      payOnWin: function() {
-        return Math.floor(98 / this.range * this.betAmount * 10000) / 10000;
-      },
-      payout: function() {
-        if (this.choose === 'small') {
-          return Math.floor(98 / this.range * 10000) / 10000;
-        } else {
-          return Math.floor(98 / (99 - this.range) * 10000) / 10000;
-        }
+
+    async ask_order() {
+      const {target_token_contract, ask, bid} = this
+      const memo = `ask,${ask},${target_token_contract}`
+
+      try {
+        await this.store.eos.transfer(
+          this.store.account.name,
+          "eosotcbackup",
+          `${bid}`,
+          `${memo}`
+        );
+        this.$notify.success({
+          title: '挂单成功',
+          message: "请耐心等待"
+        });
+      } catch (error) {
+        this.$notify.error({
+          title: '交易失败',
+          message: error.message
+        });
       }
     },
-    watch: {
-      range(newRange, oldRange) {
-        if(newRange < 6) {
-          this.range = 6;
-        } else if(newRange > 93) {
-          this.range = 93;
-        }
+
+    roll: function() {
+      this.loading = true;
+      let memo = `bet ${
+        this.choose === "small" ? this.range + 100 : this.range
+      } ${this.store.seed}`;
+      const referral = this.store.referral;
+      if (referral) {
+        memo += ` ${referral}`;
       }
-    },
-    methods: {
-      initIdentity() {
-        store.initIdentity();
-      },
-      amountTimes(data) {
-        this.betAmount = this.betAmount * data;
-        if(this.betAmount > this.store.balance) {
-          this.betAmount = this.store.balance;
-        }
-      },
-      amountMax() {
-        this.betAmount = this.store.balance;
-      },
-      changeBetAmount(data) {
-        this.betAmount = Math.floor(this.betAmount * 10000) / 10000;
-      },
-
-		ask: function() {
-			this.store.eos.transfer(this.store.account.name, "eosotcbackup", `${this.bid}`, `${this.memo}`)
-		},
-
-      roll: function() {
-        this.loading = true;
-        let memo = `bet ${this.choose === 'small' ? this.range + 100 : this.range} ${this.store.seed}`;
-        const referral = this.store.referral;
-        if (referral) {
-          memo += ` ${referral}`;
-        }
-        this.store.eos.transfer(this.store.account.name, "happyeosdice", `${this.betAmount.toFixed(4)} EOS`, memo)
-          .then(() => {
-            // 轮询查找结果
-            const r = setInterval(() => {
-              this.store.eos.getTableRows(true, "happyeosdice", this.store.account.name, "result", "0").then((data) => {
+      this.store.eos
+        .transfer(
+          this.store.account.name,
+          "happyeosdice",
+          `${this.betAmount.toFixed(4)} EOS`,
+          memo
+        )
+        .then(() => {
+          // 轮询查找结果
+          const r = setInterval(() => {
+            this.store.eos
+              .getTableRows(
+                true,
+                "happyeosdice",
+                this.store.account.name,
+                "result",
+                "0"
+              )
+              .then(data => {
                 const ans = data.rows[0].roll_number;
                 // roll点值为0-99
                 if (ans < 100) {
                   clearInterval(r);
                   this.loading = false;
-                  if ((this.choose === 'small' && ans < this.range) || (this.choose === 'big' && ans > this.range)) {
+                  if (
+                    (this.choose === "small" && ans < this.range) ||
+                    (this.choose === "big" && ans > this.range)
+                  ) {
                     this.roll_success(ans);
                   } else {
                     this.roll_fail(ans);
                   }
                 }
               });
-            }, 1000);
-          }).catch((err) => {
-            console.error(err);
-            alert('项目出错了，快联系开发者！');
-          });
-      },
-      roll_success: function(ans) {
-        this.$notify({
-          title: this.$t('Congratulations!'),
-          message: this.$t('success_message', [ans, this.payout * this.betAmount]),
-          type: 'success',
+          }, 1000);
+        })
+        .catch(err => {
+          console.error(err);
+          alert("项目出错了，快联系开发者！");
         });
-        store.updateBalance();
-      },
-      roll_fail: function(ans) {
-        this.$notify.error({
-          title: this.$t('You fail'),
-          message: this.$t('fail_message', [ans, this.payout * this.betAmount]),
-        });
-        store.updateBalance();
-      }
     }
-}
+  }
+};
 </script>
 
 <style>
@@ -194,19 +210,6 @@ export default {
   margin-left: 10px;
   vertical-align: middle;
 }
-.payout-on-win-container {
-  background-color: #3f3e3e;
-  height: 43px;
-  border-radius: 0.3em;
-  padding: 4px;
-  display: flex;
-  align-items: center;
-}
-.payout-on-win-container span {
-  display: block;
-  width: 100%;
-  text-align: center;
-}
 .roll-info {
   background-color: #3f3e3e;
   border-radius: 0.3em;
@@ -219,6 +222,10 @@ export default {
 }
 .choose-info {
   margin-bottom: 20px;
+}
+.market-container {
+  max-width: 90%;
+  margin: 0 auto;
 }
 .choose-info-section {
   background-color: #3f3e3e;
