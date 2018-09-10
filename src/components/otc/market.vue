@@ -68,7 +68,10 @@ export default {
           this.store.account.name,
           "eosotcbackup",
           `${bid}`,
-          `${memo}`
+          `${memo}`,
+           {
+            authorization: [`${this.store.account.name}@${this.store.account.authority}`]
+           }
         );
         this.$notify.success({
           title: '挂单成功',

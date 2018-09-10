@@ -45,7 +45,10 @@ export default {
 			store.store.account.name,
 			"eosotcbackup",
 			`${ask.quantity}`,
-			`${memo}`
+			`${memo}`,
+           {
+            authorization: [`${this.store.account.name}@${this.store.account.authority}`]
+           }
         )        
         this.$notify.success({
           title: "挂单成功",
