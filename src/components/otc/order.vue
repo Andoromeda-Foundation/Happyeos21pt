@@ -67,7 +67,7 @@ export default {
         await contract.retrieve(
             store.store.account.name,
             this.order.id,
-            this.order.ask,
+            `${this.order.ask.quantity}@${this.order.ask.contract}`,
             {
               authorization: [`${store.store.account.name}@${store.store.account.authority}`]
             }
