@@ -16,6 +16,14 @@
                 </el-col>
             </el-row>
       </el-card>
+      <el-card class="box-card">
+        <h1 class="title"> BET 市场 </h1>
+        <el-row class="hpy-orders-list" :gutter="20">
+                <el-col :span="8" class="order-info-section" v-for="order in betOrdersList" :key="order.id">
+                  <OrderView :order="order" />
+                </el-col>
+            </el-row>
+      </el-card>      
     </div>
 </template>
 
@@ -32,6 +40,7 @@ export default {
       store: store.store,
       eosOrdersList: [],
       hpyOrdersList: [],
+      betOrdersList: [],
     };
   },
   computed: {
@@ -39,6 +48,7 @@ export default {
   async created() {
     this.eosOrdersList = await getOrders();
     this.hpyOrdersList = await getOrders("happyeosslot");
+    this.betOrdersList = await getOrders("betdividends");
   },
   watch: {
     range(newRange, oldRange) {
