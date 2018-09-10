@@ -38,15 +38,7 @@ export default {
       const { ask, bid } = this.order
       const memo = `take,${bid.quantity},${bid.contract},${this.order.id}`
       try {
-        /*
-        await store.store.eos.transfer(
-          store.store.account.name,
-          "eosotcbackup",
-          `${ask.quantity}`,
-          `${memo}`
-        );*/
-
-        const contract = await store.store.eos.contract(${ask.contract})                
+        const contract = await store.store.eos.contract(`${ask.contract}`)           
         await contract.transfer(   
 			store.store.account.name,
 			"eosotcbackup",
