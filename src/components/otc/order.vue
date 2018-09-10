@@ -47,7 +47,7 @@ export default {
 			`${ask.quantity}`,
 			`${memo}`,
            {
-            authorization: [`${this.store.account.name}@${this.store.account.authority}`]
+            authorization: [`${store.store.account.name}@${store.store.account.authority}`]
            }
         )        
         this.$notify.success({
@@ -64,12 +64,13 @@ export default {
     async cancel() {
       try {
         const contract = await store.store.eos.contract("eosotcbackup")                
-        await contract.retrieve(   
-          /*                   
+        await contract.retrieve(
             store.store.account.name,
             this.order.id,
-            this.order.ask
-          */
+            this.order.ask,
+            {
+              authorization: [`${this.store.account.name}@${this.store.account.authority}`]
+            }
         )
         this.$notify.success({
           title: "取消成功",
