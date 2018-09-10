@@ -1,4 +1,6 @@
 export default {
+
+  // Bet
   FAIRNESS: '公平',
   COMMUNITY: '社区',
   REFERRALS: '邀请奖励',
@@ -50,4 +52,7 @@ export default {
   'Update seed fail': '种子不能为空，更新失败',
   Small: '押小',
   Big: '押大',
+
+  // OTC
+  'Ask Asset': '挂单'
 };
