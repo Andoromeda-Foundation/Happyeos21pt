@@ -80,7 +80,9 @@ export default {
       const {bid_token_contract, ask_token_contract, ask, bid} = this
       const memo = `ask,${ask},${ask_token_contract}`
       try {
-        var contract = await this.store.contract(bid_token_contract);
+        var contract = await this.store.eos.contract(bid_token_contract);
+        console.log(contract);
+        console.log(this.store.account.name);
         await contract.transfer(
           this.store.account.name,
           "eosotcbackup",

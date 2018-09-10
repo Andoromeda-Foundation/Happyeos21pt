@@ -59,11 +59,12 @@ export default {
       return `以......兑换 ${symbol}`
     },
     async ask_order() {
-      const {target_token_contract, ask, bid} = this
-      const memo = `ask,${ask},${target_token_contract}`
+      const {bid_token_contract, ask_token_contract, ask, bid} = this
+      const memo = `ask,${ask},${ask_token_contract}`
 
       try {
-        await this.store.eos.transfer(
+        var contract = this.store.eos.contract(bid_token_contract);
+        await contract.transfer(
           this.store.account.name,
           "eosotcbackup",
           `${bid}`,
