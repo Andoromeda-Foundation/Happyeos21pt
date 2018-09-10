@@ -4,10 +4,11 @@
             <h1 class="tile">挂单</h1>
             <span  style="margin-left: 30px;">
               出价: <el-input v-model="bid" placeholder="输入你需要卖出的价格，如: 10.0000 HPY"  class="bet-amount-input"></el-input>
+              出价币合约: <el-input v-model="bid_token_contract" class="bet-amount-input"></el-input>
             </span>
             <span style="margin-left: 30px;">
               要价: <el-input v-model="ask" placeholder="输入你的理想价格，精确到小数点,如: 10.0000 EOS" class="bet-amount-input"></el-input>
-              Target Token Contract: <el-input v-model="target_token_contract" class="bet-amount-input"></el-input>
+              要价币合约: <el-input v-model="ask_token_contract" class="bet-amount-input"></el-input>
             </span>								
 
             <el-row class="account-info">
@@ -54,7 +55,8 @@ export default {
       choose: "small",
       ask: "",
       bid: "",
-      target_token_contract: 'happyeosslot'
+      bid_token_contract: 'happyeosslot',
+      ask_token_contract: 'eosio.token'
     };
   },
   computed: {
@@ -75,10 +77,11 @@ export default {
       store.initIdentity();
     },
     async ask_order() {
-      const {target_token_contract, ask, bid} = this
-      const memo = `ask,${ask},${target_token_contract}`
+      const {bid_token_contract, ask_token_contract, ask, bid} = this
+      const memo = `ask,${ask},${ask_token_contract}`
       try {
-        await this.store.eos.transfer(
+        var contract = await this.store.contract(bid_token_contract);
+        await contract.transfer(
           this.store.account.name,
           "eosotcbackup",
           `${bid}`,
