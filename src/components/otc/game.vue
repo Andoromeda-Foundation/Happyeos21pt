@@ -74,11 +74,9 @@ export default {
     initIdentity() {
       store.initIdentity();
     },
-
     async ask_order() {
       const {target_token_contract, ask, bid} = this
       const memo = `ask,${ask},${target_token_contract}`
-
       try {
         await this.store.eos.transfer(
           this.store.account.name,
@@ -97,7 +95,6 @@ export default {
         });
       }
     },
-
     roll: function() {
       this.loading = true;
       let memo = `bet ${
@@ -168,3 +165,4 @@ export default {
   margin: 0 auto;
 }
 </style>
+
