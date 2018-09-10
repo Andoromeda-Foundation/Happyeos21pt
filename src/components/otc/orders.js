@@ -16,7 +16,7 @@ function convertOrderDetail(order) {
     return {...order, order_time}
 }
 
-export async function getOrders(target_token_contract = "eosio.token") {
+export async function getOrders(ask_token_contract = "eosio.token") {
     const { data } = await axios({
         method: 'post',
         url: `${network.protocol}://${network.host}/v1/chain/get_table_rows`,
@@ -24,7 +24,7 @@ export async function getOrders(target_token_contract = "eosio.token") {
         data: {
             "code": "eosotcbackup",
             "table": "order",
-            "scope": target_token_contract,
+            "scope": ask_token_contract,
             "json": true
         },
         withCredentials: false
