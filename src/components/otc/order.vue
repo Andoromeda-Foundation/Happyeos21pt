@@ -57,19 +57,25 @@ export default {
     },
     async cancel() {
       try {
-        const contract = await store.store.eos.contract("eosotcbackup")
-        await contract.retrieve(store.store.account.name, this.order.id)
+        const contract = await store.store.eos.contract("eosotcbackup")                
+        await contract.retrieve(   
+          /*                   
+            store.store.account.name,
+            this.order.id,
+            this.order.ask
+          */
+        )
         this.$notify.success({
           title: "取消成功",
           message: "请耐心等待"
-        });
-      } catch (error) {
+        });        
+      } catch (error) {        
         this.$notify.error({
           title: "交易失败",
           message: error.message
         });
       }
-      retrieve
+      //retrieve*/
     }
   }
 };

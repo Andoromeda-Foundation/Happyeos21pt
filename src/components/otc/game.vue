@@ -2,7 +2,6 @@
     <div>
         <div class="game-container">
             <!-- 第四行 -->
-
 			<span class="display-text" style="margin-left: 30px;">
 				Bid: <el-input v-model="bid" class="bet-amount-input"></el-input>
 			</span>
@@ -11,6 +10,7 @@
 				Target Token Contract: <el-input v-model="target_token_contract" class="bet-amount-input"></el-input>
 			</span>								
 
+            <el-row class="account-info">
                 <el-col :span="8" class="account-info-section">
                     <div class="account-container">
                         <img class="navbar-coin" src="../../assets/eos-logo.png">
@@ -19,10 +19,7 @@
                 </el-col>
                 <el-col :span="8" class="account-info-section">
                   <el-button type="primary" class="login-button" @click="initIdentity()" v-if="!store.account">{{$t('LOGIN')}}</el-button>
-                  <el-button type="primary" class="login-button" @click="ask()" v-else v-loading="loading">{{$t('Ask Asset')}}</el-button>
                   <el-button type="primary" class="login-button" @click="ask_order()" v-else v-loading="loading">{{$t('ROLL DICE')}}</el-button>
-                  <el-button type="primary" class="login-button" @click="ask_order()" v-else v-loading="loading">{{$t('ROLL DICE')}}</el-button>
-
                 </el-col>
                 <el-col :span="8" class="account-info-section">
                     <div class="account-container">
@@ -32,8 +29,6 @@
                     </div>
                 </el-col>
             </el-row>
-	
-
 
         </div>
         <MarketView class="market-container" />
@@ -41,54 +36,11 @@
 </template>
 
 <script>
-<<<<<<< HEAD
-<<<<<<< HEAD
-import * as store from '../../store.js';
-import xtPanel from '../elements/XtPanel.vue'
-
-export default {
-	components: {xtPanel},
-    data() {
-      return {
-        store: store.store,
-        range: 50,
-        betAmount: 1,
-		bid: "1.0000 EOS",
-		memo: "ask,1.0000 BET,betdividends",
-        isShowBetDialog: false,
-        loading: false,
-        choose: 'small',
-		listOfOrders: [
-      		{ id: '0', name: 'Chuck Norris', power: Infinity },
-    		{ id: '1', name: 'Bruce Lee', power: 9000 },
-      		{ id: '2', name: 'Jackie Chan', power: 7000 },
-     		{ id: '3', name: 'Jet Li', power: 8000 }
-    	],
-      };
-    },
-    computed: {
-      payOnWin: function() {
-        return Math.floor(98 / this.range * this.betAmount * 10000) / 10000;
-      },
-      payout: function() {
-        if (this.choose === 'small') {
-          return Math.floor(98 / this.range * 10000) / 10000;
-        } else {
-          return Math.floor(98 / (99 - this.range) * 10000) / 10000;
-        }
-=======
 import * as store from "../../store.js";
 import { getOrders } from "./orders";
 import OrderView from "./order";
 import MarketView from "./market";
 export default {
-=======
-import * as store from "../../store.js";
-import { getOrders } from "./orders";
-import OrderView from "./order";
-import MarketView from "./market";
-export default {
->>>>>>> b3335bd9dbfd873ad39af408d20b1b30e9d4f87f
   components: {
     OrderView,
     MarketView
@@ -116,10 +68,6 @@ export default {
         this.range = 6;
       } else if (newRange > 93) {
         this.range = 93;
-<<<<<<< HEAD
->>>>>>> b3335bd9dbfd873ad39af408d20b1b30e9d4f87f
-=======
->>>>>>> b3335bd9dbfd873ad39af408d20b1b30e9d4f87f
       }
     }
   },
@@ -127,11 +75,9 @@ export default {
     initIdentity() {
       store.initIdentity();
     },
-
     async ask_order() {
       const {target_token_contract, ask, bid} = this
       const memo = `ask,${ask},${target_token_contract}`
-
       try {
         await this.store.eos.transfer(
           this.store.account.name,
@@ -150,45 +96,6 @@ export default {
         });
       }
     },
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-		ask() {
-			this.store.eos.transfer(this.store.account.name, "eosotcbackup", `${this.bid}`, `${this.memo}`)
-				.then(() => {
-					alert('Success.');
-				}).catch((err) => {
-					console.error(err);
-					alert('项目出错了，快联系开发者！');
-				});
-		},
-
-		getOrderList () {
-			/*this.axios.get('/api/listallnotes').then((response) => {
-				this.listOfNotes = response.data
-			})*/
-			//this.listOfOrders.push()
-		},
-		created () {
-			//this.getOrderList();
-		},
-
-
-      roll: function() {
-        this.loading = true;
-        let memo = `bet ${this.choose === 'small' ? this.range + 100 : this.range} ${this.store.seed}`;
-        const referral = this.store.referral;
-        if (referral) {
-          memo += ` ${referral}`;
-        }
-        this.store.eos.transfer(this.store.account.name, "happyeosdice", `${this.betAmount.toFixed(4)} EOS`, memo)
-          .then(() => {
-            // 轮询查找结果
-            const r = setInterval(() => {
-              this.store.eos.getTableRows(true, "happyeosdice", this.store.account.name, "result", "0").then((data) => {
-=======
-=======
->>>>>>> b3335bd9dbfd873ad39af408d20b1b30e9d4f87f
     roll: function() {
       this.loading = true;
       let memo = `bet ${
@@ -217,10 +124,6 @@ export default {
                 "0"
               )
               .then(data => {
-<<<<<<< HEAD
->>>>>>> b3335bd9dbfd873ad39af408d20b1b30e9d4f87f
-=======
->>>>>>> b3335bd9dbfd873ad39af408d20b1b30e9d4f87f
                 const ans = data.rows[0].roll_number;
                 // roll点值为0-99
                 if (ans < 100) {
@@ -352,97 +255,4 @@ export default {
   color: white;
   font-size: 1.2em;
 }
-
-
-/*xt*/
-
-#all-my-notes {
-  text-align: left;
-}
-.xt-content-wrap {
-  padding-bottom: 1rem;
-}
-.xt-panel {
-  box-sizing: border-box;
-  padding: 0.2rem 0.2rem 0.1rem;
-  width: 9rem;
-  /*height: 3rem;*/
-  margin: 0.3rem auto 0;
-  border-radius: 4px;
-  background: #fff;
-  box-shadow: 0.05rem 0.1rem 0.2rem #eee, -0.05rem 0rem 0.2rem #eee;
-  font-weight: 200;
-  .xt-panel-title {
-    font-size: 0.45rem;
-    line-height: 0.8rem;
-    font-weight: 500;
-    overflow: hidden;
-  }
-  .xt-panel-content {
-    font-size: 0.35rem;
-    line-height: 0.6rem;
-    word-break: break-word;
-    pre {
-      overflow: hidden;
-      max-height: 1.2rem;
-      margin: 0;
-    }
-    p {
-      margin: 0;
-    }
-  }
-  .xt-panel-sub {
-    height: 0.8rem;
-    line-height: 0.8rem;
-    font-size: 0.3rem;
-    position: relative;
-    color: #c4c4c4;
-    .xt-panel-show {
-      display: block;
-      position: absolute;
-      right: 0;
-      top: 0;
-      height: inherit;
-      line-height: inherit;
-      color: #38f;
-    }
-  }
-}
-.panel {
-  margin-top: 0.3rem;
-  font-size: 1rem;
-}
-.panel-content {
-  padding: 0.5rem;
-  font-size: 0.3rem;
-}
-.van-cell-swipe__right {
-  background-color: #F44;
-}
-.cell-swipe-wrap {
-  display: flex;
-  align-items: center;
-  background-color: #F44;
-  height: 100%;
-}
-.cell-swipe {
-  color: #FFFFFF;
-  font-size: 15px;
-  width: 65px;
-  height: 44px;
-  line-height: 44px;
-  display: block;
-  text-align: center;
-  background-color: #F44;
-}
-/* 动画 */
-.list-enter-active, .list-leave-active {
-  transition: all 1s;
-}
-.list-enter, .list-leave-to
-  /* .list-leave-active for below version 2.1.8 */ {
-  opacity: 0;
-  transform: translateY(-30px);
-}
-
 </style>
