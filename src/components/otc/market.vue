@@ -1,29 +1,13 @@
 <template>
     <div>
       <el-card class="box-card">
-        <h1 class="title"> {{inExchangeFor('EOS')}} </h1>
+        <h1 class="title"> {{inExchangeFor(currentToken.name)}} </h1>
         <el-row class="eos-orders-list" :gutter="20">
-                <el-col :span="8" class="order-info-section" v-for="order in eosOrdersList" :key="order.id">
+                <el-col :span="8" class="order-info-section" v-for="order in ordersList" :key="order.id">
                   <OrderView :order="order" />
                 </el-col>
         </el-row>
-      </el-card>
-      <el-card class="box-card">
-        <h1 class="title"> {{inExchangeFor('HPY')}} </h1>
-        <el-row class="hpy-orders-list" :gutter="20">
-                <el-col :span="8" class="order-info-section" v-for="order in hpyOrdersList" :key="order.id">
-                  <OrderView :order="order" />
-                </el-col>
-            </el-row>
-      </el-card>
-      <el-card class="box-card">
-        <h1 class="title"> BET 市场 </h1>
-        <el-row class="hpy-orders-list" :gutter="20">
-                <el-col :span="8" class="order-info-section" v-for="order in betOrdersList" :key="order.id">
-                  <OrderView :order="order" />
-                </el-col>
-            </el-row>
-      </el-card>      
+      </el-card>   
     </div>
 </template>
 
@@ -35,21 +19,23 @@ export default {
   components: {
     OrderView
   },
+  props: ['currentToken'],
   data() {
     return {
       store: store.store,
-      eosOrdersList: [],
-      hpyOrdersList: [],
-      betOrdersList: [],
+      ordersList: [],
     };
   },
   computed: {
 
   },
   async created() {
-    this.eosOrdersList = await getOrders();
-    this.hpyOrdersList = await getOrders("happyeosslot");
-    this.betOrdersList = await getOrders("betdividends");
+    this.ordersList = await getOrders(this.currentToken.contract);
+  },
+  watch: {
+    async currentToken(newVal, oldVal) {
+      this.ordersList = await getOrders(newVal.contract)
+    }
   },
   methods: {
     initIdentity() {
