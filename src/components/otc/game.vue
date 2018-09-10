@@ -1,5 +1,19 @@
 <template>
-    <div class="otc-view">
+    <el-row :gutter="20" class="otc-view" style="margin-left: 0;margin-right: 0;">
+      <el-col :span="5">
+        <el-card title="Token List">
+          <h1 class="title">目前可交易的币</h1>
+          <ul>
+            <li v-for="t in tokenLists" :key="t.name">
+              <a href="#" @click="switchView(t)">{{t.name}}</a>
+              </li>
+          </ul>
+        </el-card>
+      </el-col>
+      <el-col :span="12">
+        <MarketView class="market-container" :currentToken="currentToken" />
+      </el-col>
+      <el-col :span="7">
         <el-card title="OTC" >
             <h1 class="tile">挂单</h1>
             <span  style="margin-left: 30px;">
@@ -14,31 +28,25 @@
             <el-row class="account-info">
                 <el-col :span="8" class="account-info-section">
                     <div class="account-container">
-                        <img class="navbar-coin" src="../../assets/eos-logo.png">
                         <span>EOS 余额：{{store.balance}}</span>
                     </div>
                 </el-col>
                 <el-col :span="8" class="account-info-section">
-                  <el-button type="primary" class="login-button" @click="initIdentity()" v-if="!store.account"> 使用 Scatter 登录 </el-button>
+                  <el-button type="primary" class="login-button" @click="initIdentity()" v-if="!store.account"> 登录 </el-button>
                   <el-button type="primary" class="login-button" @click="ask_order()" v-else v-loading="loading"> 发出交易 </el-button>
-                </el-col>
-                <el-col :span="8" class="account-info-section">
-                    <div class="account-container">
-                        <img class="navbar-coin" src="../../assets/HPY_Token.png">
-                        <span class="">HPY 余额：{{store.hpyBalance}}</span>
-                        <i class="el-icon-question" @click="isShowBetDialog = !isShowBetDialog" style="cursor: pointer;"></i>
-                    </div>
                 </el-col>
             </el-row>
         </el-card>
-        <MarketView class="market-container" />
-    </div>
+      </el-col>
+
+    </el-row>
 </template>
 
 <script>
 import * as store from "../../store.js";
 import { getOrders } from "./orders";
 import OrderView from "./order";
+import getTokenLists from "./tokenLists";
 import MarketView from "./market";
 export default {
   components: {
@@ -55,13 +63,16 @@ export default {
       choose: "small",
       ask: "",
       bid: "",
+      tokenLists: [],
+      currentToken: null,
       bid_token_contract: 'happyeosslot',
       ask_token_contract: 'eosio.token'
     };
   },
-  computed: {
-  },
+  computed: {},
   async created() {
+    this.tokenLists = getTokenLists();
+    this.currentToken = this.tokenLists[0];
   },
   watch: {
     range(newRange, oldRange) {
@@ -75,6 +86,9 @@ export default {
   methods: {
     initIdentity() {
       store.initIdentity();
+    },
+    switchView(t) {
+      this.currentToken = t;
     },
     async ask_order() {
       const {bid_token_contract, ask_token_contract, ask, bid} = this
@@ -93,12 +107,12 @@ export default {
            }
         );
         this.$notify.success({
-          title: '挂单成功',
+          title: "挂单成功",
           message: "请耐心等待"
         });
       } catch (error) {
         this.$notify.error({
-          title: '交易失败',
+          title: "交易失败",
           message: error.message
         });
       }
@@ -169,8 +183,7 @@ export default {
   align-items: center;
 }
 .otc-view {
-  max-width: 90%;
-  margin: 0 auto;
+  margin: 2rem auto;
 }
 </style>
 
