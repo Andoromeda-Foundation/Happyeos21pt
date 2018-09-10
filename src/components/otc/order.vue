@@ -6,6 +6,8 @@
             v-if="isLogined && isTheOrderOwner" @click="cancel()">取消订单</el-button>
             <el-button class="btn" type="text" 
             v-else-if="isLogined" @click="take()">TAKE!</el-button>
+            <el-button class="btn" type="text" 
+            v-else disabled="">登录后采取行动</el-button>
         </div>
         <p class="text item">出价: {{order.bid.quantity}}</p>
         <p class="text item">要价: {{order.ask.quantity}}</p>

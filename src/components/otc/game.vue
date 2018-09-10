@@ -1,36 +1,35 @@
 <template>
-    <div>
-        <div class="game-container">
-            <!-- 第四行 -->
-			<span class="display-text" style="margin-left: 30px;">
-				Bid: <el-input v-model="bid" class="bet-amount-input"></el-input>
-			</span>
-			<span class="display-text" style="margin-left: 30px;">
-				Ask: <el-input v-model="ask" class="bet-amount-input"></el-input>
-				Target Token Contract: <el-input v-model="target_token_contract" class="bet-amount-input"></el-input>
-			</span>								
+    <div class="otc-view">
+        <el-card title="OTC" >
+            <h1 class="tile">挂单</h1>
+            <span  style="margin-left: 30px;">
+              出价: <el-input v-model="bid" placeholder="输入你需要卖出的价格，如: 10.0000 HPY"  class="bet-amount-input"></el-input>
+            </span>
+            <span style="margin-left: 30px;">
+              要价: <el-input v-model="ask" placeholder="输入你的理想价格，精确到小数点,如: 10.0000 EOS" class="bet-amount-input"></el-input>
+              Target Token Contract: <el-input v-model="target_token_contract" class="bet-amount-input"></el-input>
+            </span>								
 
             <el-row class="account-info">
                 <el-col :span="8" class="account-info-section">
                     <div class="account-container">
                         <img class="navbar-coin" src="../../assets/eos-logo.png">
-                        <span class="display-text">{{store.balance}}</span>
+                        <span>EOS 余额：{{store.balance}}</span>
                     </div>
                 </el-col>
                 <el-col :span="8" class="account-info-section">
-                  <el-button type="primary" class="login-button" @click="initIdentity()" v-if="!store.account">{{$t('LOGIN')}}</el-button>
-                  <el-button type="primary" class="login-button" @click="ask_order()" v-else v-loading="loading">{{$t('ROLL DICE')}}</el-button>
+                  <el-button type="primary" class="login-button" @click="initIdentity()" v-if="!store.account"> 使用 Scatter 登录 </el-button>
+                  <el-button type="primary" class="login-button" @click="ask_order()" v-else v-loading="loading"> 发出交易 </el-button>
                 </el-col>
                 <el-col :span="8" class="account-info-section">
                     <div class="account-container">
                         <img class="navbar-coin" src="../../assets/HPY_Token.png">
-                        <span class="display-text">{{store.hpyBalance}}</span>
+                        <span class="">HPY 余额：{{store.hpyBalance}}</span>
                         <i class="el-icon-question" @click="isShowBetDialog = !isShowBetDialog" style="cursor: pointer;"></i>
                     </div>
                 </el-col>
             </el-row>
-
-        </div>
+        </el-card>
         <MarketView class="market-container" />
     </div>
 </template>
@@ -53,8 +52,8 @@ export default {
       isShowBetDialog: false,
       loading: false,
       choose: "small",
-      ask: "1.0000 HPY",
-      bid: "1.0000 EOS",
+      ask: "",
+      bid: "",
       target_token_contract: 'happyeosslot'
     };
   },
@@ -150,7 +149,8 @@ export default {
 };
 </script>
 
-<style>
+// For the sake of god, please use style scoped to avoid style collusion
+<style scoped>
 .game-container {
   width: 655px;
   height: 386px;
@@ -160,99 +160,9 @@ export default {
   background-color: #4b4848;
   align-items: center;
 }
-.slider-wrapper {
-  padding: 10px;
-  background-color: #4b484888;
-  border-radius: 30px;
-  align-items: center;
-  width: 655px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: row;
-  color: white;
-  justify-content: space-between;
-}
-.slider-wrapper .range {
-  width: 90%;
-}
-.bet-amount-container {
-  background-color: #3f3e3e;
-  height: 43px;
-  border-radius: 0.3em;
-  padding: 4px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.bet-amount {
-  width: 100%;
-  height: 100%;
-  display: flex;
-}
-.bet-amount .amount {
-  background-color: #4b4848;
-  display: flex;
-  align-items: center;
-  border-radius: 0.3em;
-}
-.bet-amount .amount-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  cursor: pointer;
-}
-.navbar-coin {
-  height: 22px;
-  margin-left: 10px;
-  vertical-align: middle;
-}
-.roll-info {
-  background-color: #3f3e3e;
-  border-radius: 0.3em;
-  height: 87px;
-  margin: 0 20px;
-}
-.roll-info-section {
-  text-align: center;
-  padding: 10px;
-}
-.choose-info {
-  margin-bottom: 20px;
-}
-.market-container {
+.otc-view {
   max-width: 90%;
   margin: 0 auto;
 }
-.choose-info-section {
-  background-color: #3f3e3e;
-  height: 70px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.3em;
-  padding: 4px;
-}
-.account-info {
-  height: 87px;
-  margin: 0 20px;
-  font-size: 20px;
-  display: flex;
-  align-items: center;
-}
-.account-container {
-  display: flex;
-  align-items: center;
-}
-.account-container span {
-  display: block;
-  width: 100%;
-  text-align: center;
-}
-.bet-amount-input input {
-  background-color: #4b4848;
-  border: 0;
-  color: white;
-  font-size: 1.2em;
-}
 </style>
+

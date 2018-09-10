@@ -1,7 +1,7 @@
 <template>
     <div>
       <el-card class="box-card">
-        <h1 class="title"> EOS 市场 </h1>
+        <h1 class="title"> {{inExchangeFor('EOS')}} </h1>
         <el-row class="eos-orders-list" :gutter="20">
                 <el-col :span="8" class="order-info-section" v-for="order in eosOrdersList" :key="order.id">
                   <OrderView :order="order" />
@@ -9,7 +9,7 @@
         </el-row>
       </el-card>
       <el-card class="box-card">
-        <h1 class="title"> HPY 市场 </h1>
+        <h1 class="title"> {{inExchangeFor('HPY')}} </h1>
         <el-row class="hpy-orders-list" :gutter="20">
                 <el-col :span="8" class="order-info-section" v-for="order in hpyOrdersList" :key="order.id">
                   <OrderView :order="order" />
@@ -44,26 +44,20 @@ export default {
     };
   },
   computed: {
+
   },
   async created() {
     this.eosOrdersList = await getOrders();
     this.hpyOrdersList = await getOrders("happyeosslot");
     this.betOrdersList = await getOrders("betdividends");
   },
-  watch: {
-    range(newRange, oldRange) {
-      if (newRange < 6) {
-        this.range = 6;
-      } else if (newRange > 93) {
-        this.range = 93;
-      }
-    }
-  },
   methods: {
     initIdentity() {
       store.initIdentity();
     },
-
+    inExchangeFor(symbol) {
+      return `以......兑换 ${symbol}`
+    },
     async ask_order() {
       const {target_token_contract, ask, bid} = this
       const memo = `ask,${ask},${target_token_contract}`
