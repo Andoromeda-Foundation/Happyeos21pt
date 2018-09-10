@@ -32,11 +32,6 @@
 
         </div>
         <MarketView class="market-container" />
-        <!-- <el-row class="orders-list" :gutter="20">
-                <el-col :span="8" class="order-info-section" v-for="order in ordersList" :key="order.id">
-                  <OrderView :order="order" />
-                </el-col>
-            </el-row> -->
     </div>
 </template>
 
@@ -58,7 +53,6 @@ export default {
       isShowBetDialog: false,
       loading: false,
       choose: "small",
-      ordersList: [],
       ask: "1.0000 HPY",
       bid: "1.0000 EOS",
       target_token_contract: 'happyeosslot'
@@ -67,7 +61,6 @@ export default {
   computed: {
   },
   async created() {
-    this.ordersList = await getOrders();
   },
   watch: {
     range(newRange, oldRange) {
