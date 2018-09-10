@@ -69,7 +69,7 @@ export default {
             this.order.id,
             this.order.ask,
             {
-              authorization: [`${this.store.account.name}@${this.store.account.authority}`]
+              authorization: [`${store.store.account.name}@${store.store.account.authority}`]
             }
         )
         this.$notify.success({
