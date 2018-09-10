@@ -1,42 +1,21 @@
 <template>
     <div>
-        <div class="game-container">
-            <!-- 第四行 -->
-			<span class="display-text" style="margin-left: 30px;">
-				Bid: <el-input v-model="bid" class="bet-amount-input"></el-input>
-			</span>
-			<span class="display-text" style="margin-left: 30px;">
-				Ask: <el-input v-model="ask" class="bet-amount-input"></el-input>
-				Target Token Contract: <el-input v-model="target_token_contract" class="bet-amount-input"></el-input>
-			</span>								
-
-            <el-row class="account-info">
-                <el-col :span="8" class="account-info-section">
-                    <div class="account-container">
-                        <img class="navbar-coin" src="../../assets/eos-logo.png">
-                        <span class="display-text">{{store.balance}}</span>
-                    </div>
-                </el-col>
-                <el-col :span="8" class="account-info-section">
-                  <el-button type="primary" class="login-button" @click="initIdentity()" v-if="!store.account">{{$t('LOGIN')}}</el-button>
-                  <el-button type="primary" class="login-button" @click="ask_order()" v-else v-loading="loading">{{$t('ROLL DICE')}}</el-button>
-                </el-col>
-                <el-col :span="8" class="account-info-section">
-                    <div class="account-container">
-                        <img class="navbar-coin" src="../../assets/HPY_Token.png">
-                        <span class="display-text">{{store.hpyBalance}}</span>
-                        <i class="el-icon-question" @click="isShowBetDialog = !isShowBetDialog" style="cursor: pointer;"></i>
-                    </div>
-                </el-col>
-            </el-row>
-
-        </div>
-        <MarketView class="market-container" />
-        <!-- <el-row class="orders-list" :gutter="20">
-                <el-col :span="8" class="order-info-section" v-for="order in ordersList" :key="order.id">
+      <el-card class="box-card">
+        <h1 class="title"> EOS 市场 </h1>
+        <el-row class="eos-orders-list" :gutter="20">
+                <el-col :span="8" class="order-info-section" v-for="order in eosOrdersList" :key="order.id">
                   <OrderView :order="order" />
                 </el-col>
-            </el-row> -->
+        </el-row>
+      </el-card>
+      <el-card class="box-card">
+        <h1 class="title"> HPY 市场 </h1>
+        <el-row class="hpy-orders-list" :gutter="20">
+                <el-col :span="8" class="order-info-section" v-for="order in hpyOrdersList" :key="order.id">
+                  <OrderView :order="order" />
+                </el-col>
+            </el-row>
+      </el-card>
     </div>
 </template>
 
@@ -44,30 +23,22 @@
 import * as store from "../../store.js";
 import { getOrders } from "./orders";
 import OrderView from "./order";
-import MarketView from "./market";
 export default {
   components: {
-    OrderView,
-    MarketView
+    OrderView
   },
   data() {
     return {
       store: store.store,
-      range: 50,
-      betAmount: 1,
-      isShowBetDialog: false,
-      loading: false,
-      choose: "small",
-      ordersList: [],
-      ask: "1.0000 HPY",
-      bid: "1.0000 EOS",
-      target_token_contract: 'happyeosslot'
+      eosOrdersList: [],
+      hpyOrdersList: [],
     };
   },
   computed: {
   },
   async created() {
-    this.ordersList = await getOrders();
+    this.eosOrdersList = await getOrders();
+    this.hpyOrdersList = await getOrders("happyeosslot");
   },
   watch: {
     range(newRange, oldRange) {
@@ -229,10 +200,6 @@ export default {
 }
 .choose-info {
   margin-bottom: 20px;
-}
-.market-container {
-  max-width: 90%;
-  margin: 0 auto;
 }
 .choose-info-section {
   background-color: #3f3e3e;
