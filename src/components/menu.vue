@@ -22,9 +22,9 @@
         </el-dropdown>
       </div>
       <div id="menu-section-container">
-        <el-dropdown trigger="click" @command="handleNetworkChange">
+        <el-dropdown trigger="click" @command="handleNetworkChange" v-if="!store.account">
           <span class="el-dropdown-link">
-            当前网络: {{store.network}}<i class="el-icon-arrow-down el-icon--right"></i>
+            设定登录网络: {{store.network}}<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="mainnet">{{$t('Mainnet')}}</el-dropdown-item>
@@ -41,7 +41,9 @@
             <el-dropdown-item command="jp"> 日本語　</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-
+        <el-button type="primary"  @click="initIdentity()" v-if="!store.account"> 登录 </el-button>
+        <el-button type="text" class="menu-item" v-if="store.account"> {{store.account.name}} @ {{store.network}} </el-button>
+        <el-button type="primary" class="menu-item" @click="forgetIdentity()" v-if="store.account"> 退出账户 </el-button>
         <el-button type="text" class="menu-item" @click="isShowReferralsDialog = !isShowReferralsDialog">{{$t('REFERRALS')}}</el-button>
       </div>
     </div>
@@ -95,65 +97,71 @@
 </template>
 
 <script>
-import Chance from 'chance';
-import Clipboard from 'clipboard';
-import * as store from '../store.js';
+import Chance from "chance";
+import Clipboard from "clipboard";
+import * as store from "../store.js";
 
 export default {
   data() {
-      return {
-        store: store.store,
-        isShowFairDialog: false,
-        isShowCommunityDialog: false,
-        isShowReferralsDialog: false,
-        isShowHowToPlayDialog: false,
-        langCodeToReadableStr: {
-          "ch": "中文",
-          "en": "English",
-          "jp": "日本語",
-        }
-      };
-    },
+    return {
+      store: store.store,
+      isShowFairDialog: false,
+      isShowCommunityDialog: false,
+      isShowReferralsDialog: false,
+      isShowHowToPlayDialog: false,
+      langCodeToReadableStr: {
+        ch: "中文",
+        en: "English",
+        jp: "日本語"
+      }
+    };
+  },
   computed: {
     refUrl: function() {
-      return `${window.location.origin}?ref=${(this.store.account && this.store.account.name) || ''}`;
+      return `${window.location.origin}?ref=${(this.store.account &&
+        this.store.account.name) ||
+        ""}`;
     }
   },
   methods: {
+    initIdentity() {
+      store.initIdentity();
+    },
+    forgetIdentity() {},
     handleMenuClick(val) {
-      this.store.currentGame = val
-      console.info(val)
+      this.store.currentGame = val;
+      console.info(val);
     },
     handleNetworkChange(val) {
-      this.changeNetwork(val)
+      this.changeNetwork(val);
     },
     changeNetwork(newNetwork) {
-      localStorage.setItem('network', newNetwork);
+      localStorage.setItem("network", newNetwork);
       location.reload();
     },
     changeLang(lang) {
-      this.store.lang = lang
-      localStorage.setItem('lang', this.store.lang);
+      this.store.lang = lang;
+      localStorage.setItem("lang", this.store.lang);
       this.$i18n.locale = this.store.lang;
     },
     copy() {
-      const clipboard = new Clipboard('.copy-btn');
+      const clipboard = new Clipboard(".copy-btn");
     },
     update() {
       if (!this.store.seed) {
         this.$notify.error({
-          title: this.$t('Update seed fail'),
+          title: this.$t("Update seed fail")
         });
       } else {
-        localStorage.setItem('seed', this.store.seed);
+        localStorage.setItem("seed", this.store.seed);
         this.$notify({
-          title: this.$t('Update seed success'),
-          type: 'success',
+          title: this.$t("Update seed success"),
+          type: "success"
         });
       }
     }
   }
-}
+};
 </script>
 
 <style>
@@ -173,10 +181,10 @@ export default {
   height: 50px;
 }
 #menu .el-dropdown {
-    display: inline-block;
-    position: relative;
-    font-size: 14px;
-    color: #EEE;
+  display: inline-block;
+  position: relative;
+  font-size: 14px;
+  color: #eee;
 }
 .menu-item {
   color: white;
