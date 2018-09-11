@@ -1,0 +1,92 @@
+defaults: &defaults
+  working_directory: ~/repo
+  docker:
+    - image: circleci/node:8.11.1
+
+
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2
+jobs:
+  build:
+    <<: *defaults
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - yarn-packages-{{ .Branch }}
+            - yarn-packages-master
+            - yarn-packages-
+
+      - run:
+          name: Install Dependencies
+          command: yarn install
+
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules/
+        
+      # run builds!
+      - run: 
+          name: Build
+          command: CI=false yarn run build
+
+      - store_artifacts:
+          path: ~/repo/dist
+
+      - persist_to_workspace:
+          # Must be an absolute path, or relative path from working_directory
+          root: ~/repo/
+          paths:
+            - build
+  deploy:
+    <<: *defaults
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "71:c8:22:fa:3a:a3:a8:8c:9f:1c:36:7d:13:ff:97:19"
+      - attach_workspace: 
+          at: ~/repo/dist
+      - run:
+          name: Keyscan Github (HACK)
+          command: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+      - run:
+          name: Deploy to Github Pages
+          command: |
+            cd ./build/dist 
+            git config --global user.email "cd-bot@dasdaq.io"
+            git config --global user.name "Circle CI Deploy Bot"
+            echo "otc.happyeosslot.com" >> CNAME # add custom domain
+            git init
+            git add .
+            git commit -m "Update website content"
+            git push --force --quiet git@github.com:Andoromeda-Foundation/Happyeos21pt.git master:gh-pages
+
+workflows:
+  version: 2
+  build-test:
+    jobs:
+      - build:
+          filters:
+            branches:
+              ignore:
+                - /master/
+  build-and-deploy:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: /master/
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: /master/

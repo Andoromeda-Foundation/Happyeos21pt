@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --hot --env.dev",
-    "build": "rimraf dist && webpack -p --progress --hide-modules",
+    "build": "rimraf dist && webpack --progress --hide-modules",
     "deploy": "gh-pages -d dist -b master"
   },
   "dependencies": {
