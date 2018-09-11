@@ -41,6 +41,7 @@
             <el-dropdown-item command="jp"> 日本語　</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
+
         <el-button type="text" class="menu-item" @click="isShowReferralsDialog = !isShowReferralsDialog">{{$t('REFERRALS')}}</el-button>
       </div>
     </div>
