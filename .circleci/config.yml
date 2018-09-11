@@ -78,6 +78,7 @@ workflows:
             branches:
               ignore:
                 - /master/
+                - /gh-pages/
   build-and-deploy:
     jobs:
       - build:
