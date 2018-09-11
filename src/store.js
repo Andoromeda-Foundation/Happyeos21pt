@@ -15,7 +15,7 @@ if (!localStorage.getItem('seed')) {
 }
 
 export const store = {
-  currentGame: 'blackJack',
+  currentGame: 'otc',
   account: null,
   balance: 0,
   hpyBalance: 0,
