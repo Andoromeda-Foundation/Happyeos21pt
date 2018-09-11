@@ -8,8 +8,10 @@ import config from './config.js';
 
 import enLocale from 'element-ui/lib/locale/lang/en';
 import zhLocale from 'element-ui/lib/locale/lang/zh-CN';
+import jpLocale from 'element-ui/lib/locale/lang/ja';
 import zhTerm from './lang/ch';
 import enTerm from './lang/en';
+import jpTerm from './lang/jp';
 
 Vue.use(VueI18n);
 
@@ -21,6 +23,10 @@ const messages = {
   ch: {
     ...zhTerm,
     ...zhLocale,
+  },
+  jp: {
+    ...jpTerm,
+    ...jpLocale,
   },
 };
 
