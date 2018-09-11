@@ -9,12 +9,31 @@
         <el-button type="text" class="menu-item" @click="isShowCommunityDialog = !isShowCommunityDialog">{{$t('COMMUNITY')}}</el-button>
       </div>
       <div id="menu-section-container">
-        <el-button type="text" class="menu-item" @click="store.currentGame = 'dice'">{{$t('Dice')}}</el-button>
+        <el-dropdown @command="handleCommand">
+      <span class="el-dropdown-link">
+        {{menuName}}<i class="el-icon-arrow-down el-icon--right"></i>
+      </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="dice" >{{$t('Dice')}}</el-dropdown-item>
+            <el-dropdown-item command="blackJack">{{$t('BlackJack')}}</el-dropdown-item>
+            <el-dropdown-item command="otc">{{$t('Otc')}}</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+       <!-- <el-button type="text" class="menu-item" @click="store.currentGame = 'dice'">{{$t('Dice')}}</el-button>
         <el-button type="text" class="menu-item" @click="store.currentGame = 'blackJack'">{{$t('BlackJack')}}</el-button>
-        <el-button type="text" class="menu-item" @click="store.currentGame = 'otc'">{{$t('Otc')}}</el-button>      
+        <el-button type="text" class="menu-item" @click="store.currentGame = 'otc'">{{$t('Otc')}}</el-button>   -->
       </div>
       <div id="menu-section-container">
-        <el-button type="text" class="menu-item" @click="changeNetwork()">{{store.network}}</el-button>
+        <el-dropdown @command="networkCommand">
+      <span class="el-dropdown-link">
+        {{store.network}}<i class="el-icon-arrow-down el-icon--right"></i>
+      </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="kylin" >kylin</el-dropdown-item>
+            <el-dropdown-item command="mainnet">mainnet</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      <!--  <el-button type="text" class="menu-item" @click="changeNetwork()">{{store.network}}</el-button>-->
         <img src="../assets/flag-ch.jpg" class="lang-icon menu-item" @click="changeLang" v-if="store.lang === 'ch'">
         <img src="../assets/flag-en.jpg" class="lang-icon menu-item" @click="changeLang" v-else>
         <el-button type="text" class="menu-item" @click="isShowReferralsDialog = !isShowReferralsDialog">{{$t('REFERRALS')}}</el-button>
@@ -83,6 +102,7 @@ export default {
         isShowCommunityDialog: false,
         isShowReferralsDialog: false,
         isShowHowToPlayDialog: false,
+          menuName:'Otc'
       };
     },
   computed: {
@@ -91,6 +111,15 @@ export default {
     }
   },
   methods: {
+      networkCommand(command){
+          const newNetwork = this.store.network =command;
+          localStorage.setItem('network', newNetwork);
+          location.reload();
+      },
+      handleCommand(command){
+          this.store.currentGame = command;
+          this.menuName = command;
+      },
     changeNetwork() {
       const newNetwork = this.store.network === 'kylin' ? 'mainnet' : 'kylin';
       localStorage.setItem('network', newNetwork);
