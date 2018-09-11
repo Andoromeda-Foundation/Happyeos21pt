@@ -10,7 +10,7 @@
       </div>
       <div id="menu-section-container">
         <el-dropdown @command="handleCommand">
-      <span class="el-dropdown-link">
+      <span class="el-dropdown-link" style="color: #ffffff">
         {{menuName}}<i class="el-icon-arrow-down el-icon--right"></i>
       </span>
           <el-dropdown-menu slot="dropdown">
@@ -25,7 +25,7 @@
       </div>
       <div id="menu-section-container">
         <el-dropdown @command="networkCommand">
-      <span class="el-dropdown-link">
+      <span class="el-dropdown-link" style="color: #ffffff">
         {{store.network}}<i class="el-icon-arrow-down el-icon--right"></i>
       </span>
           <el-dropdown-menu slot="dropdown">
