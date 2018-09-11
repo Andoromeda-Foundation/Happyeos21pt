@@ -10,19 +10,21 @@
           </ul>
         </el-card>
       </el-col>
-      <el-col :span="12">
+      <el-col :span="13">
         <MarketView class="market-container" :currentToken="currentToken" />
       </el-col>
-      <el-col :span="7">
+      <el-col :span="6">
         <el-card title="OTC" >
-            <h1 class="tile">挂单</h1>
+            <div slot="header" class="clearfix">
+              <h1 class="title">挂单</h1>
+            </div>
             <span  style="margin-left: 30px;">
               出价币合约: <el-input v-model="bid_token_contract" class="bet-amount-input"></el-input>
-              出价: <el-input v-model="bid" placeholder="输入你需要卖出的价格，如: 10.0000 HPY"  class="bet-amount-input"></el-input>
+              出价(你愿意出多少): <el-input v-model="bid" placeholder="精确小数点,如: 10.0000 HPY"  class="bet-amount-input"></el-input>
             </span>
             <span style="margin-left: 30px;">
               要价币合约: <el-input v-model="ask_token_contract" class="bet-amount-input"></el-input>
-              要价: <el-input v-model="ask" placeholder="输入你的理想价格，精确到小数点,如: 10.0000 EOS" class="bet-amount-input"></el-input>
+              要价（你想要多少）: <el-input v-model="ask" placeholder="精确到小数点,如: 10.0000 EOS" class="bet-amount-input"></el-input>
             </span>								
 
             <el-row class="account-info">
