@@ -12,7 +12,7 @@
         <p class="text item">出价: {{order.bid.quantity}}</p>
         <p class="text item">要价: {{order.ask.quantity}}</p>
         <p class="text item">卖家: {{order.owner}}</p>
-        <p class="text item">订单创建时间 {{order.order_time}} </p>  
+        <p class="text item">时间 {{order.order_time}} </p>  
       </el-card>
 </template>
 

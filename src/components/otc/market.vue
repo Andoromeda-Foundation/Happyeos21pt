@@ -1,10 +1,12 @@
 <template>
     <div>
       <el-card class="box-card">
-        <h1 class="title"> {{inExchangeFor(currentToken.name)}} </h1>
+        <div slot="header" class="clearfix">
+          <h1 class="title"> {{inExchangeFor(currentToken.name)}} </h1>
+        </div>
         <el-row class="eos-orders-list" :gutter="20">
                 <el-col :span="8" class="order-info-section" v-for="order in ordersList" :key="order.id">
-                  <OrderView :order="order" />
+                  <OrderView class="order-view" :order="order" />
                 </el-col>
         </el-row>
       </el-card>   
@@ -125,6 +127,9 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.order-view {
+  margin: 0.5rem 0;
+}
 
 </style>
