@@ -44,7 +44,7 @@
         <el-button type="primary"  @click="initIdentity()" v-if="!store.account"> 登录 </el-button>
         <el-button type="text" class="menu-item" v-if="store.account"> {{store.account.name}} @ {{store.network}} </el-button>
         <el-button type="primary" class="menu-item" @click="forgetIdentity()" v-if="store.account"> 退出账户 </el-button>
-        <el-button type="text" class="menu-item" @click="isShowReferralsDialog = !isShowReferralsDialog">{{$t('REFERRALS')}}</el-button>
+        <el-button type="text" class="menu-item" @click="isShowReferralsDialog = !isShowReferralsDialog" v-if="store.account">{{$t('REFERRALS')}}</el-button>
       </div>
     </div>
       <!-- 弹出 -->
