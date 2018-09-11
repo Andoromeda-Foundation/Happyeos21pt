@@ -36,7 +36,7 @@ jobs:
       # run builds!
       - run: 
           name: Build
-          command: CI=false yarn run build
+          command: yarn run build
 
       - store_artifacts:
           path: ~/repo/dist
@@ -45,7 +45,7 @@ jobs:
           # Must be an absolute path, or relative path from working_directory
           root: ~/repo/
           paths:
-            - build
+            - dist
   deploy:
     <<: *defaults
     steps:
@@ -60,7 +60,7 @@ jobs:
       - run:
           name: Deploy to Github Pages
           command: |
-            cd ./build/dist 
+            cd ./dist/dist 
             git config --global user.email "cd-bot@dasdaq.io"
             git config --global user.name "Circle CI Deploy Bot"
             echo "otc.happyeosslot.com" >> CNAME # add custom domain
