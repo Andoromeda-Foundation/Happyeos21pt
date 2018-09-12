@@ -2,7 +2,7 @@
     <div>
       <el-card class="box-card">
         <div slot="header" class="clearfix">
-          <h1 class="title"> {{inExchangeFor(currentToken.name)}} </h1>
+          <h1 class="title"> {{inExchangeFor}} </h1>
         </div>
         <el-row class="eos-orders-list" :gutter="20">
                 <el-col :span="8" class="order-info-section" v-for="order in ordersList" :key="order.id">
@@ -29,23 +29,23 @@ export default {
     };
   },
   computed: {
-
+    inExchangeFor() {
+      return `以...兑换 ${this.currentToken.tokenSymbol}`
+    },
   },
   async created() {
-    this.ordersList = await getOrders(this.currentToken.contract);
+    this.ordersList = await getOrders(this.currentToken.tokenContract);
   },
   watch: {
     async currentToken(newVal, oldVal) {
-      this.ordersList = await getOrders(newVal.contract)
+      this.ordersList = await getOrders(newVal.tokenContract)
     }
   },
   methods: {
     initIdentity() {
       store.initIdentity();
     },
-    inExchangeFor(symbol) {
-      return `以......兑换 ${symbol}`
-    },
+    
     async ask_order() {
       const {bid_token_contract, ask_token_contract, ask, bid} = this
       const memo = `ask,${ask},${ask_token_contract}`
