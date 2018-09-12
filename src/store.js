@@ -59,6 +59,11 @@ export function initIdentity() {
   }
 }
 
+export async function forgetIdentity() {
+  await scatter.forgetIdentity(this.network)
+  setIdentity(null);      
+}
+
 export function setIdentity(identity) {
   store.account = identity.accounts.find((acc) => acc.blockchain === 'eos');
   store.eos = scatter.eos(config.networks[store.network], Eos, {});
