@@ -12,12 +12,12 @@
       <div id="menu-section-container">
         <el-dropdown trigger="click" @command="handleMenuClick">
           <span class="el-dropdown-link">
-            {{store.currentGame}}<i class="el-icon-arrow-down el-icon--right"></i>
+            {{currentRouteName}}<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="dice">{{$t('Dice')}}</el-dropdown-item>
-            <el-dropdown-item command="blackJack">{{$t('BlackJack')}}</el-dropdown-item>
-            <el-dropdown-item command="otc">{{$t('OTC')}}</el-dropdown-item>
+            <el-dropdown-item command="Dice">{{$t('Dice')}}</el-dropdown-item>
+            <el-dropdown-item command="BlackJack">{{$t('BlackJack')}}</el-dropdown-item>
+            <el-dropdown-item command="OTCEOS">{{$t('OTC')}}</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -121,6 +121,9 @@ export default {
       return `${window.location.origin}?ref=${(this.store.account &&
         this.store.account.name) ||
         ""}`;
+    },
+    currentRouteName() {
+      return this.$route.name
     }
   },
   methods: {
@@ -132,8 +135,7 @@ export default {
       location.reload();
     },
     handleMenuClick(val) {
-      this.store.currentGame = val;
-      console.info(val);
+      this.$router.push({ name: val })
     },
     handleNetworkChange(val) {
       this.changeNetwork(val);

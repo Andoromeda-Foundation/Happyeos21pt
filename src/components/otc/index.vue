@@ -5,40 +5,30 @@
           <h1 class="title">目前可交易的币</h1>
           <ul>
             <li v-for="t in tokenLists" :key="t.name">
-              <a href="#" @click="switchView(t)">{{t.name}}</a>
+              <router-link :to="{ name: 'OTCExchange', params: {
+                    tokenContract: t.contract,
+                    tokenSymbol: t.name
+                } }"> {{t.name}} </router-link>
               </li>
+              <el-form ref="form" :model="customTokenForm" label-width="80px">
+                <el-form-item label="活动名称">
+                  <el-input v-model="customTokenForm.name"></el-input>
+                </el-form-item>
+                <el-form-item label="活动区域">
+                  <el-select v-model="customTokenForm.region" placeholder="请选择活动区域">
+                    <el-option label="区域一" value="shanghai"></el-option>
+                    <el-option label="区域二" value="beijing"></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-form>
           </ul>
         </el-card>
       </el-col>
       <el-col :span="13">
-        <MarketView class="market-container" :currentToken="currentToken" />
+        <MarketView class="market-container" :currentToken="getTokenDetailByRoute" />
       </el-col>
       <el-col :span="6">
-        <el-card title="OTC" >
-            <div slot="header" class="clearfix">
-              <h1 class="title">挂单</h1>
-            </div>
-            <span  style="margin-left: 30px;">
-              出价币合约: <el-input v-model="bid_token_contract" class="bet-amount-input"></el-input>
-              出价(你愿意出多少): <el-input v-model="bid" placeholder="精确小数点,如: 10.0000 HPY"  class="bet-amount-input"></el-input>
-            </span>
-            <span style="margin-left: 30px;">
-              要价币合约: <el-input v-model="ask_token_contract" class="bet-amount-input"></el-input>
-              要价（你想要多少）: <el-input v-model="ask" placeholder="精确到小数点,如: 10.0000 EOS" class="bet-amount-input"></el-input>
-            </span>								
-
-            <el-row class="account-info">
-                <el-col :span="8" class="account-info-section">
-                    <div class="account-container">
-                        <span>EOS 余额：{{store.balance}}</span>
-                    </div>
-                </el-col>
-                <el-col :span="8" class="account-info-section">
-                  <el-button type="primary" class="login-button" @click="initIdentity()" v-if="!store.account"> 登录 </el-button>
-                  <el-button type="primary" class="login-button" @click="ask_order()" v-else v-loading="loading"> 发出交易 </el-button>
-                </el-col>
-            </el-row>
-        </el-card>
+        <PlaceOrderView />        
       </el-col>
 
     </el-row>
@@ -50,31 +40,30 @@ import { getOrders } from "./orders";
 import OrderView from "./order";
 import getTokenLists from "./tokenLists";
 import MarketView from "./market";
+import PlaceOrderView from "./PlaceOrder";
 export default {
   components: {
     OrderView,
-    MarketView
+    MarketView,
+    PlaceOrderView
   },
   data() {
     return {
       store: store.store,
-      range: 50,
-      betAmount: 1,
-      isShowBetDialog: false,
       loading: false,
       choose: "small",
-      ask: "",
-      bid: "",
+      customTokenForm: {},
       tokenLists: [],
-      currentToken: null,
-      bid_token_contract: 'happyeosslot',
-      ask_token_contract: 'eosio.token'
     };
   },
-  computed: {},
+  computed: {
+    getTokenDetailByRoute() {
+      const { tokenContract, tokenSymbol } = this.$route.params;
+      return { tokenContract, tokenSymbol };
+    }
+  },
   async created() {
     this.tokenLists = getTokenLists();
-    this.currentToken = this.tokenLists[0];
   },
   watch: {
     range(newRange, oldRange) {
@@ -90,11 +79,11 @@ export default {
       store.initIdentity();
     },
     switchView(t) {
-      this.currentToken = t;
+      // this.currentToken = t;
     },
     async ask_order() {
-      const {bid_token_contract, ask_token_contract, ask, bid} = this
-      const memo = `ask,${ask},${ask_token_contract}`
+      const { bid_token_contract, ask_token_contract, ask, bid } = this;
+      const memo = `ask,${ask},${ask_token_contract}`;
       try {
         var contract = await this.store.eos.contract(bid_token_contract);
         console.log(contract);
@@ -104,9 +93,11 @@ export default {
           "eosotcbackup",
           `${bid}`,
           `${memo}`,
-           {
-            authorization: [`${this.store.account.name}@${this.store.account.authority}`]
-           }
+          {
+            authorization: [
+              `${this.store.account.name}@${this.store.account.authority}`
+            ]
+          }
         );
         this.$notify.success({
           title: "挂单成功",

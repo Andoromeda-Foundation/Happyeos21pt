@@ -5,6 +5,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import './css/main.css';
 import app from './app.vue';
 import config from './config.js';
+import router from './router.js';
 
 import enLocale from 'element-ui/lib/locale/lang/en';
 import zhLocale from 'element-ui/lib/locale/lang/zh-CN';
@@ -47,5 +48,6 @@ new Vue({
   el: '#app',
   i18n,
   data,
+  router,
   render: (h) => h(app),
 });
