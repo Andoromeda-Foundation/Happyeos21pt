@@ -14,7 +14,7 @@
               label="合约地址">
             </el-table-column>
           </el-table>
-              <el-form ref="form" :model="customTokenForm" label-width="80px">
+           <!--   <el-form ref="form" :model="customTokenForm" label-width="80px">
                 <el-form-item label="TODO 自定义币对">
                   <el-input v-model="customTokenForm.name"></el-input>
                 </el-form-item>
@@ -24,7 +24,10 @@
                     <el-option label="区域二" value="beijing"></el-option>
                   </el-select>
                 </el-form-item>
-              </el-form>
+              </el-form>-->
+          <el-input v-model="contractBySelf" placeholder="请输入合约地址"></el-input>
+          <el-input v-model="coinBySelf" placeholder="请输入币名"></el-input>
+          <el-button type="primary" @click="queryCoin">查询</el-button>
         </el-card>
       </el-col>
       <el-col :span="13">
@@ -44,9 +47,11 @@ import OrderView from "./order";
 import getTokenLists from "./tokenLists";
 import MarketView from "./market";
 import PlaceOrderView from "./PlaceOrder";
+import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
 export default {
   components: {
-    OrderView,
+      ElButton,
+      OrderView,
     MarketView,
     PlaceOrderView
   },
@@ -57,6 +62,8 @@ export default {
       choose: "small",
       customTokenForm: {},
       tokenLists: [],
+        contractBySelf:'',
+        coinBySelf:''
     };
   },
   computed: {
@@ -78,6 +85,9 @@ export default {
     }
   },
   methods: {
+      queryCoin(){
+          this.jumpToDiffrentToken(this.contractBySelf,this.coinBySelf)
+      },
     initIdentity() {
       store.initIdentity();
     },
