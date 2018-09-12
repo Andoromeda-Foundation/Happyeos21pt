@@ -3,15 +3,19 @@
       <el-col :span="5">
         <el-card title="Token List">
           <h1 class="title">目前可交易的币</h1>
-          <ul>
-            <li v-for="t in tokenLists" :key="t.name">
-              <router-link :to="{ name: 'OTCExchange', params: {
-                    tokenContract: t.contract,
-                    tokenSymbol: t.name
-                } }"> {{t.name}} </router-link>
-              </li>
+          <el-table :data="tokenLists" 
+            @row-click="clickTokenRow"
+            stripe style="width: 100%">
+            <el-table-column
+              prop="name" label="币名" >
+            </el-table-column>
+            <el-table-column
+              prop="contract"
+              label="合约地址">
+            </el-table-column>
+          </el-table>
               <el-form ref="form" :model="customTokenForm" label-width="80px">
-                <el-form-item label="活动名称">
+                <el-form-item label="TODO 自定义币对">
                   <el-input v-model="customTokenForm.name"></el-input>
                 </el-form-item>
                 <el-form-item label="活动区域">
@@ -21,7 +25,6 @@
                   </el-select>
                 </el-form-item>
               </el-form>
-          </ul>
         </el-card>
       </el-col>
       <el-col :span="13">
@@ -77,6 +80,16 @@ export default {
   methods: {
     initIdentity() {
       store.initIdentity();
+    },
+    clickTokenRow(row, event, column) {
+      console.info(row.contract)
+      this.$router.push({
+        name: 'OTCExchange',
+        params: {
+          tokenContract: row.contract,
+          tokenSymbol: row.name
+        }
+      })
     },
     switchView(t) {
       // this.currentToken = t;
