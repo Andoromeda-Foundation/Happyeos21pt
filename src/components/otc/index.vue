@@ -81,15 +81,18 @@ export default {
     initIdentity() {
       store.initIdentity();
     },
-    clickTokenRow(row, event, column) {
-      console.info(row.contract)
+    jumpToDiffrentToken(tokenContract, tokenSymbol) {
       this.$router.push({
         name: 'OTCExchange',
         params: {
-          tokenContract: row.contract,
-          tokenSymbol: row.name
+          tokenContract,
+          tokenSymbol
         }
       })
+    },
+    clickTokenRow(row, event, column) {
+      console.info(row.contract)
+      this.jumpToDiffrentToken(row.contract, row.name)
     },
     switchView(t) {
       // this.currentToken = t;
