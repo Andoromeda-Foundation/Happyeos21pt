@@ -127,7 +127,10 @@ export default {
     initIdentity() {
       store.initIdentity();
     },
-    forgetIdentity() {},
+    forgetIdentity() {
+      store.forgetIdentity();
+      location.reload();
+    },
     handleMenuClick(val) {
       this.store.currentGame = val;
       console.info(val);
