@@ -216,7 +216,7 @@ export default{
             return baseUrl += args.join('&');
         },
         change_bet: function () {
-            play_se("se_click");
+            this.play_se("se_click");
             var new_bet = parseFloat(prompt("赌多少EOS？"));
             // Check new bet
             if (new_bet > 0) {
@@ -251,7 +251,7 @@ export default{
             return this.eop;
         },
         make_deposit: function (event) {
-            play_se("se_click");
+            this.play_se("se_click");
             this.init_scatter();
             var new_deposit = prompt("购买多少EOS的股份？");
             // Check new deposit
@@ -269,7 +269,7 @@ export default{
             }
         },
         make_withdraw: function (event) {
-            play_se("se_click");
+            this.play_se("se_click");
             this.init_scatter();
             var new_withdraw = prompt("出售多少HPY（股份）？");
             // Check new withdraw
@@ -377,12 +377,12 @@ export default{
             })
         },
         deposit: function (amount) {
-            play_se("se_click");
+            this.play_se("se_click");
             amount = new Number(amount).toFixed(4);
             // console.log(amount);
             this.eos.transfer(this.account.name, "hthisyeosslot", amount + " EOS", "buy")
                 .then(() => {
-                    play_se("se_buy");
+                    this.play_se("se_buy");
                     this.get_current_balance();
                     alert("充值成功");
                 })
@@ -410,7 +410,7 @@ export default{
             })
         },
         withdraw: function (amount) {
-            play_se("se_click");
+            this.play_se("se_click");
             amount = new Number(amount).toFixed(4);
             var requiredFields = this.requiredFields;
             this.eos.contract('hthisyeosslot', {
@@ -421,7 +421,7 @@ export default{
                 });
             })
                 .then(() => {
-                    play_se("se_withdraw");
+                    this.play_se("se_withdraw");
                     this.get_current_balance();
                 })
                 .catch((err) => {
@@ -512,7 +512,7 @@ export default{
             return num;
         },
         start_roll: function () {
-            play_se("se_click");
+            this.play_se("se_click");
             if (this.running) return;
             this.init_scatter();
 
@@ -523,7 +523,7 @@ export default{
             }
             this.eos.transfer(this.account.name, "hthisyeosslot", amount + " EOS", "bet " + this.createHexRandom())
                 .then(() => {
-                    play_se("se_startrolling");
+                    this.play_se("se_startrolling");
                     this.running = true;
                     this.last_bet = amount;
                     this.roll_loop();
@@ -534,7 +534,7 @@ export default{
                 });
         },
         roll_loop: function () {
-            play_se("se_rolling");
+            this.play_se("se_rolling");
             this.times += 1;
             this.roll();
             if (this.times > this.cycle + 10 && this.prize == this.index) {
@@ -627,7 +627,24 @@ export default{
          isPc:function () {
     //移动端PC端判断
     return /Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent) ? false : true;
-     }
+     },
+         swap_music:function(id) {
+    var oAudio = document.getElementById("audioId");
+    var playEvent = document.getElementById(id);
+    if(oAudio.paused){
+        oAudio.play();
+        $("#"+id).attr('src',"imges/pause.jpg");
+    }else {
+        oAudio.pause();
+        $("#"+id).attr('src',"imges/play.jpg");
+    }
+},
+
+ play_se: function(id){
+    var SEAudio = document.getElementById(id);
+    SEAudio.currentTime = 0;
+    SEAudio.play();
+}
     },
     computed: {}
 }
