@@ -1,66 +1,69 @@
-const resolve = require('path').resolve
-const webpack = require('webpack')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const url = require('url')
-const publicPath = ''
+const resolve = require('path').resolve;
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const url = require('url');
+const publicPath = '';
 
 module.exports = (options = {}) => ({
   entry: {
-    index: './src/main.js'
+    index: './src/main.js',
   },
   output: {
     path: resolve(__dirname, 'dist'),
     filename: options.dev ? '[name].js' : '[name].js?[chunkhash]',
     chunkFilename: '[id].js?[chunkhash]',
-    publicPath: options.dev ? '/assets/' : publicPath
+    publicPath: options.dev ? '/assets/' : publicPath,
   },
   module: {
-    rules: [{
+    rules: [
+      {
         test: /\.vue$/,
-        use: ['vue-loader']
+        use: ['vue-loader'],
       },
       {
         test: /\.js$/,
         use: ['babel-loader'],
-        exclude: /node_modules/
+        exclude: /node_modules/,
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader', 'postcss-loader']
+        use: ['style-loader', 'css-loader', 'postcss-loader'],
       },
-        {
-            test: /\.less$/,
-            loader: "style-loader!css-loader!less-loader",
-        },
       {
-        test: /\.(png|jpg|jpeg|gif|eot|ttf|woff|woff2|svg|svgz)(\?.+)?$/,
-        use: [{
-          loader: 'url-loader',
-          options: {
-            limit: 10000
-          }
-        }]
-      }
-    ]
+        test: /\.less$/,
+        loader: 'style-loader!css-loader!less-loader',
+      },
+      {
+        test: /\.(png|mp3|jpg|jpeg|gif|eot|ttf|woff|woff2|svg|svgz)(\?.+)?$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 10000,
+            },
+          },
+        ],
+      },
+    ],
   },
   externals: {
-    'Eos': 'eosjs',
-    'Vue': 'vue',
+    Eos: 'eosjs',
+    Vue: 'vue',
   },
   plugins: [
     new webpack.optimize.CommonsChunkPlugin({
-      names: ['vendor', 'manifest']
+      names: ['vendor', 'manifest'],
     }),
     new HtmlWebpackPlugin({
       template: 'src/index.html',
       favicon: 'src/assets/favicon.ico',
-    })
+    }),
   ],
   resolve: {
     alias: {
-      '~': resolve(__dirname, 'src')
+      '~': resolve(__dirname, 'src'),
     },
-    extensions: ['.js', '.vue', '.json', '.css']
+    extensions: ['.js', '.vue', '.json', '.css'],
   },
   devServer: {
     host: '127.0.0.1',
@@ -70,13 +73,13 @@ module.exports = (options = {}) => ({
         target: 'http://127.0.0.1:8080',
         changeOrigin: true,
         pathRewrite: {
-          '^/api': ''
-        }
-      }
+          '^/api': '',
+        },
+      },
     },
     historyApiFallback: {
-      index: url.parse(options.dev ? '/assets/' : publicPath).pathname
-    }
+      index: url.parse(options.dev ? '/assets/' : publicPath).pathname,
+    },
   },
-  devtool: options.dev ? '#eval-source-map' : '#source-map'
-})
+  devtool: options.dev ? '#eval-source-map' : '#source-map',
+});

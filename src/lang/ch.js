@@ -62,6 +62,7 @@ export default {
   Login: '登录',
   Logout: '退出',
   Network: '网络',
+  'Contract Name': '合约名称',
 
   // OTC
   'Ask Asset': '挂单',

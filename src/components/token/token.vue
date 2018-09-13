@@ -6,8 +6,10 @@
                 <ve-candle :data="chartData" :settings="chartSettings"></ve-candle>
             </el-col>
             <el-col :span="6" :offset="2">
+                <p>{{$t('Contract Name')}}: {{code}}</p>
                 <p>{{$t('Contract Balance')}}: {{store[symbol].bancorBalance}} EOS</p>
                 <p>{{$t('Supply')}}: {{store[symbol].supply}} {{symbol.toUpperCase()}}</p>
+                <p>{{$t('EOP')}}: {{store[symbol].eop.toFixed(4)}}</p>
                 <p>{{$t('Current Price')}}: {{store[symbol].price}} EOS / {{symbol.toUpperCase()}}</p>
                 <p>{{$t('My Balance')}}: {{store[symbol].balance}} {{symbol.toUpperCase()}}</p>
                 <el-row :gutter="20">

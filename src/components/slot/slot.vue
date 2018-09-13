@@ -117,7 +117,7 @@
             <button class="get-money" v-show="true"  v-on:click="make_withdraw">出售股份</button>
             <!--   <button class="leave"> Leave</button>-->
             <div class="music-play" id="musicId">
-                <img id="imgId" src="imges/pause.jpg">
+                <img id="imgId" src="../../assets/imges/pause.jpg">
             </div>
             <div class="actions-table">
                 <table class="table">
@@ -145,32 +145,36 @@
               <p> HPY余额: {{ user_hpy_balance }}</p>-->
         </div>
         <audio id="audioId" loop="loop" preload="auto" autoplay="autoplay">
-            <source src="music/tiger.mp3" type="audio/mp3">
+            <source src="../../assets/music/tiger.mp3" type="audio/mp3">
         </audio>
         <audio id="se_bigreward" preload="auto">
-            <source src="music/se/bigreward.mp3" type="audio/mp3">
+            <source src="../../assets/music/se/bigreward.mp3" type="audio/mp3">
         </audio>
         <audio id="se_buy" preload="auto">
-            <source src="music/se/buy.mp3" type="audio/mp3">
+            <source src="../../assets/music/se/buy.mp3" type="audio/mp3">
         </audio>
         <audio id="se_click" preload="auto">
-            <source src="music/se/click.mp3" type="audio/mp3">
+            <source src="../../assets/music/se/click.mp3" type="audio/mp3">
         </audio>
         <audio id="se_rolling" preload="auto">
-            <source src="music/se/rolling.mp3" type="audio/mp3">
+            <source src="../../assets/music/se/rolling.mp3" type="audio/mp3">
         </audio>
         <audio id="se_smallreward" preload="auto">
-            <source src="music/se/smallreward.mp3" type="audio/mp3">
+            <source src="../../assets/music/se/smallreward.mp3" type="audio/mp3">
         </audio>
         <audio id="se_startrolling" preload="auto">
-            <source src="music/se/startrolling.mp3" type="audio/mp3">
+            <source src="../../assets/music/se/startrolling.mp3" type="audio/mp3">
         </audio>
         <audio id="se_withdraw" preload="auto">
-            <source src="music/se/withdraw.mp3" type="audio/mp3">
+            <source src="../../assets/music/se/withdraw.mp3" type="audio/mp3">
         </audio>
     </div>
 </template>
 <script>
+import * as store from '../../store.js';
+import config from '../../config.js';
+import Eos from 'eosjs';
+
 export default{
     data(){
      return {
@@ -430,7 +434,7 @@ export default{
         },
         setIdentity: function (identity) {
             this.account = identity.accounts.find(acc => acc.blockchain === 'eos');
-            this.eos = scatter.eos(network, Eos, {});
+            this.eos = scatter.eos(config.networks[store.store.network], Eos, {});
             this.requiredFields = {
                 accounts: [network]
             };
@@ -445,8 +449,8 @@ export default{
                 } else {
                     scatter.getIdentity({
                         accounts: [{
-                            chainId: network.chainId,
-                            blockchain: network.blockchain
+                            chainId: config.networks[store.store.network].chainId,
+                            blockchain: config.networks[store.store.network].blockchain
                         }]
                     })
                         .then(identity => {
@@ -597,15 +601,15 @@ export default{
                 } else {
                     const identity = await scatter.getIdentity({
                         accounts: [{
-                            chainId: network.chainId,
-                            blockchain: network.blockchain
+                            chainId: config.networks[store.store.network].chainId,
+                            blockchain: config.networks[store.store.network].blockchain
                         }]
                     });
                     this.account = identity.accounts.find(acc => acc.blockchain === 'eos');
                     scatter.getIdentity({
                         accounts: [{
-                            chainId: network.chainId,
-                            blockchain: network.blockchain
+                            chainId: config.networks[store.store.network].chainId,
+                            blockchain: config.networks[store.store.network].blockchain
                         }]
                     });
                     this.setIdentity(identity);
@@ -633,10 +637,10 @@ export default{
     var playEvent = document.getElementById(id);
     if(oAudio.paused){
         oAudio.play();
-        $("#"+id).attr('src',"imges/pause.jpg");
+        $("#"+id).attr('src',"../../assets/imges/pause.jpg");
     }else {
         oAudio.pause();
-        $("#"+id).attr('src',"imges/play.jpg");
+        $("#"+id).attr('src',"../../assets/imges/play.jpg");
     }
 },
 
@@ -650,10 +654,10 @@ export default{
 }
 </script>
 <style scoped>
-    @import "../../assets/css/cube.css";
-    @import "../../assets/css/cube-top.css";
-    @import "../../assets/css/main.css";
+@import '../../assets/css/cube.css';
+@import '../../assets/css/cube-top.css';
+@import '../../assets/css/main.css';
 </style>
 <style lang="less">
-    @import "../../assets/css/main.less";
+@import '../../assets/css/main.less';
 </style>

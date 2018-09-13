@@ -15,6 +15,7 @@ if (!localStorage.getItem('seed')) {
 }
 
 export const store = {
+  config,
   currentGame: 'otc',
   account: null,
   eos: {
