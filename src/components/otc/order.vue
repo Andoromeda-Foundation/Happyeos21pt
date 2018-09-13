@@ -2,17 +2,17 @@
     <el-card class="box-card">
         <div slot="header" class="clearfix">
           <span>订单 #{{ order.id }}</span>
-            <el-button class="btn" type="text" 
+            <el-button class="btn" type="text"
             v-if="isLogined && isTheOrderOwner" @click="cancel()">取消订单</el-button>
-            <el-button class="btn" type="text" 
+            <el-button class="btn" type="text"
             v-else-if="isLogined" @click="take()">TAKE!</el-button>
-            <el-button class="btn" type="text" 
+            <el-button class="btn" type="text"
             v-else disabled="">登录后采取行动</el-button>
         </div>
         <p class="text item">出价: {{order.bid.quantity}}</p>
         <p class="text item">要价: {{order.ask.quantity}}</p>
         <p class="text item">卖家: {{order.owner}}</p>
-        <p class="text item">时间 {{order.order_time}} </p>  
+        <p class="text item">时间 {{order.order_time}} </p>
       </el-card>
 </template>
 
@@ -40,8 +40,8 @@ export default {
       const { ask, bid } = this.order
       const memo = `take,${bid.quantity},${bid.contract},${this.order.id}`
       try {
-        const contract = await store.store.eos.contract(`${ask.contract}`)           
-        await contract.transfer(   
+        const contract = await store.store.scatter.contract(`${ask.contract}`)
+        await contract.transfer(
 			store.store.account.name,
 			"eosotcbackup",
 			`${ask.quantity}`,
@@ -49,7 +49,7 @@ export default {
            {
             authorization: [`${store.store.account.name}@${store.store.account.authority}`]
            }
-        )        
+        )
         this.$notify.success({
           title: "挂单成功",
           message: "请耐心等待"
@@ -63,7 +63,7 @@ export default {
     },
     async cancel() {
       try {
-        const contract = await store.store.eos.contract("eosotcbackup")                
+        const contract = await store.store.scatter.contract("eosotcbackup")
         await contract.retrieve(
             store.store.account.name,
             this.order.id,
@@ -75,8 +75,8 @@ export default {
         this.$notify.success({
           title: "取消成功",
           message: "请耐心等待"
-        });        
-      } catch (error) {        
+        });
+      } catch (error) {
         this.$notify.error({
           title: "交易失败",
           message: error.message

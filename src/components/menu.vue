@@ -7,7 +7,7 @@
       <div id="menu-section-container">
         <el-button type="text" class="menu-item" @click="isShowFairDialog = !isShowFairDialog">{{$t('FAIRNESS')}}</el-button>
         <el-button type="text" class="menu-item" @click="isShowCommunityDialog = !isShowCommunityDialog">{{$t('COMMUNITY')}}</el-button>
-        <el-button type="text" class="menu-item" @click="isShowHowToPlayDialog = !isShowHowToPlayDialog">{{$t('HOW TO PLAY')}}</el-button>      
+        <el-button type="text" class="menu-item" @click="isShowHowToPlayDialog = !isShowHowToPlayDialog">{{$t('HOW TO PLAY')}}</el-button>
       </div>
       <div id="menu-section-container">
         <el-dropdown trigger="click" @command="handleMenuClick">
@@ -22,16 +22,16 @@
         </el-dropdown>
       </div>
       <div id="menu-section-container">
-        <el-dropdown trigger="click" @command="handleNetworkChange" v-if="!store.account">
+        <el-dropdown trigger="click" @command="handleNetworkChange" v-if="!store.account" style="margin-right: 20px;">
           <span class="el-dropdown-link">
-            设定登录网络: {{store.network}}<i class="el-icon-arrow-down el-icon--right"></i>
+            {{$t('Network')}}:{{store.network}}<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="mainnet">{{$t('Mainnet')}}</el-dropdown-item>
             <el-dropdown-item command="kylin">{{$t('Kylin Testnet')}}</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <el-dropdown trigger="click" @command="changeLang">
+        <el-dropdown trigger="click" @command="changeLang" style="margin-right: 20px;">
           <span class="el-dropdown-link">
             {{langCodeToReadableStr[store.lang]}} <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
@@ -41,9 +41,9 @@
             <el-dropdown-item command="jp"> 日本語　</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <el-button type="primary"  @click="initIdentity()" v-if="!store.account"> 登录 </el-button>
+        <el-button type="primary"  @click="initIdentity()" v-if="!store.account"> {{$t('Login')}} </el-button>
         <el-button type="text" class="menu-item" v-if="store.account"> {{store.account.name}} @ {{store.network}} </el-button>
-        <el-button type="primary" class="menu-item" @click="forgetIdentity()" v-if="store.account"> 退出账户 </el-button>
+        <el-button type="primary" class="menu-item" @click="forgetIdentity()" v-if="store.account"> {{$t('Logout')}} </el-button>
         <el-button type="text" class="menu-item" @click="isShowReferralsDialog = !isShowReferralsDialog" v-if="store.account">{{$t('REFERRALS')}}</el-button>
       </div>
     </div>
@@ -116,6 +116,11 @@ export default {
       }
     };
   },
+  mounted: function() {
+      setTimeout(() => {
+        store.setScatter();
+      }, 2000);
+    },
   computed: {
     refUrl: function() {
       return `${window.location.origin}?ref=${(this.store.account &&

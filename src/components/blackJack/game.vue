@@ -56,7 +56,7 @@
                 <el-col :span="8" class="account-info-section">
                     <div class="account-container">
                         <img class="navbar-coin" src="../../assets/eos-logo.png">
-                        <span class="display-text">{{store.balance}}</span>
+                        <span class="display-text">{{store.eos.balance}}</span>
                     </div>
                 </el-col>
                 <el-col :span="8" class="account-info-section">
@@ -67,7 +67,7 @@
                 <el-col :span="8" class="account-info-section">
                     <div class="account-container">
                         <img class="navbar-coin" src="../../assets/HPY_Token.png">
-                        <span class="display-text">{{store.hpyBalance}}</span>
+                        <span class="display-text">{{store.hpy.balance}}</span>
                         <i class="el-icon-question" @click="isShowBetDialog = !isShowBetDialog" style="cursor: pointer;"></i>
                     </div>
                 </el-col>
@@ -138,12 +138,12 @@ export default {
       },
       amountTimes(data) {
         this.betAmount = this.betAmount * data;
-        if(this.betAmount > this.store.balance) {
-          this.betAmount = this.store.balance;
+        if(this.betAmount > this.store.eos.balance) {
+          this.betAmount = this.store.eos.balance;
         }
       },
       amountMax() {
-        this.betAmount = this.store.balance;
+        this.betAmount = this.store.eos.balance;
       },
       changeBetAmount(data) {
         this.betAmount = Math.floor(this.betAmount * 10000) / 10000;
@@ -232,9 +232,9 @@ export default {
   text-size-adjust: 100%;
 }
 .deck {
-    position: relative;
-    left: 50%;
-    top: 50%;
+  position: relative;
+  left: 50%;
+  top: 50%;
 }
 #container {
   position: fixed;
@@ -256,8 +256,8 @@ export default {
   background-color: #fff;
   -webkit-border-radius: 4px;
   border-radius: 4px;
-  -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.15);
-  box-shadow: 0 1px 1px rgba(0,0,0,0.15);
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
   cursor: default;
   will-change: transform;
 }
@@ -295,7 +295,7 @@ export default {
 }
 .card .back {
   position: absolute;
-  background-image: url("../../assets/faces/back.png");
+  background-image: url('../../assets/faces/back.png');
   background-position: 50% 50%;
   -webkit-background-size: 100% 100%;
   -moz-background-size: 100% 100%;
@@ -322,7 +322,7 @@ export default {
 .card.joker.rank1:after,
 .card.joker.rank2:after,
 .card.joker.rank3:after {
-  content: "J\a O\a K\a E\a R";
+  content: 'J\a O\a K\a E\a R';
   letter-spacing: 0;
   font-size: 0.4rem;
   line-height: 0.4rem;
@@ -331,231 +331,221 @@ export default {
 }
 .card.rank1:before,
 .card.rank1:after {
-  content: "A";
+  content: 'A';
 }
 .card.rank2:before,
 .card.rank2:after {
-  content: "2";
+  content: '2';
 }
 .card.rank3:before,
 .card.rank3:after {
-  content: "3";
+  content: '3';
 }
 .card.rank4:before,
 .card.rank4:after {
-  content: "4";
+  content: '4';
 }
 .card.rank5:before,
 .card.rank5:after {
-  content: "5";
+  content: '5';
 }
 .card.rank6:before,
 .card.rank6:after {
-  content: "6";
+  content: '6';
 }
 .card.rank7:before,
 .card.rank7:after {
-  content: "7";
+  content: '7';
 }
 .card.rank8:before,
 .card.rank8:after {
-  content: "8";
+  content: '8';
 }
 .card.rank9:before,
 .card.rank9:after {
-  content: "9";
+  content: '9';
 }
 .card.rank10:before,
 .card.rank10:after {
-  content: "10";
+  content: '10';
 }
 .card.rank11:before,
 .card.rank11:after {
-  content: "J";
+  content: 'J';
 }
 .card.rank12:before,
 .card.rank12:after {
-  content: "Q";
+  content: 'Q';
 }
 .card.rank13:before,
 .card.rank13:after {
-  content: "K";
+  content: 'K';
 }
 .card.spades.rank1 .face {
-  background-image: url("../../assets/faces/0_1.svg");
+  background-image: url('../../assets/faces/0_1.svg');
 }
 .card.spades.rank2 .face {
-  background-image: url("../../assets/faces/0_2.svg");
+  background-image: url('../../assets/faces/0_2.svg');
 }
 .card.spades.rank3 .face {
-  background-image: url("../../assets/faces/0_3.svg");
+  background-image: url('../../assets/faces/0_3.svg');
 }
 .card.spades.rank4 .face {
-  background-image: url("../../assets/faces/0_4.svg");
+  background-image: url('../../assets/faces/0_4.svg');
 }
 .card.spades.rank5 .face {
-  background-image: url("../../assets/faces/0_5.svg");
+  background-image: url('../../assets/faces/0_5.svg');
 }
 .card.spades.rank6 .face {
-  background-image: url("../../assets/faces/0_6.svg");
+  background-image: url('../../assets/faces/0_6.svg');
 }
 .card.spades.rank7 .face {
-  background-image: url("../../assets/faces/0_7.svg");
+  background-image: url('../../assets/faces/0_7.svg');
 }
 .card.spades.rank8 .face {
-  background-image: url("../../assets/faces/0_8.svg");
+  background-image: url('../../assets/faces/0_8.svg');
 }
 .card.spades.rank9 .face {
-  background-image: url("../../assets/faces/0_9.svg");
+  background-image: url('../../assets/faces/0_9.svg');
 }
 .card.spades.rank10 .face {
-  background-image: url("../../assets/faces/0_10.svg");
+  background-image: url('../../assets/faces/0_10.svg');
 }
 .card.spades.rank11 .face {
-  background-image: url("../../assets/faces/0_11.svg");
+  background-image: url('../../assets/faces/0_11.svg');
 }
 .card.spades.rank12 .face {
-  background-image: url("../../assets/faces/0_12.svg");
+  background-image: url('../../assets/faces/0_12.svg');
 }
 .card.spades.rank13 .face {
-  background-image: url("../../assets/faces/0_13.svg");
+  background-image: url('../../assets/faces/0_13.svg');
 }
 .card.hearts.rank1 .face {
-  background-image: url("../../assets/faces/1_1.svg");
+  background-image: url('../../assets/faces/1_1.svg');
 }
 .card.hearts.rank2 .face {
-  background-image: url("../../assets/faces/1_2.svg");
+  background-image: url('../../assets/faces/1_2.svg');
 }
 .card.hearts.rank3 .face {
-  background-image: url("../../assets/faces/1_3.svg");
+  background-image: url('../../assets/faces/1_3.svg');
 }
 .card.hearts.rank4 .face {
-  background-image: url("../../assets/faces/1_4.svg");
+  background-image: url('../../assets/faces/1_4.svg');
 }
 .card.hearts.rank5 .face {
-  background-image: url("../../assets/faces/1_5.svg");
+  background-image: url('../../assets/faces/1_5.svg');
 }
 .card.hearts.rank6 .face {
-  background-image: url("../../assets/faces/1_6.svg");
+  background-image: url('../../assets/faces/1_6.svg');
 }
 .card.hearts.rank7 .face {
-  background-image: url("../../assets/faces/1_7.svg");
+  background-image: url('../../assets/faces/1_7.svg');
 }
 .card.hearts.rank8 .face {
-  background-image: url("../../assets/faces/1_8.svg");
+  background-image: url('../../assets/faces/1_8.svg');
 }
 .card.hearts.rank9 .face {
-  background-image: url("../../assets/faces/1_9.svg");
+  background-image: url('../../assets/faces/1_9.svg');
 }
 .card.hearts.rank10 .face {
-  background-image: url("../../assets/faces/1_10.svg");
+  background-image: url('../../assets/faces/1_10.svg');
 }
 .card.hearts.rank11 .face {
-  background-image: url("../../assets/faces/1_11.svg");
+  background-image: url('../../assets/faces/1_11.svg');
 }
 .card.hearts.rank12 .face {
-  background-image: url("../../assets/faces/1_12.svg");
+  background-image: url('../../assets/faces/1_12.svg');
 }
 .card.hearts.rank13 .face {
-  background-image: url("../../assets/faces/1_13.svg");
+  background-image: url('../../assets/faces/1_13.svg');
 }
 .card.clubs.rank1 .face {
-  background-image: url("../../assets/faces/2_1.svg");
+  background-image: url('../../assets/faces/2_1.svg');
 }
 .card.clubs.rank2 .face {
-  background-image: url("../../assets/faces/2_2.svg");
+  background-image: url('../../assets/faces/2_2.svg');
 }
 .card.clubs.rank3 .face {
-  background-image: url("../../assets/faces/2_3.svg");
+  background-image: url('../../assets/faces/2_3.svg');
 }
 .card.clubs.rank4 .face {
-  background-image: url("../../assets/faces/2_4.svg");
+  background-image: url('../../assets/faces/2_4.svg');
 }
 .card.clubs.rank5 .face {
-  background-image: url("../../assets/faces/2_5.svg");
+  background-image: url('../../assets/faces/2_5.svg');
 }
 .card.clubs.rank6 .face {
-  background-image: url("../../assets/faces/2_6.svg");
+  background-image: url('../../assets/faces/2_6.svg');
 }
 .card.clubs.rank7 .face {
-  background-image: url("../../assets/faces/2_7.svg");
+  background-image: url('../../assets/faces/2_7.svg');
 }
 .card.clubs.rank8 .face {
-  background-image: url("../../assets/faces/2_8.svg");
+  background-image: url('../../assets/faces/2_8.svg');
 }
 .card.clubs.rank9 .face {
-  background-image: url("../../assets/faces/2_9.svg");
+  background-image: url('../../assets/faces/2_9.svg');
 }
 .card.clubs.rank10 .face {
-  background-image: url("../../assets/faces/2_10.svg");
+  background-image: url('../../assets/faces/2_10.svg');
 }
 .card.clubs.rank11 .face {
-  background-image: url("../../assets/faces/2_11.svg");
+  background-image: url('../../assets/faces/2_11.svg');
 }
 .card.clubs.rank12 .face {
-  background-image: url("../../assets/faces/2_12.svg");
+  background-image: url('../../assets/faces/2_12.svg');
 }
 .card.clubs.rank13 .face {
-  background-image: url("../../assets/faces/2_13.svg");
+  background-image: url('../../assets/faces/2_13.svg');
 }
 .card.diamonds.rank1 .face {
-  background-image: url("../../assets/faces/3_1.svg");
+  background-image: url('../../assets/faces/3_1.svg');
 }
 .card.diamonds.rank2 .face {
-  background-image: url("../../assets/faces/3_2.svg");
+  background-image: url('../../assets/faces/3_2.svg');
 }
 .card.diamonds.rank3 .face {
-  background-image: url("../../assets/faces/3_3.svg");
+  background-image: url('../../assets/faces/3_3.svg');
 }
 .card.diamonds.rank4 .face {
-  background-image: url("../../assets/faces/3_4.svg");
+  background-image: url('../../assets/faces/3_4.svg');
 }
 .card.diamonds.rank5 .face {
-  background-image: url("../../assets/faces/3_5.svg");
+  background-image: url('../../assets/faces/3_5.svg');
 }
 .card.diamonds.rank6 .face {
-  background-image: url("../../assets/faces/3_6.svg");
+  background-image: url('../../assets/faces/3_6.svg');
 }
 .card.diamonds.rank7 .face {
-  background-image: url("../../assets/faces/3_7.svg");
+  background-image: url('../../assets/faces/3_7.svg');
 }
 .card.diamonds.rank8 .face {
-  background-image: url("../../assets/faces/3_8.svg");
+  background-image: url('../../assets/faces/3_8.svg');
 }
 .card.diamonds.rank9 .face {
-  background-image: url("../../assets/faces/3_9.svg");
+  background-image: url('../../assets/faces/3_9.svg');
 }
 .card.diamonds.rank10 .face {
-  background-image: url("../../assets/faces/3_10.svg");
+  background-image: url('../../assets/faces/3_10.svg');
 }
 .card.diamonds.rank11 .face {
-  background-image: url("../../assets/faces/3_11.svg");
+  background-image: url('../../assets/faces/3_11.svg');
 }
 .card.diamonds.rank12 .face {
-  background-image: url("../../assets/faces/3_12.svg");
+  background-image: url('../../assets/faces/3_12.svg');
 }
 .card.diamonds.rank13 .face {
-  background-image: url("../../assets/faces/3_13.svg");
+  background-image: url('../../assets/faces/3_13.svg');
 }
 .card.joker.rank1 .face {
-  background-image: url("../../assets/faces/4_1.svg");
+  background-image: url('../../assets/faces/4_1.svg');
 }
 .card.joker.rank2 .face {
-  background-image: url("../../assets/faces/4_2.svg");
+  background-image: url('../../assets/faces/4_2.svg');
 }
 .card.joker.rank3 .face {
-  background-image: url("../../assets/faces/4_3.svg");
+  background-image: url('../../assets/faces/4_3.svg');
 }
-
-
-
-
-
-
-
-
-
-
 
 .bet-amount-container {
   background-color: #3f3e3e;

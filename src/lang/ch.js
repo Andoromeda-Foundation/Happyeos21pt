@@ -1,5 +1,4 @@
 export default {
-
   // Bet
   FAIRNESS: '公平',
   COMMUNITY: '社区',
@@ -52,7 +51,18 @@ export default {
   'Update seed fail': '种子不能为空，更新失败',
   Small: '押小',
   Big: '押大',
+  'Wrong Input': '输入有误',
+  'Contract Balance': '合约余额',
+  Supply: '发行量',
+  'Current Price': '当前价格',
+  'My Balance': '我的持有',
+  'Please Input Amount': '请输入数量',
+  Buy: '购入',
+  Sell: '售出',
+  Login: '登录',
+  Logout: '退出',
+  Network: '网络',
 
   // OTC
-  'Ask Asset': '挂单'
+  'Ask Asset': '挂单',
 };

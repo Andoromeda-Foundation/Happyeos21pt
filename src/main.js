@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
 import ElementUI from 'element-ui';
+import VeCandle from 'v-charts/lib/candle.common';
 import 'element-ui/lib/theme-chalk/index.css';
 import './css/main.css';
 import app from './app.vue';
@@ -43,6 +44,8 @@ Vue.use(ElementUI, {
 window.data = {
   config,
 };
+
+Vue.component(VeCandle.name, VeCandle);
 
 new Vue({
   el: '#app',

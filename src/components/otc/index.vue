@@ -3,7 +3,7 @@
       <el-col :span="5">
         <el-card title="Token List">
           <h1 class="title">目前可交易的币</h1>
-          <el-table :data="tokenLists" 
+          <el-table :data="tokenLists"
             @row-click="clickTokenRow"
             stripe style="width: 100%">
             <el-table-column
@@ -34,7 +34,7 @@
         <MarketView class="market-container" :currentToken="getTokenDetailByRoute" />
       </el-col>
       <el-col :span="6">
-        <PlaceOrderView />        
+        <PlaceOrderView />
       </el-col>
 
     </el-row>
@@ -111,7 +111,7 @@ export default {
       const { bid_token_contract, ask_token_contract, ask, bid } = this;
       const memo = `ask,${ask},${ask_token_contract}`;
       try {
-        var contract = await this.store.eos.contract(bid_token_contract);
+        var contract = await this.store.scatter.contract(bid_token_contract);
         console.log(contract);
         console.log(this.store.account.name);
         await contract.transfer(
@@ -145,7 +145,7 @@ export default {
       if (referral) {
         memo += ` ${referral}`;
       }
-      this.store.eos
+      this.store.scatter
         .transfer(
           this.store.account.name,
           "happyeosdice",
@@ -155,7 +155,7 @@ export default {
         .then(() => {
           // 轮询查找结果
           const r = setInterval(() => {
-            this.store.eos
+            this.store.scatter
               .getTableRows(
                 true,
                 "happyeosdice",

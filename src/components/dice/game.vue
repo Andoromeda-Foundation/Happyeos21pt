@@ -70,7 +70,7 @@
                 <el-col :span="8" class="account-info-section">
                     <div class="account-container">
                         <img class="navbar-coin" src="../../assets/eos-logo.png">
-                        <span class="display-text">{{store.balance}}</span>
+                        <span class="display-text">{{store.eos.balance}}</span>
                     </div>
                 </el-col>
                 <el-col :span="8" class="account-info-section">
@@ -80,7 +80,7 @@
                 <el-col :span="8" class="account-info-section">
                     <div class="account-container">
                         <img class="navbar-coin" src="../../assets/HPY_Token.png">
-                        <span class="display-text">{{store.hpyBalance}}</span>
+                        <span class="display-text">{{store.hpy.balance}}</span>
                         <i class="el-icon-question" @click="isShowBetDialog = !isShowBetDialog" style="cursor: pointer;"></i>
                     </div>
                 </el-col>
@@ -91,6 +91,10 @@
             <el-slider v-model="range" class="range" :min="0" :max="99"></el-slider>
             <span>99</span>
         </div>
+
+        <!-- 买卖token及K线 -->
+        <token-display :code="'happyeosslot'" :game="'dice'" :symbol="'hpy'"></token-display>
+        <token-display :code="'dicemaster11'" :game="'dice'" :symbol="'dmt'"></token-display>
 
         <!-- 弹出 -->
         <el-dialog
@@ -108,8 +112,12 @@
 
 <script>
 import * as store from '../../store.js';
+import tokenDisplay from '../../components/token/token';
 
 export default {
+    components: {
+      'token-display': tokenDisplay,
+    },
     data() {
       return {
         store: store.store,
@@ -147,12 +155,12 @@ export default {
       },
       amountTimes(data) {
         this.betAmount = this.betAmount * data;
-        if(this.betAmount > this.store.balance) {
-          this.betAmount = this.store.balance;
+        if(this.betAmount > this.store.eos.balance) {
+          this.betAmount = this.store.eos.balance;
         }
       },
       amountMax() {
-        this.betAmount = this.store.balance;
+        this.betAmount = this.store.eos.balance;
       },
       changeBetAmount(data) {
         this.betAmount = Math.floor(this.betAmount * 10000) / 10000;
@@ -164,11 +172,11 @@ export default {
         if (referral) {
           memo += ` ${referral}`;
         }
-        this.store.eos.transfer(this.store.account.name, "happyeosdice", `${this.betAmount.toFixed(4)} EOS`, memo)
+        this.store.scatter.transfer(this.store.account.name, "happyeosdice", `${this.betAmount.toFixed(4)} EOS`, memo)
           .then(() => {
             // 轮询查找结果
             const r = setInterval(() => {
-              this.store.eos.getTableRows(true, "happyeosdice", this.store.account.name, "result", "0").then((data) => {
+              this.store.scatter.getTableRows(true, "happyeosdice", this.store.account.name, "result", "0").then((data) => {
                 const ans = data.rows[0].roll_number;
                 // roll点值为0-99
                 if (ans < 100) {

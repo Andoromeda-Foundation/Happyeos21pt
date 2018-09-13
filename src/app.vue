@@ -2,7 +2,7 @@
   <div id="app">
     <vip-menu></vip-menu>
     <div id="game">
-      <router-view />   
+      <router-view />
     </div>
   </div>
 </template>
@@ -33,7 +33,6 @@ export default {
   background: url('./assets/background_2.png');
   background-size: 100%;
   background-repeat: repeat repeat;
-  height: 100vh;
   display: flex;
   flex-direction: column;
   font-weight: 600;

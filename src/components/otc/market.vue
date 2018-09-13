@@ -9,7 +9,7 @@
                   <OrderView class="order-view" :order="order" />
                 </el-col>
         </el-row>
-      </el-card>   
+      </el-card>
     </div>
 </template>
 
@@ -45,13 +45,13 @@ export default {
     initIdentity() {
       store.initIdentity();
     },
-    
+
     async ask_order() {
       const {bid_token_contract, ask_token_contract, ask, bid} = this
       const memo = `ask,${ask},${ask_token_contract}`
 
       try {
-        var contract = this.store.eos.contract(bid_token_contract);
+        var contract = this.store.scatter.contract(bid_token_contract);
         await contract.transfer(
           this.store.account.name,
           "eosotcbackup",
@@ -82,7 +82,7 @@ export default {
       if (referral) {
         memo += ` ${referral}`;
       }
-      this.store.eos
+      this.store.scatter
         .transfer(
           this.store.account.name,
           "happyeosdice",
@@ -92,7 +92,7 @@ export default {
         .then(() => {
           // 轮询查找结果
           const r = setInterval(() => {
-            this.store.eos
+            this.store.scatter
               .getTableRows(
                 true,
                 "happyeosdice",
@@ -131,5 +131,4 @@ export default {
 .order-view {
   margin: 0.5rem 0;
 }
-
 </style>
