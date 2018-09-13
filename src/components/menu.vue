@@ -16,6 +16,7 @@
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="Dice">{{$t('Dice')}}</el-dropdown-item>
+            <el-dropdown-item command="Slot">Slot</el-dropdown-item>
             <el-dropdown-item command="BlackJack">{{$t('BlackJack')}}</el-dropdown-item>
             <el-dropdown-item command="OTCEOS">{{$t('OTC')}}</el-dropdown-item>
           </el-dropdown-menu>
@@ -100,9 +101,11 @@
 import Chance from "chance";
 import Clipboard from "clipboard";
 import * as store from "../store.js";
+import ElDropdownItem from "../../node_modules/element-ui/packages/dropdown/src/dropdown-item";
 
 export default {
-  data() {
+    components: {ElDropdownItem},
+    data() {
     return {
       store: store.store,
       isShowFairDialog: false,

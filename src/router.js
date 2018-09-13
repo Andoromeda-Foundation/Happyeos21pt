@@ -3,7 +3,7 @@ import Router from 'vue-router';
 import diceGame from './components/dice/game.vue';
 import blackJackGame from './components/blackJack/game.vue';
 import OTCView from './components/otc';
-
+import slot from './components/slot/slot.vue'
 Vue.use(Router);
 
 export default new Router({
@@ -40,6 +40,10 @@ export default new Router({
             name: 'Dice',
             path: '/dice',
             component: diceGame,
+        },{
+           name: 'Slot',
+            path: '/slot',
+            component:slot
         }
     ],
 });
