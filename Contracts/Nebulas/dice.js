@@ -35,15 +35,83 @@ class Operator {
     }
 }
 
-class CounterContract {
-    constructor() {       
+class OwnerableContract {
+    constructor() {
         LocalContractStorage.defineProperties(this, {
-            counter: null,
+            owner: null
+        })
+        LocalContractStorage.defineMapProperties(this, {
+            "admins": null
+        })
+    }
+
+    init() {
+        super.init()
+        const {
+            from
+        } = Blockchain.transaction
+        this.admins.set(from, "true")
+        this.owner = from
+    }
+
+    onlyAdmins() {
+        const {
+            from
+        } = Blockchain.transaction
+        if (!this.admins.get(from)) {
+            throw new Error("Sorry, You don't have the permission as admins.")
+        }
+    }
+
+    onlyContractOwner() {
+        const {
+            from
+        } = Blockchain.transaction
+        if (this.owner !== from) {
+            throw new Error("Sorry, But you don't have the permission as owner.")
+        }
+    }
+
+    getContractOwner() {
+        return this.owner
+    }
+
+    getAdmins() {
+        return this.admins
+    }
+
+    setAdmins(address) {
+        this.onlyContractOwner()
+        this.admins.set(address, "true")
+    }
+}
+
+class DiceContract extends OwnerableContract {
+    constructor() {       
+        super()
+        LocalContractStorage.defineProperties(this, {
             referCut: null,
         })
         LocalContractStorage.defineMapProperties(this, {
         })
     }
+
+    _sendCommissionTo(referer, actualCost) {
+        const {
+            referCut
+        } = this
+        if (referer !== "") {
+            const withoutCut = new BigNumber(100).dividedToIntegerBy(referCut)
+            const cut = actualCost.dividedToIntegerBy(withoutCut)
+            Blockchain.transfer(referer, cut)
+        }
+    }
+
+    _event(name,indexes){
+        var k = {};
+        k[name] = indexes;
+        Event.Trigger("Dice", k);
+    }    
 
     // referer by default is empty
     bet(referer = "", bet_number = 50, is_under = true) {
@@ -67,27 +135,24 @@ class CounterContract {
         this._event("Bet",{number: roll_number});
     }
 
+    withdraw(value) {
+        this.onlyAdmins()
+        // Only the owner can have the withdraw fund, so be careful
+        return Blockchain.transfer(this.owner, new BigNumber(value))
+    }
+
+    withdrawAll() {
+        this.withdraw(this.getBalance())
+    }    
 
     init() {
-        this.counter = 0
-        this.referCut = new BigNumber(1)
-    }
-    
-    _sendCommissionTo(referer, actualCost) {
+        super.init()
         const {
-            referCut
-        } = this
-        if (referer !== "") {
-            const withoutCut = new BigNumber(100).dividedToIntegerBy(referCut)
-            const cut = actualCost.dividedToIntegerBy(withoutCut)
-            Blockchain.transfer(referer, cut)
-        }
-    }
-
-    _event(name,indexes){
-        var k = {};
-        k[name] = indexes;
-        Event.Trigger("Dice", k);
+            from
+        } = Blockchain.transaction
+        this.referCut = new BigNumber(1)
+        this.admins.set(from, "true")
+        this.owner = from
     }
 }
 
