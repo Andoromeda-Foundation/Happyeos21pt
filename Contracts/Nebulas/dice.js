@@ -44,28 +44,6 @@ class CounterContract {
         })
     }
 
-   // referer by default is empty
-   bet(referer = "", bet_number = 50, is_under = true) {
-        var {
-            from,
-            value
-        } = Blockchain.transaction
-        
-        this._sendCommissionTo(referer, value)
-
-        var roll_number = Math.floor(Math.random() * 100);        
-        if (is_under) {
-            if (bet_number < roll_number) {
-                Blockchain.transfer(from, value * 96 / bet_number)
-            }
-        } else {
-            if(bet_number > roll_number) {
-                Blockchain.transfer(from, value * 96 / (99 - bet_number))
-            }
-        }
-    }
-
-
     init() {
         this.counter = 0
     }
