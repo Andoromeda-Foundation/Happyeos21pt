@@ -46,7 +46,6 @@ class OwnerableContract {
     }
 
     init() {
-        super.init()
         const {
             from
         } = Blockchain.transaction
@@ -156,4 +155,4 @@ class DiceContract extends OwnerableContract {
     }
 }
 
-module.exports = CounterContract
+module.exports = DiceContract
