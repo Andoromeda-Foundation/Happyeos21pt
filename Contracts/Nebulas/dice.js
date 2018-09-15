@@ -45,8 +45,8 @@ class CounterContract {
         })
     }
 
-   // referer by default is empty
-   bet(referer = "", bet_number = 50, is_under = true) {
+    // referer by default is empty
+    bet(referer = "", bet_number = 50, is_under = true) {
         var {
             from,
             value
