@@ -206,7 +206,8 @@ export default{
         running: false, // 正在抽奖
         tpConnected: false,
         eop:1, // 经营状况系数
-        tpAccount: null
+        tpAccount: null,
+         network:localStorage.getItem('network')
     };
 },
     created: function () {
@@ -242,25 +243,24 @@ export default{
 //            this.fetch_action()
         },
         get_current_eop: async function () {
-            /*var hthisyeosslot_balance = await this.eos.getCurrencyBalance('eosio.token', 'hthisyeosslot');
-            var hthisyeosslot_true_balance =
-                await this.eos.getTableRows({
+            var happyeosslot_balance = await this.store.scatter.getCurrencyBalance('eosio.token', 'happyeosslot');
+            var happyeosslot_true_balance =
+                await this.store.scatter.getTableRows({
                     json: "true",
-                    code: "hthisyeosslot",
-                    scope: "hthisyeosslot",
+                    code: "happyeosslot",
+                    scope: "happyeosslot",
                     limit: 10,
                     table: 'market'
                 });
-            hthisyeosslot_balance = hthisyeosslot_balance[0].split(' ', 1)[0];
-            //this.eop = hthisyeosslot_true_balance;
-            hthisyeosslot_true_balance = hthisyeosslot_true_balance.rows[0].deposit.balance.split(' ', 1)[0];
-            this.eop = hthisyeosslot_balance / (hthisyeosslot_true_balance - 1250);
+            happyeosslot_balance = happyeosslot_balance[0].split(' ', 1)[0];
+            //this.eop = happyeosslot_true_balance;
+            happyeosslot_true_balance = happyeosslot_true_balance.rows[0].deposit.balance.split(' ', 1)[0];
+            this.eop = happyeosslot_balance / (happyeosslot_true_balance - 1250);
             //this.eop = new Number(this.eop).toFixed(4);
-            return this.eop;*/
+            return this.eop;
         },
         make_deposit: function (event) {
             this.play_se("se_click");
-            this.init_scatter();
             var new_deposit = prompt("购买多少EOS的股份？");
             // Check new deposit
             if (new_deposit > 0) {
@@ -278,7 +278,6 @@ export default{
         },
         make_withdraw: function (event) {
             this.play_se("se_click");
-            this.init_scatter();
             var new_withdraw = prompt("出售多少HPY（股份）？");
             // Check new withdraw
             if (new_withdraw > 0) {
@@ -291,16 +290,16 @@ export default{
             LazyRouting.RedirectTo(name, path, params, query);
         },
         get_roll_result: function () {
-            this.eos.getTableRows({
+            this.store.scatter.getTableRows({
                 json: "true",
-                code: "hthisyeosslot",
-                scope: this.account.name,
+                code: "happyeosslot",
+                scope: this.store.account.name,
                 limit: 10,
                 table: 'result'
             }).then((data) => {
+                console.log(data)
                 var result = data.rows[0].roll_number;
                 this.bet_result = result;
-
                 var rate_100 = 25;
                 var rate_50 = new Array(11, 24);
                 var rate_20 = new Array(6, 16, 21);
@@ -340,7 +339,7 @@ export default{
         tpGetRollResult: function () {
             tp.getTableRows({
                 json: "true",
-                code: "hthisyeosslot",
+                code: "happyeosslot",
                 scope: this.tpAccount.name,
                 limit: 10,
                 table: 'result'
@@ -388,7 +387,7 @@ export default{
             this.play_se("se_click");
             amount = new Number(amount).toFixed(4);
             // console.log(amount);
-            this.eos.transfer(this.account.name, "hthisyeosslot", amount + " EOS", "buy")
+            this.store.scatter.transfer(this.store.account.name, "happyeosslot", amount + " EOS", "buy")
                 .then(() => {
                     this.play_se("se_buy");
                     this.get_current_balance();
@@ -402,7 +401,7 @@ export default{
             amount = new Number(amount).toFixed(4);
             tp.eosTokenTransfer({
                 from: tpAccount.name,
-                to: 'hthisyeosslot',
+                to: 'happyeosslot',
                 amount: amount,
                 tokenName: 'EOS',
                 precision: 4,
@@ -420,12 +419,15 @@ export default{
         withdraw: function (amount) {
             this.play_se("se_click");
             amount = new Number(amount).toFixed(4);
-            var requiredFields = this.requiredFields;
-            this.eos.contract('hthisyeosslot', {
+            console.log(this.store.network)
+            var requiredFields = this.requiredFields = {
+                accounts: [config.networks[this.store.network]]
+            };
+            this.store.scatter.contract('happyeosslot', {
                 requiredFields
             }).then(contract => {
-                contract.sell(this.account.name, amount + " HPY", {
-                    authorization: [`${this.account.name}@${this.account.authority}`]
+                contract.sell(this.store.account.name, amount + " HPY", {
+                    authorization: [`${this.store.account.name}@${this.store.account.authority}`]
                 });
             })
                 .then(() => {
@@ -439,9 +441,12 @@ export default{
         setIdentity: function () {
             store.initIdentity();
             this.get_current_balance();
+            this.requiredFields = {
+                accounts: [config.networks[this.store.network]]
+            };
         },
         init_scatter: function () {
-            if (this.eos != null) return;
+            if (this.store.scatter != null) return;
             if (this.tpAccount != null) return;
             if (this.isPc()) {
                 if (!('scatter' in window)) {
@@ -486,7 +491,7 @@ export default{
         },
         createHexRandom: function () {
             var num = '';
-            for (i = 0; i < 64; i++) {
+            for (var i = 0; i < 64; i++) {
                 var tmp = Math.floor(Math.random() * 16);
                 if (tmp > 9) {
                     switch (tmp) {
@@ -518,14 +523,11 @@ export default{
         start_roll: function () {
             this.play_se("se_click");
             if (this.running) return;
-            this.init_scatter();
-
-
             var amount = new Number(this.bet_input).toFixed(4);
             if (this.bet_input == "") {
                 amount = "1.0000"
             }
-            this.eos.transfer(this.account.name, "hthisyeosslot", amount + " EOS", "bet " + this.createHexRandom())
+            this.store.scatter.transfer(this.store.account.name, "happyeosslot", amount + " EOS", "bet " + this.createHexRandom())
                 .then(() => {
                     this.play_se("se_startrolling");
                     this.running = true;
@@ -577,7 +579,7 @@ export default{
                 method:'post',
                 url: 'https://api1.eosasia.one/v1/history/get_actions',
                 headers: { 'content-type': 'thislication/x-www-form-urlencoded' },
-                data: {"account_name":"hthisyeosslot","pos":-1,"offset":-300}
+                data: {"account_name":"happyeosslot","pos":-1,"offset":-300}
             })
             this.actions = data.actions
                 .map(({action_trace}) => action_trace.act.data)
@@ -589,41 +591,6 @@ export default{
                 clearTimeout(this.result_timer);
                 this.prize = stop_position;
                 this.get_current_balance();
-            }
-        },
-        requestId: async function() {
-            if (this.isPc()) {
-                //PC端
-                if (!('scatter' in window)) {
-                    alert("你需要Scatter来玩这个游戏");
-                } else {
-                    const identity = await scatter.getIdentity({
-                        accounts: [{
-                            chainId: config.networks[store.store.network].chainId,
-                            blockchain: config.networks[store.store.network].blockchain
-                        }]
-                    });
-                    this.account = identity.accounts.find(acc => acc.blockchain === 'eos');
-                    scatter.getIdentity({
-                        accounts: [{
-                            chainId: config.networks[store.store.network].chainId,
-                            blockchain: config.networks[store.store.network].blockchain
-                        }]
-                    });
-                    this.setIdentity(identity);
-                }
-            } else {
-                //移动端
-                this.tpConnected = tp.isConnected();
-                if (this.tpConnected) {
-                    //test
-                    // this.tpBalance();
-                    tp.getWalletList("eos").then(function (data) {
-                        this.tpAccount = data.wallets.eos[0]
-                    });
-                } else {
-                    alert("请下载TokenPocket") //待完善
-                }
             }
         },
          isPc:function () {
