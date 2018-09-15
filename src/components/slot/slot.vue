@@ -44,8 +44,8 @@
                                                      <input v-model="bet_input" type="number" id="bet_input" placeholder="Bet credits">
                                                  </div>
                     -->
-                            <div class="bet" onclick="this.change_bet()">Bet</div>
-                            <div class="bet-num" onclick="this.change_bet()">{{ bet_input||0 }}
+                            <div class="bet" @click="change_bet()">Bet</div>
+                            <div class="bet-num" @click="change_bet()">{{ bet_input||0 }}
                                 <span class="tooltiptext">点击修改Bet数额</span>
                             </div>
                             <div class="bet">EOP</div>
@@ -233,6 +233,7 @@ export default{
         change_bet: function () {
             this.play_se("se_click");
             var new_bet = parseFloat(prompt("赌多少EOS？"));
+//            var new_bet = prompt("赌多少EOS？");
             // Check new bet
             if (new_bet > 0) {
                 this.bet_input = new Number(new_bet).toFixed(4);
