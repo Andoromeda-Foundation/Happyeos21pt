@@ -64,6 +64,7 @@ class CounterContract {
                 Blockchain.transfer(from,  new BigNumber(value).times(96).dividedToIntegerBy(99 - bet_number))
             }
         }
+        this._event("Bet",{number: roll_number});
     }
 
 
@@ -81,6 +82,12 @@ class CounterContract {
             const cut = actualCost.dividedToIntegerBy(withoutCut)
             Blockchain.transfer(referer, cut)
         }
+    }
+
+    _event(name,indexes){
+        var k = {};
+        k[name] = indexes;
+        Event.Trigger("Dice", k);
     }
 }
 
