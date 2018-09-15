@@ -28,8 +28,10 @@
             {{$t('Network')}}:{{store.network}}<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="mainnet">{{$t('Mainnet')}}</el-dropdown-item>
-            <el-dropdown-item command="kylin">{{$t('Kylin Testnet')}}</el-dropdown-item>
+            <el-dropdown-item command="mainnet">{{$t('Eos Mainnet')}}</el-dropdown-item>
+            <el-dropdown-item command="kylin">{{$t('Eos Kylin Testnet')}}</el-dropdown-item>
+            <el-dropdown-item command="nas_mainnet">{{$t('Nas Mainnet')}}</el-dropdown-item>
+            <el-dropdown-item command="nas_testnet">{{$t('Nas Testnet')}}</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
         <el-dropdown trigger="click" @command="changeLang" style="margin-right: 20px;">
