@@ -64,10 +64,10 @@
                             <!-- <div class="credits">Current EOP</div>
                             <div class="credits-num">{{ eop.toFixed(4) || 0 }}</div> -->
                             <div class="credits">Balance</div>
-                            <div class="credits-num">{{ store.eos.balance || 0 }}</div>
+                            <div class="credits-num">{{ user_eos_balance || 0 }}</div>
                             <!--   <div class="small"> </div>-->
                             <div class="credits">HPY</div>
-                            <div class="credits-num">{{ store.hpy.balance || 0 }}</div>
+                            <div class="credits-num">{{ user_hpy_balance || 0 }}</div>
                         </div>
                     </div>
                     <div class="center-box-bottom">
@@ -180,8 +180,10 @@
 import * as store from '../../store.js';
 import config from '../../config.js';
 import Eos from 'eosjs';
+import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
 
 export default{
+    components: {ElButton},
     data(){
      return {
          store:store.store,
@@ -237,9 +239,16 @@ export default{
             }
         },
         get_current_balance: function () {
-            this.user_hpy_balance = this.store.hpy.balance;
-            this.user_eos_balance = this.store.eos.balance;
             this.get_current_eop();
+            if(this.store.scatter){
+
+            this.store.scatter.getCurrencyBalance('happyeosslot', this.store.account.name).then(x => {
+                this.user_hpy_balance = x[0].split(' ', 1)[0];
+            })
+            this.store.scatter.getCurrencyBalance('eosio.token', this.store.account.name).then(x => {
+                this.user_eos_balance = x[0].split(' ', 1)[0];
+            });
+            }
 //            this.fetch_action()
         },
         get_current_eop: async function () {
@@ -257,6 +266,9 @@ export default{
             happyeosslot_true_balance = happyeosslot_true_balance.rows[0].deposit.balance.split(' ', 1)[0];
             this.eop = happyeosslot_balance / (happyeosslot_true_balance - 1250);
             //this.eop = new Number(this.eop).toFixed(4);
+
+            this.user_hpy_balance = this.store.hpy.balance;
+            this.user_eos_balance = this.store.eos.balance;
             return this.eop;
         },
         make_deposit: function (event) {
@@ -440,6 +452,7 @@ export default{
         },
         setIdentity: function () {
             store.initIdentity();
+            this.init_scatter()
             this.get_current_balance();
             this.requiredFields = {
                 accounts: [config.networks[this.store.network]]
@@ -447,7 +460,7 @@ export default{
         },
         init_scatter: function () {
             if (this.store.scatter != null) return;
-            if (this.tpAccount != null) return;
+//            if (this.tpAccount != null) return;
             if (this.isPc()) {
                 if (!('scatter' in window)) {
                     alert("没有找到Scatter.");
