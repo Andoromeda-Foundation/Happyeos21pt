@@ -57,11 +57,11 @@ class CounterContract {
         var roll_number = Math.floor(Math.random() * 100);        
         if (is_under) {
             if (bet_number < roll_number) {
-                Blockchain.transfer(from, value * 96 / bet_number)
+                Blockchain.transfer(from, new BigNumber(value).times(96).dividedToIntegerBy(bet_number))
             }
         } else {
             if(bet_number > roll_number) {
-                Blockchain.transfer(from, value * 96 / (99 - bet_number))
+                Blockchain.transfer(from,  new BigNumber(value).times(96).dividedToIntegerBy(99 - bet_number))
             }
         }
     }
@@ -69,15 +69,7 @@ class CounterContract {
 
     init() {
         this.counter = 0
-        this.referCut = new BigNumber(5)
-    }
-
-    inc() {
-        this.counter += 1
-    }
-
-    get() {
-        return this.counter
+        this.referCut = new BigNumber(1)
     }
     
     _sendCommissionTo(referer, actualCost) {
