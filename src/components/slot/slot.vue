@@ -64,10 +64,10 @@
                             <!-- <div class="credits">Current EOP</div>
                             <div class="credits-num">{{ eop.toFixed(4) || 0 }}</div> -->
                             <div class="credits">Balance</div>
-                            <div class="credits-num">{{ user_eos_balance || 0 }}</div>
+                            <div class="credits-num">{{ store.eos.balance || 0 }}</div>
                             <!--   <div class="small"> </div>-->
                             <div class="credits">HPY</div>
-                            <div class="credits-num">{{ (user_hpy_balance!=""?user_hpy_balance:user_hpy_balance) || 0 }}</div>
+                            <div class="credits-num">{{ store.hpy.balance || 0 }}</div>
                         </div>
                     </div>
                     <div class="center-box-bottom">
@@ -112,9 +112,15 @@
                 <div class="left"></div>
                 <div class="right"></div>
             </div>
+            <div v-if="!store.account">
+                <el-button type="primary" class="login-button" @click="setIdentity()" >{{$t('LOGIN')}}</el-button>
+            </div>
+            <div v-else>
             <button id="spinId" class="spin" v-on:click="start_roll">摇起来！</button>
             <button class="input-money" v-show="true" v-on:click="make_deposit">购买股份</button>
             <button class="get-money" v-show="true"  v-on:click="make_withdraw">出售股份</button>
+             </div>
+
             <!--   <button class="leave"> Leave</button>-->
             <div class="music-play" id="musicId">
                 <img id="imgId" src="../../assets/imges/pause.jpg">
@@ -178,6 +184,7 @@ import Eos from 'eosjs';
 export default{
     data(){
      return {
+         store:store.store,
         requiredFields: null,
         eos: null,
         account: null,
@@ -202,7 +209,8 @@ export default{
         tpAccount: null
     };
 },
-    created: function () {},
+    created: function () {
+    },
     watch: {},
     methods: {
         resolveUrl: function (to) {
@@ -228,17 +236,13 @@ export default{
             }
         },
         get_current_balance: function () {
+            this.user_hpy_balance = this.store.hpy.balance;
+            this.user_eos_balance = this.store.eos.balance;
             this.get_current_eop();
-            this.eos.getCurrencyBalance('hthisyeosslot', this.account.name).then(x => {
-                this.user_hpy_balance = x[0].split(' ', 1)[0];
-            })
-            this.eos.getCurrencyBalance('eosio.token', this.account.name).then(x => {
-                this.user_eos_balance = x[0].split(' ', 1)[0];
-            });
-            this.fetch_action()
+//            this.fetch_action()
         },
         get_current_eop: async function () {
-            var hthisyeosslot_balance = await this.eos.getCurrencyBalance('eosio.token', 'hthisyeosslot');
+            /*var hthisyeosslot_balance = await this.eos.getCurrencyBalance('eosio.token', 'hthisyeosslot');
             var hthisyeosslot_true_balance =
                 await this.eos.getTableRows({
                     json: "true",
@@ -252,7 +256,7 @@ export default{
             hthisyeosslot_true_balance = hthisyeosslot_true_balance.rows[0].deposit.balance.split(' ', 1)[0];
             this.eop = hthisyeosslot_balance / (hthisyeosslot_true_balance - 1250);
             //this.eop = new Number(this.eop).toFixed(4);
-            return this.eop;
+            return this.eop;*/
         },
         make_deposit: function (event) {
             this.play_se("se_click");
@@ -432,12 +436,8 @@ export default{
                     alert(err.toString());
                 });
         },
-        setIdentity: function (identity) {
-            this.account = identity.accounts.find(acc => acc.blockchain === 'eos');
-            this.eos = scatter.eos(config.networks[store.store.network], Eos, {});
-            this.requiredFields = {
-                accounts: [network]
-            };
+        setIdentity: function () {
+            store.initIdentity();
             this.get_current_balance();
         },
         init_scatter: function () {
@@ -592,12 +592,10 @@ export default{
             }
         },
         requestId: async function() {
-            if (this.eos != null) return;
-            if (this.tpAccount != null) return;
             if (this.isPc()) {
                 //PC端
                 if (!('scatter' in window)) {
-                    //alert("你需要Scatter来玩这个游戏");
+                    alert("你需要Scatter来玩这个游戏");
                 } else {
                     const identity = await scatter.getIdentity({
                         accounts: [{
