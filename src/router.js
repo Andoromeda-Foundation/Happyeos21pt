@@ -20,14 +20,14 @@ export default new Router({
             name: 'OTCEOS',
             path: '/otc',
             redirect: {
-                name: 'OTCExchange', params: {
+                name: 'OTC', params: {
                     tokenContract: 'eosio.token',
                     tokenSymbol: 'EOS'
                 }
             }
         },
         {
-            name: 'OTCExchange',
+            name: 'OTC',
             path: '/otc/:tokenContract/:tokenSymbol',
             component: OTCView,
         },
