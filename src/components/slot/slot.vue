@@ -241,16 +241,15 @@ export default{
         },
         get_current_balance: function () {
             this.get_current_eop();
-            if(this.store.scatter){
-
+//            this.fetch_action()
+        },
+        getHpyAndEosBalance(){
             this.store.scatter.getCurrencyBalance('happyeosslot', this.store.account.name).then(x => {
                 this.user_hpy_balance = x[0].split(' ', 1)[0];
             })
             this.store.scatter.getCurrencyBalance('eosio.token', this.store.account.name).then(x => {
                 this.user_eos_balance = x[0].split(' ', 1)[0];
             });
-            }
-//            this.fetch_action()
         },
         get_current_eop: async function () {
             var happyeosslot_balance = await this.store.scatter.getCurrencyBalance('eosio.token', 'happyeosslot');
@@ -268,8 +267,7 @@ export default{
             this.eop = happyeosslot_balance / (happyeosslot_true_balance - 1250);
             //this.eop = new Number(this.eop).toFixed(4);
 
-            this.user_hpy_balance = this.store.hpy.balance;
-            this.user_eos_balance = this.store.eos.balance;
+            this.getHpyAndEosBalance()
             return this.eop;
         },
         make_deposit: function (event) {
@@ -432,7 +430,6 @@ export default{
         withdraw: function (amount) {
             this.play_se("se_click");
             amount = new Number(amount).toFixed(4);
-            console.log(this.store.network)
             var requiredFields = this.requiredFields = {
                 accounts: [config.networks[this.store.network]]
             };
@@ -441,11 +438,12 @@ export default{
             }).then(contract => {
                 contract.sell(this.store.account.name, amount + " HPY", {
                     authorization: [`${this.store.account.name}@${this.store.account.authority}`]
+                }).then(()=>{
+                    this.get_current_balance();
                 });
             })
                 .then(() => {
                     this.play_se("se_withdraw");
-                    this.get_current_balance();
                 })
                 .catch((err) => {
                     alert(err.toString());
