@@ -63,7 +63,7 @@ jobs:
             cd ./dist/dist 
             git config --global user.email "cd-bot@dasdaq.io"
             git config --global user.name "Circle CI Deploy Bot"
-            echo "otc.happyeosslot.com" >> CNAME # add custom domain
+            echo "happyeosslot.com" >> CNAME # add custom domain
             git init
             git add .
             git commit -m "Update website content"

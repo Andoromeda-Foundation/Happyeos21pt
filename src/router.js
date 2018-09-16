@@ -13,7 +13,7 @@ export default new Router({
             name: 'Home',
             path: '/',
             redirect: {
-                name: 'OTCEOS'
+                name: 'Dice'
             }
         },
         {
