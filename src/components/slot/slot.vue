@@ -213,6 +213,8 @@ export default{
     };
 },
     created: function () {
+        this.setIdentity();
+        this.get_current_balance();
     },
     watch: {},
     methods: {
