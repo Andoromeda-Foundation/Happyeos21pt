@@ -289,7 +289,6 @@ export default {
     height: 76px;
     justify-content: space-between;
     padding: 0 30px;
-
     text-decoration: none;
     letter-spacing: .5px;
     font-weight: 600;
@@ -303,12 +302,15 @@ export default {
     border-radius: 50%;    
     transition: 1s;
   }
+
   .community-links li:hover {
+    border-radius: 20%;    
     background-color: #6C2DED;
   }
 
   .community-links ul li {
     text-decoration: none;  
+    padding: 50px;
   }
   .community-links {
     color: #333;
@@ -316,37 +318,269 @@ export default {
     letter-spacing: .5px;
   }
 
-
-/*
-.social-links{
- display: flex;
-    align-items: center;
-}
-
-  .social-links {
-    margin-left: 30px;
-  }
-
-  
-  .social-links {
-    text-decoration: none;
-    letter-spacing: .5px;
-    font-weight: 600;
-    font-size: .9em;
-  }
-
-  .social-links {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    height: 76px;
-    justify-content: space-between;
-    padding: 0 30px;
-  }  */
-
   .icon-logout {
     cursor: pointer;
+  }
+</style>
+
+
+
+<style scoped>
+  .game {
+    background: url('../assets/bg.png') top left repeat;
+    background-size: contain;
+    padding: 60px 0;
+  }
+  .form {
+    width: 655px;
+    border-radius: 5px; 
+    font-size: 18px;
+    background-color: #4b4848;
+    margin: 0 auto 20px auto;
+    padding: 20px 30px;
+  }
+  .form-group {
+    display: flex;
+    align-items: center;
+  }
+  .form-group > div:last-child {
+    flex: 1;
+  }
+  .amount-rate {
+    display: flex;
+    align-items: center;
+  }
+  .amount-rate li {
+    color: #9b9fae;
+    font-size: .6em;
+    font-weight: 600;
+  }
+  .amount-rate li:not(:last-child) {
+    border-right: 2px solid #2F2F2F;
+  }
+  .form-group {
+    margin-bottom: 20px;
+  }
+  .form-group label {
+    color: #9b9fae;
+    font-weight: 600;
+    font-size: .6em;
+    margin-bottom: .75em;
+    display: block;
+  }
+  .form-group input {
+    text-align: center;
+    border: none;
+    padding: 10px 12px;
+    borde-radius: .3em;
+    font-weight: 600;
+    letter-spacing: .2px;
+    font-size: 18px;
+    outline: none;
+    background-color: #4b4848;
+    width: 177px;
+    color: #fff;
+  }
+  .input-amount-group {
+    display: flex;
+    align-items: center;
+    background-color: #3f3e3e;
+    padding: 2px;
+    border-radius: .3em;    
+    margin-right: 30px;
+    height: 47px;
+    position: relative;
+  }
+  .input-amount-group ul li {
+    cursor: pointer;
+    padding: 8px 15px;
+  }
+  .input-amount-group ul li:hover {
+    background-color: #0000003f; 
+  }
+  .input-group {
+    flex: 1;
+  }
+  .input-group input {
+    padding-left: 15px;   
+  }
+  .input-group .eos-logo {
+    position: absolute;
+    left: 10px;
+    top: 12.5px;
+  }
+  .info-container {
+    background-color: #3F3E3E; 
+    padding: 20px;
+  }
+  .info-container ul {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .info-container ul > li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+  }
+  .info-container ul > li:not(:last-child) {
+    border-right: 2px solid #2F2F2F;
+  }
+  .info-container ul > li > label {
+    color: #9b9fae;
+    font-weight: 600;
+    font-size: .6em;
+    margin-bottom: .75em;
+    display: block;
+  }
+  .info-container ul > li > span {
+    color: #fff;
+    font-size: 1.2em;
+    font-weight: 600;
+    letter-spacing: .5px;
+  }
+  .bet-cell {
+    background-color: #3f3e3e;
+    border-radius: .3em;
+    height: 47px;
+    line-height: 47px;
+    text-align: center;
+    position: relative;
+  }
+  .bet-cell > span {
+    color: #fff;
+    font-weight: 600;
+  }
+  .bet-cell .eos-logo {
+    position: absolute;
+    left: 10px;
+    top: 12.5px;
+  }
+  .game-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+  } 
+  .game-footer > div {
+    flex: 1;
+    text-align: center;
+    color: #fff;
+    font-weight: 600;
+  }
+  .btn-action {
+    outline: none;
+    letter-spacing: 3px;
+    font-weight: 600;
+    font-size: 18px;
+    background-color: #0191ee;
+    border-color: #0191ee;
+    cursor: pointer; 
+    padding: .5rem 1rem;
+    line-height: 1.5;
+    border-radius: .3rem;
+    color: #fff;
+    flex: 1;
+  }
+  .eos-logo {
+    height: 22px;
+  }
+  .eos-lg {
+    width: 22px;
+    margin-right: 5px;
+    vertical-align: middle;
+  }
+  .token-logo {
+    width: 22px;
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+  .game >>> .el-dialog {
+    background-color: #4A4848;
+  }
+  .game >>> .el-dialog__header {
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.5;
+    letter-spacing: .5px;
+    color: #fff;
+    font-size: 1.25em;
+  }
+  .game >>> .el-dialog__body {
+    color: #fff;
+    padding-top: 0;
+    font-weight: 700;
+    letter-spacing: .5px;
+    color: #fff;
+    font-size: 1em;
+  }
+  .game >>> .el-dialog__body li,
+  .game >>> .el-dialog__body p {
+    margin-bottom: 10px;
+  }
+  .game >>> .el-dialog__body a {
+    color: #0191ee;
+    text-decoration: none;
+  }
+  .game >>> .el-dialog__body a:hover {
+    text-decoration: underline;
+  }
+  .social-links {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 30px 30px 0 30px;  
+    font-size: 1.2em;
+  }
+  .social-links li {
+    border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color ease 200ms;
+  }
+  .social-links li:hover {
+    background-color: #6C2DED;
+  }
+  .bet-balance {
+    visibility: hidden;
+  }
+  .currenteos-container {
+    position: relative;
+  }
+  .eos-animation {
+    opacity: 0;
+    
+    position: absolute;
+  }
+  .eos-animation.animateUp {
+    animation: fadeOutUp 3s;
+    color: #02f292; 
+    text-shadow: 0 0 5px #02f292;
+  }
+  .eos-animation.animateDown {
+    animation: fadeOutDown 1s;
+    color: #CD4263;
+    text-shadow: 0 0 5px #CD4263;
+  }
+  @keyframes fadeOutUp {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+      -webkit-transform: translate3d(0, -100%, 0);
+      transform: translate3d(0, -100%, 0);
+    }
+  }
+  @keyframes fadeOutDown {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+      -webkit-transform: translate3d(0, 100%, 0);
+      transform: translate3d(0, 100%, 0);
+    }
   }
 </style>
