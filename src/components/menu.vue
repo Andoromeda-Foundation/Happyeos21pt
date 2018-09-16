@@ -1,3 +1,4 @@
+
 <template>
 <div id="menu">
     <div id="logo-container">
@@ -56,11 +57,25 @@
         :visible.sync="isShowFairDialog"
         width="30%"
         center>
-        <el-input v-model="store.seed" :placeholder="$t('Enter Your Custom Seed')" style="width: 300px;"></el-input>
-        <el-button type="primary" @click="update()">{{$t('Update')}}</el-button>
+
         <p>{{$t('fair-1')}}</p>
         <p>{{$t('fair-2')}}</p>
         <p>{{$t('fair-3')}}</p>
+        所有合约均已经过 eospark 认证：
+        <p>        
+          <a href="https://eosflare.io/account/happyeosslot">https://eosflare.io/account/happyeosslot</a>
+          <a href="https://eosflare.io/account/happyeosdice">https://eosflare.io/account/happyeosdice</a>
+          <a href="https://eosflare.io/account/happyeos21pt">https://eosflare.io/account/happyeos21pt</a>
+          <a href="https://eosflare.io/account/eosotcbackup">https://eosflare.io/account/eosotcbackup</a>          
+        </p>
+        并且可使用下面的小程度验证随机数的结果： 
+        <el-input v-model="store.seed" :placeholder="$t('Enter Your Custom Seed')" style="width: 300px;"></el-input>
+        <el-button type="primary" @click="update()">{{$t('Update_Client_Seed')}}</el-button>        
+
+        <el-input v-model="store.server_seed" :placeholder="$t('Server Seed')" style="width: 300px;"></el-input>                
+        <el-button type="primary" @click="pull()">{{$t('Pull_Server_Seed')}}</el-button>        
+
+        <el-input v-model="store.random_number" :placeholder="$t('Random Number')" style="width: 300px;"></el-input>                                
       </el-dialog>
 
       <el-dialog
@@ -68,7 +83,23 @@
         :visible.sync="isShowCommunityDialog"
         width="30%"
         center>
-        <a href="https://t.me/joinchat/HnyfLA9DC8cNmr6RP0tE7Q" target="_blank">https://t.me/joinchat/HnyfLA9DC8cNmr6RP0tE7Q</a>
+          <ul class="community-links">
+            <li @click="navigate('telegram')">
+              <font-awesome-icon :icon="['fab', 'telegram']" /> 
+            </li>          
+            <li @click="navigate('twitter')">
+              <font-awesome-icon :icon="['fab', 'twitter']" /> 
+            </li>
+            <li @click="navigate('github')">
+              <font-awesome-icon :icon="['fab', 'github']" /> 
+            </li>
+            <li @click="navigate('medium')">
+              <font-awesome-icon :icon="['fab', 'medium-m']" /> 
+            </li>
+            <li @click="navigate('discord')">
+              <font-awesome-icon :icon="['fab', 'discord']" /> 
+            </li>
+          </ul>        
       </el-dialog>
 
       <el-dialog
@@ -159,6 +190,25 @@ export default {
       localStorage.setItem("lang", this.store.lang);
       this.$i18n.locale = this.store.lang;
     },
+    navigate(brand) {
+      switch (brand) {
+        case 'telegram':
+          window.open('//t.me/joinchat/HnyfLA9DC8cNmr6RP0tE7Q');
+          break;        
+        case 'twitter':
+          window.open('//twitter.com/link_idol_');
+          break;
+        case 'medium':
+          window.open('//medium.com/@andoromeda');
+          break;
+        case 'github':
+          window.open('//github.com/Andoromeda-Foundation');
+          break;
+        case 'discord':
+          window.open('//discordapp.com/channels/420341255696809995/420341258184163330');
+          break;
+      }
+    },    
     copy() {
       const clipboard = new Clipboard(".copy-btn");
     },
@@ -180,12 +230,8 @@ export default {
 </script>
 
 <style>
-#menu {
-  height: 60px;
-  background-color: #3f3e3e;
-  padding: 8px 16px;
-  display: flex;
-}
+
+
 #logo-container {
   height: 100%;
   display: inline-flex;
@@ -195,16 +241,28 @@ export default {
 #logo {
   height: 50px;
 }
+
+#menu {
+  height: 60px;
+  background-color: #3f3e3e;
+  padding: 8px 16px;
+  display: flex;
+}
 #menu .el-dropdown {
   display: inline-block;
   position: relative;
   font-size: 14px;
   color: #eee;
 }
+
 .menu-item {
   color: white;
   padding: 6px 12px;
 }
+.menu-item :hover {
+    text-shadow: 0 0 5px #fff;
+  }
+
 #menu-container {
   display: flex;
   justify-content: space-between;
@@ -215,7 +273,80 @@ export default {
   display: inline-flex;
   align-items: center;
 }
+
 .lang-icon {
   height: 16px;
 }
+
+
+  .community-links {
+    list-style-type:none;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    height: 76px;
+    justify-content: space-between;
+    padding: 0 30px;
+
+    text-decoration: none;
+    letter-spacing: .5px;
+    font-weight: 600;
+    font-size: 2em;  
+  }  
+
+  .community-links {
+    display: flex;
+    align-items: center;     
+    cursor: pointer;
+    border-radius: 50%;    
+    transition: 1s;
+  }
+  .community-links li:hover {
+    background-color: #6C2DED;
+  }
+
+  .community-links ul li {
+    text-decoration: none;  
+  }
+  .community-links {
+    color: #333;
+    text-decoration: none;
+    letter-spacing: .5px;
+  }
+
+
+/*
+.social-links{
+ display: flex;
+    align-items: center;
+}
+
+  .social-links {
+    margin-left: 30px;
+  }
+
+  
+  .social-links {
+    text-decoration: none;
+    letter-spacing: .5px;
+    font-weight: 600;
+    font-size: .9em;
+  }
+
+  .social-links {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    height: 76px;
+    justify-content: space-between;
+    padding: 0 30px;
+  }  */
+
+  .icon-logout {
+    cursor: pointer;
+  }
 </style>

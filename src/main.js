@@ -15,6 +15,14 @@ import zhTerm from './lang/ch';
 import enTerm from './lang/en';
 import jpTerm from './lang/jp';
 
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { 
+  faSignOutAlt,
+} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import brands from '@fortawesome/fontawesome-free-brands';
+Vue.component('font-awesome-icon', FontAwesomeIcon)
+
 Vue.use(VueI18n);
 
 const messages = {

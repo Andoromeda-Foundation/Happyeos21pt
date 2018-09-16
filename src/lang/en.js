@@ -17,4 +17,6 @@ export default {
   'bet-3': 'We are also running a presale for large investors. Please join our Telegram right now for more information. We will be having a public ICO later.',
   success_message: 'Your roll number is {0}，you win {1} EOS！',
   fail_message: 'Your roll number is {0}，you fail.',
+  'Client Seed': 'Client Seed',
+  'Server Seed': 'Server Seed',
 };
