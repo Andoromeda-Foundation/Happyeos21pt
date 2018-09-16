@@ -129,7 +129,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .token-display {
   margin-top: 100px;
   margin-bottom: 100px;
