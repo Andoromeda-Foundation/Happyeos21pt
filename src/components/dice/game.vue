@@ -130,7 +130,11 @@ export default {
     },
     computed: {
       payOnWin: function() {
-        return Math.floor(98 / this.range * this.betAmount * 10000) / 10000;
+        if (this.choose === 'small') {
+          return Math.floor(98 / this.range * this.betAmount * 10000) / 10000;
+        } else {
+          return Math.floor(98 / (99 - this.range) * this.betAmount * 10000) / 10000;
+        }
       },
       payout: function() {
         if (this.choose === 'small') {
