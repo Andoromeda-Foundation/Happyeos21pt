@@ -37,9 +37,15 @@ export default {
     props: ['code', 'game', 'symbol'],
     data() {
         this.chartSettings = {
-            showDataZoom: true,
-            start: 20,
-            end: 100
+          legendName: {
+            '日K': '分k',
+          },
+          labelMap: {
+            '日K': '分k',
+          },
+          showDataZoom: true,
+          start: 0,
+          end: 100
         }
       return {
         store: store.store,
@@ -58,7 +64,7 @@ export default {
     },
     methods: {
       fetch: async function() {
-        const result = await request.get(`https://api.happyeosslot.com/api/price/${this.symbol}`);
+        const result = await request.get(`http://api.happyeosslot.com/api/price/${this.symbol}`);
         this.chartData.rows = result.body;
       },
       buy: async function() {
@@ -108,5 +114,6 @@ export default {
 }
 .candle-container {
   background-color: white;
+  padding: 20px;
 }
 </style>

@@ -123,7 +123,7 @@
 
             <!--   <button class="leave"> Leave</button>-->
             <div class="music-play" id="musicId">
-                <img id="imgId" src="../../assets/imges/pause.jpg">
+                <img id="imgId" src="../../assets/images/pause.jpg">
             </div>
             <div class="actions-table">
                 <table class="table">
@@ -616,10 +616,10 @@ export default{
     var playEvent = document.getElementById(id);
     if(oAudio.paused){
         oAudio.play();
-        $("#"+id).attr('src',"../../assets/imges/pause.jpg");
+        $("#"+id).attr('src',"../../assets/images/pause.jpg");
     }else {
         oAudio.pause();
-        $("#"+id).attr('src',"../../assets/imges/play.jpg");
+        $("#"+id).attr('src',"../../assets/images/play.jpg");
     }
 },
 

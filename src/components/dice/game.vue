@@ -94,7 +94,7 @@
 
         <!-- 买卖token及K线 -->
         <token-display :code="'happyeosslot'" :game="'dice'" :symbol="'hpy'"></token-display>
-        <token-display :code="'dicemaster11'" :game="'dice'" :symbol="'dmt'"></token-display>
+        <!-- <token-display :code="'dicemaster11'" :game="'dice'" :symbol="'dmt'"></token-display> -->
 
         <!-- 弹出 -->
         <el-dialog

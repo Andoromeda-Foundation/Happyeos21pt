@@ -62,20 +62,20 @@
         <p>{{$t('fair-2')}}</p>
         <p>{{$t('fair-3')}}</p>
         所有合约均已经过 eospark 认证：
-        <p>        
+        <p>
           <a href="https://eosflare.io/account/happyeosslot">https://eosflare.io/account/happyeosslot</a>
           <a href="https://eosflare.io/account/happyeosdice">https://eosflare.io/account/happyeosdice</a>
           <a href="https://eosflare.io/account/happyeos21pt">https://eosflare.io/account/happyeos21pt</a>
-          <a href="https://eosflare.io/account/eosotcbackup">https://eosflare.io/account/eosotcbackup</a>          
+          <a href="https://eosflare.io/account/eosotcbackup">https://eosflare.io/account/eosotcbackup</a>
         </p>
-        并且可使用下面的小程度验证随机数的结果： 
+        并且可使用下面的小程度验证随机数的结果：
         <el-input v-model="store.seed" :placeholder="$t('Enter Your Custom Seed')" style="width: 300px;"></el-input>
-        <el-button type="primary" @click="update()">{{$t('Update_Client_Seed')}}</el-button>        
+        <el-button type="primary" @click="update()">{{$t('Update_Client_Seed')}}</el-button>
 
-        <el-input v-model="store.server_seed" :placeholder="$t('Server Seed')" style="width: 300px;"></el-input>                
-        <el-button type="primary" @click="pull()">{{$t('Pull_Server_Seed')}}</el-button>        
+        <el-input v-model="store.server_seed" :placeholder="$t('Server Seed')" style="width: 300px;"></el-input>
+        <el-button type="primary" @click="pull()">{{$t('Pull_Server_Seed')}}</el-button>
 
-        <el-input v-model="store.random_number" :placeholder="$t('Random Number')" style="width: 300px;"></el-input>                                
+        <el-input v-model="store.random_number" :placeholder="$t('Random Number')" style="width: 300px;"></el-input>
       </el-dialog>
 
       <el-dialog
@@ -85,21 +85,21 @@
         center>
           <ul class="community-links">
             <li @click="navigate('telegram')">
-              <font-awesome-icon :icon="['fab', 'telegram']" /> 
-            </li>          
+              <font-awesome-icon :icon="['fab', 'telegram']" />
+            </li>
             <li @click="navigate('twitter')">
-              <font-awesome-icon :icon="['fab', 'twitter']" /> 
+              <font-awesome-icon :icon="['fab', 'twitter']" />
             </li>
             <li @click="navigate('github')">
-              <font-awesome-icon :icon="['fab', 'github']" /> 
+              <font-awesome-icon :icon="['fab', 'github']" />
             </li>
             <li @click="navigate('medium')">
-              <font-awesome-icon :icon="['fab', 'medium-m']" /> 
+              <font-awesome-icon :icon="['fab', 'medium-m']" />
             </li>
             <li @click="navigate('discord')">
-              <font-awesome-icon :icon="['fab', 'discord']" /> 
+              <font-awesome-icon :icon="['fab', 'discord']" />
             </li>
-          </ul>        
+          </ul>
       </el-dialog>
 
       <el-dialog
@@ -194,7 +194,7 @@ export default {
       switch (brand) {
         case 'telegram':
           window.open('//t.me/joinchat/HnyfLA9DC8cNmr6RP0tE7Q');
-          break;        
+          break;
         case 'twitter':
           window.open('//twitter.com/link_idol_');
           break;
@@ -208,7 +208,7 @@ export default {
           window.open('//discordapp.com/channels/420341255696809995/420341258184163330');
           break;
       }
-    },    
+    },
     copy() {
       const clipboard = new Clipboard(".copy-btn");
     },
@@ -292,24 +292,24 @@ export default {
     text-decoration: none;
     letter-spacing: .5px;
     font-weight: 600;
-    font-size: 2em;  
-  }  
+    font-size: 2em;
+  }
 
   .community-links {
     display: flex;
-    align-items: center;     
+    align-items: center;
     cursor: pointer;
-    border-radius: 50%;    
+    border-radius: 50%;
     transition: 1s;
   }
 
   .community-links li:hover {
-    border-radius: 20%;    
+    border-radius: 20%;
     background-color: #6C2DED;
   }
 
   .community-links ul li {
-    text-decoration: none;  
+    text-decoration: none;
     padding: 50px;
   }
   .community-links {
@@ -327,13 +327,13 @@ export default {
 
 <style scoped>
   .game {
-    background: url('../assets/bg.png') top left repeat;
+    background: url('../assets/background.png') top left repeat;
     background-size: contain;
     padding: 60px 0;
   }
   .form {
     width: 655px;
-    border-radius: 5px; 
+    border-radius: 5px;
     font-size: 18px;
     background-color: #4b4848;
     margin: 0 auto 20px auto;
@@ -386,7 +386,7 @@ export default {
     align-items: center;
     background-color: #3f3e3e;
     padding: 2px;
-    border-radius: .3em;    
+    border-radius: .3em;
     margin-right: 30px;
     height: 47px;
     position: relative;
@@ -396,13 +396,13 @@ export default {
     padding: 8px 15px;
   }
   .input-amount-group ul li:hover {
-    background-color: #0000003f; 
+    background-color: #0000003f;
   }
   .input-group {
     flex: 1;
   }
   .input-group input {
-    padding-left: 15px;   
+    padding-left: 15px;
   }
   .input-group .eos-logo {
     position: absolute;
@@ -410,7 +410,7 @@ export default {
     top: 12.5px;
   }
   .info-container {
-    background-color: #3F3E3E; 
+    background-color: #3F3E3E;
     padding: 20px;
   }
   .info-container ul {
@@ -462,7 +462,7 @@ export default {
     align-items: center;
     justify-content: space-between;
     margin-top: 20px;
-  } 
+  }
   .game-footer > div {
     flex: 1;
     text-align: center;
@@ -476,7 +476,7 @@ export default {
     font-size: 18px;
     background-color: #0191ee;
     border-color: #0191ee;
-    cursor: pointer; 
+    cursor: pointer;
     padding: .5rem 1rem;
     line-height: 1.5;
     border-radius: .3rem;
@@ -530,7 +530,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 30px 30px 0 30px;  
+    padding: 30px 30px 0 30px;
     font-size: 1.2em;
   }
   .social-links li {
@@ -550,12 +550,12 @@ export default {
   }
   .eos-animation {
     opacity: 0;
-    
+
     position: absolute;
   }
   .eos-animation.animateUp {
     animation: fadeOutUp 3s;
-    color: #02f292; 
+    color: #02f292;
     text-shadow: 0 0 5px #02f292;
   }
   .eos-animation.animateDown {
