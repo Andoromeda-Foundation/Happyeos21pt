@@ -5,13 +5,21 @@ cleos wallet unlock --password PW5JaGpLtoM1vtD1WxiAC4RDsr82FRUczmKgocw1KJZqVahB4
 #/usr/local/eosio/bin/eosiocpp -g happyeosdice/happyeosdice.abi happyeosdice/happyeosdice.cpp happyeosdice/eosio.token.cpp
 
 /usr/local/eosio/bin/eosiocpp -o happyeosdice/happyeosdice.wast happyeosdice/happyeosdice.cpp
+# cleos -u http://api-direct.eosasia.one push action happyeosdice init '["07359f2ae9669d3991e49bb0bafbc60b2d0efe98cbc38f95682df182561d5947"]' -p happyeosdice@active
 
-cleos -u https://api-kylin.eosasia.one set contract happyeosdice happyeosdice -p happyeosdice@active
+
+
+cleos -u http://api-direct.eosasia.one set contract happyeosdice happyeosdice -p happyeosdice@active
+
+
+# cleos -u http://api-direct.eosasia.one push action happyeosdice test '["minakokojima", "1.0000 EOS"]' -p happyeosdice@active
+#cleos -u http://api-direct.eosasia.one set contract happyeosdice happyeosdice -p happyeosdice@active
 #cleos -u https://api-kylin.eosasia.one push action happyeosdice test '["minakokojima", "1.0000 EOS"]' -p happyeosdice@active
 #cleos -u https://api-kylin.eosasia.one push action happyeosdice init '["9993a3fa2e1f0d628a1bb9b27b7522ad29aa72881a1a36e39c2af301e86228d3"]' -p happyeosdice@active
-cleos -u https://api-kylin.eosasia.one push action eosio.token transfer '[ "minakokojima", "happyeosdice", "0.1000 EOS", "buy" ]' -p minakokojima@active
 
-cleos -u https://api-kylin.eosasia.one get table happyeosdice happyeosdice accounts
+#cleos -u http://api-direct.eosasia.one push action eosio.token transfer '[ "minakokojima", "happyeosdice", "0.1000 EOS", "bet 50" ]' -p minakokojima@active
+
+#cleos -u https://api-kylin.eosasia.one get table happyeosdice happyeosdice accounts
 
 
 #cleos -u https://api-kylin.eosasia.one push action eosio.token transfer '[ "minakokojima", "happyeosdice", "0.0500 EOS", "buy" ]' -p minakokojima@active
@@ -40,3 +48,9 @@ cleos -u https://api-kylin.eosasia.one get table happyeosdice happyeosdice accou
 
 
 # cleos -u https://api-kylin.eosasia.one set account permission happyeosdice active '{"threshold": 1,"keys": [{"key": "EOS79mZ2pseEgc7cR4rPFoTUe3DBrLj8jmf3FGZqQCBwazUYioGZh","weight": 1}],"accounts": [{"permission":{"actor":"happyeosdice","permission":"eosio.code"},"weight":1}]}' owner -p happyeosdice
+
+
+
+#cleos -u http://api-direct.eosasia.one get table happyeosdice happyeosdice global 
+#cleos -u http://api-direct.eosasia.one get table happyeosdice happyeosdice offer
+#cleos -u http://api-direct.eosasia.one get table happyeosdice happyeosdice market

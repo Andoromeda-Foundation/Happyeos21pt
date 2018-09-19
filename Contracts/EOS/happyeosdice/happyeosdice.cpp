@@ -160,7 +160,6 @@ void happyeosdice::bet(const account_name account, const account_name referal, a
     // eosio_assert(bet_number >= 0, "Bet number should bigger or equal to 0."); always true.
     eosio_assert((2 <= bet_number && bet_number <= 97) || (102 <= bet_number && bet_number <= 197) ,  "Bet number should smaller than 100.");
     send_referal_bonus(referal, eos);
-
     eosio_assert(offers.begin() == offers.end(), "only one bet at one time.");    
 
     offers.emplace(_self, [&](auto& offer) {
@@ -174,26 +173,28 @@ void happyeosdice::bet(const account_name account, const account_name referal, a
     global.modify(g, 0, [&](auto &g) {
         g.offerBalance += eos.amount;
     });
+    
     set_roll_result(account, 256);
 
-    uint8_t roll_above = -1, roll_under = -1;
+    int8_t roll_above = -1, roll_under = -1;
     if (bet_number < 100){
         roll_above = bet_number;
     } else {
         roll_under = bet_number - 100;
     }
 
-    const rec_bet _bet{.player = account,
-                       .referrer = referal,
-                       .amount = eos,
-                       .roll_above = roll_above,                      
-                       .roll_under = roll_under,
-                       .server_hash = g->hash,
-                       .client_seed = seed
-                      };   
+    const rec_bet _bet{
+        .player = account,
+        .referrer = referal,
+        .amount = eos,
+        .roll_above = roll_above,                      
+        .roll_under = roll_under,
+        .server_hash = g->hash,
+        .client_seed = seed
+    };   
     action(permission_level{_self, N(active)},
         _self, N(betreceipt), _bet)
-    .send();                   
+    .send();            
 }
 
 void happyeosdice::betreceipt(const rec_bet& bet) {
@@ -223,7 +224,7 @@ void happyeosdice::onTransfer(account_name from, account_name to, asset eos, std
     string operation;
     stream.get_string(&operation);
 
-    if (operation == "bet") {        
+    if (operation == "bet") {                
         uint64_t under;
         stream.get_uint(&under);
         string seed_string;
@@ -237,8 +238,7 @@ void happyeosdice::onTransfer(account_name from, account_name to, asset eos, std
         }
         account_name referal = eosio::string_to_name(referal_string.c_str());
         bet(from, referal, eos, seed, under);
-    } else if (operation == "buy") {
-        
+    } else if (operation == "buy") {        
         if (memo.size() > 7) {
             if (memo.substr(4, 3) == "for") {
                 memo.erase(0, 8);
@@ -248,14 +248,13 @@ void happyeosdice::onTransfer(account_name from, account_name to, asset eos, std
                 }
             }
         }
-        buy(from, eos);
-        
-    } else {
+        buy(from, eos);        
+    } else {        
         action(            
             permission_level{_self, N(active)},
             N(eosio.token), N(transfer),
-                make_tuple(_self, N(minakokojima), eos, std::string("Unknown happyeosslot deposit."))
-        ).send();
+                make_tuple(_self, N(minakokojima), eos, std::string("Unknown deposit."))
+        ).send();        
     }
 }
 
@@ -302,49 +301,37 @@ uint64_t happyeosdice::merge_seed(const checksum256 &s1, const checksum256 &s2) 
 
     if ((itr->under < bonus_rate) || (itr->under > bonus_rate + 100)) {
         int return_rate;
-
         if (itr->under < 100) { // 猜大
             return_rate = (99 - itr->under); // 最小猜0 itr->under = 0 赔率...., 最大猜 99 itr->under = 99 赔率98倍。
         } else { // 猜小
             return_rate = (itr->under - (100) ); // 最小猜0 itr->under = 100 赔率98倍. 最大猜 99 itr->under = 199, 赔率...
         }  
 
-        eosio::transaction tx;
-
-        tx.actions.emplace_back(
+        send_defer_action(
             permission_level{_self, N(active)},
             N(eosio.token), N(transfer),
-            make_tuple(_self, itr->owner, asset(itr->bet * 98 / return_rate , EOS_SYMBOL),
-                std::string("happy eos dice bonus. The result is: ") + int_to_string(bonus_rate) + std::string(" happyeosslot.com") )
-            );
-            /*
-        action(
-                permission_level{_self, N(active)},
-                N(eosio.token), N(transfer),
-                make_tuple(_self, itr->owner, asset(itr->bet * 98 / return_rate , EOS_SYMBOL),
-                    std::string("... happy eos dice bonus. The result is: ") + int_to_string(bonus_rate) + std::string(" happyeosslot.com") ))
-            .send();       
-    } else {
+            make_tuple(
+                _self, itr->owner, asset(itr->bet * 98 / return_rate , EOS_SYMBOL),
+                std::string("... happy eos dice bonus. The result is: ") + int_to_string(bonus_rate) + std::string(" happyeosslot.com") 
+            )
+        ); 
+
+        
+           
+    } else {        
         if (itr->bet / 200 > 0) {        
-            auto tar = eosio::name{itr->owner}.to_string();
-
-            eosio::transaction tx;
-
-            tx.actions.emplace_back(
+            auto referrer = eosio::name{itr->owner}.to_string();            
+            send_defer_action(
                 permission_level{_self, N(active)},
                 N(eosio.token), N(transfer),
-                make_tuple(_self, N(happyeosslot), asset(itr->bet / 200 , EOS_SYMBOL),
-                    std::string("buy for " + tar))
+                make_tuple(
+                    _self, N(happyeosslot), 
+                    asset(itr->bet / 200 , EOS_SYMBOL),
+                    std::string("buy for " + referrer)
+                )
             );
-            
-            tx.delay_sec = 10;
-            // Sending a deferred transaction requires both a uint64_t sender_id to reference the transaction,
-            // and an account_name payer which will provide the RAM to store our delayed transaction until it’s executed.
-            tx.send((uint64_t)seed, _self); // need set sender_id
-        }        
+        }            
     }
-//          static char msg[100];
-//       sprintf(msg, "Happy eos slot bonus. happyeosdice.com: %d", bonus/10000); 
     set_roll_result(itr->owner, bonus_rate);
     offers.erase(itr);
 

@@ -15,3 +15,7 @@ eosiocpp -o happyeosslot/happyeosslot.wast happyeosslot/happyeosslot.cpp
 eosiocpp -g happyeosslot/happyeosslot.abi happyeosslot/happyeosslot.cpp
 cleos -u http://api-direct.eosasia.one set contract happyeosslot happyeosslot -p happyeosslot@active
 
+
+## Query Order
+cleos -u http://api-direct.eosasia.one get table happyeosdice happyeosdice order
+cleos -u http://api-direct.eosasia.one get table happyeosslot happyeosslot accounts

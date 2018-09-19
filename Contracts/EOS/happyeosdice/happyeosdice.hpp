@@ -6,6 +6,7 @@
 #include <eosiolib/eosio.hpp>
 #include <eosiolib/asset.hpp>
 #include <eosiolib/contract.hpp>
+#include <eosiolib/transaction.hpp>
 #include "kyubey.hpp"
 #include "utils.hpp"
 
@@ -64,7 +65,7 @@ class happyeosdice : public kyubey {
             uint64_t offerBalance; // All balance in offer list.
 
             uint64_t primary_key() const { return id; }
-            EOSLIB_SERIALIZE(global, (id)(hash)(offerBalance)) 
+            EOSLIB_SERIALIZE(global, (id)(defer_id)(hash)(offerBalance)) 
         };
         typedef eosio::multi_index<N(global), global> global_index;
         global_index global;          
@@ -100,6 +101,21 @@ class happyeosdice : public kyubey {
         uint64_t get_bonus(uint64_t seed) const;
         uint64_t merge_seed(const checksum256& s1, const checksum256& s2) const;
         checksum256 parse_memo(const std::string &memo) const;
+
+        uint64_t get_next_defer_id() {
+            auto g = global.get(0);
+            global.modify(g, 0, [&](auto &g) {
+               g.defer_id += 1;
+            });        
+            return g.defer_id;
+        }
+
+        template <typename... Args>
+        void send_defer_action(Args&&... args) {
+            transaction trx;
+            trx.actions.emplace_back(std::forward<Args>(args)...);
+            trx.send(get_next_defer_id(), _self, false);
+        }
 };
 
 extern "C" {
