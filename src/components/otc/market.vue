@@ -1,6 +1,8 @@
 <template>
     <div>
       <el-card class="box-card">
+        <el-alert title="警告" description="留意币属合约，谨防上当受骗" 
+        type="warning" show-icon style="margin-bottom: 10px"/>
         <div slot="header" class="clearfix">
           <h1 class="title"> {{inExchangeFor}} </h1>
         </div>
