@@ -9,6 +9,9 @@ cleos wallet unlock --password PW5JaGpLtoM1vtD1WxiAC4RDsr82FRUczmKgocw1KJZqVahB4
 # Set Contract
 cleos -u http://api-direct.eosasia.one set contract eosotcbackup eosotcbackup -p eosotcbackup@active
 
+cleos -u http://api-direct.eosasia.one push action eosotcbackup test '[ ]' -p eosotcbackup@active
+
+
 # ask order
 #cleos -u http://api-direct.eosasia.one push action eosio.token transfer '[ "minakokojima", "eosotcbackup", "0.0001 EOS", "ask,0.0010 HPY,happyeosslot" ]' -p minakokojima@active
 

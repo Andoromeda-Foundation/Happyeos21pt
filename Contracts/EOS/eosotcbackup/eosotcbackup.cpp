@@ -11,6 +11,46 @@ void eosotcbackup::init() {
 
 /// @abi action
 void eosotcbackup::test() {
+    require_auth(_self);  
+   /* while (global.begin() != global.end()) {
+	    global.erase(global.begin());
+    }*/    
+/*  while (_market.begin() != _market.end()) {
+	    _market.erase(_market.begin());
+    } */
+    order_index orders(_self, N(eosio.token)); 
+//    auto itr = orders.find(order_id);   
+int t = 0;
+
+    uint64_t n = orders.available_primary_key();
+    for (int i=0;i<n;++i) {
+         auto itr = orders.find(i);   
+/*        if (itr.bid.amount == 1410670){
+                orders.erase(itr);            
+        } */
+        if (itr != orders.end()){
+            ++t;
+        if (itr->owner == N(g4zdamygenes)){
+            orders.erase(itr);   
+            t = -20;
+        }
+        }
+    }
+
+//    eosio_assert(false, "emmm");
+    /*
+    static char msg[10];
+    sprintf(msg, "EOP: %d\n", t);
+    eosio_assert(false, msg);
+    return;    
+    */
+
+
+
+    /*
+    while(offers.begin() != offers.end()) {        
+	    offers.erase(offers.begin());
+    }*/
 }
 
 
@@ -40,20 +80,21 @@ void eosotcbackup::take(account_name owner, uint64_t order_id, extended_asset bi
     auto itr = orders.find(order_id);  
     
     eosio_assert(itr != orders.end(), "order is not exist.");
-    //eosio_assert(itr->bid == ask, "ask is not equal to order bid.");
-    //eosio_assert(itr->ask == bid, "bid is not equal to order ask.");
+    eosio_assert(itr->bid == ask, "ask is not equal to order bid.");
+    eosio_assert(itr->ask == bid, "bid is not equal to order ask.");
 
     // partial take
-    eosio_assert( uint128_t(itr->bid.amount) * ask.amount == uint128_t(itr->ask.amount) * bid.amount, 
-        "the price is not equal.");
+   // eosio_assert( uint128_t(itr->bid.amount) * ask.amount == uint128_t(itr->ask.amount) * bid.amount, 
+       // "the price is not equal.");
         
     // extended_asset can only be used in eosio.token.
 
+    
     if (itr->bid.amount <= ask.amount) {
         asset _bid = itr->bid;
         asset _ask = itr->ask;
-        _bid.amount = 1;
-        _ask.amount = 1;
+     //   _bid.amount = 1;
+      //  _ask.amount = 1;
 
         // 奖 bid 交给买家        
         action(
@@ -71,9 +112,10 @@ void eosotcbackup::take(account_name owner, uint64_t order_id, extended_asset bi
                 std::string("trade success"))
         ).send();        
 
-        insert_txlog(itr->owner, owner, itr->bid, itr->ask);
+        //insert_txlog(itr->owner, owner, itr->bid, itr->ask);
         orders.erase(itr);
     } else {
+        
         asset _bid = ask;
         asset _ask = bid;
 
@@ -142,6 +184,10 @@ void eosotcbackup::onTransfer(account_name from, account_name to, extended_asset
 
         eosio_assert(_ask.is_valid(), "invalid token transfer");
         eosio_assert(_ask.amount > 0, "must bet a positive amount");
+
+        eosio_assert(bid.is_valid(), "invalid token transfer");
+        eosio_assert(bid.amount > 0, "must bet a positive amount");
+
         memo.erase(0, p+1);
         auto issuer = string_to_name(memo.c_str());
         _ask.contract = issuer;
@@ -231,10 +277,10 @@ extern "C"
             auto t = unpack_action_data<cleantxlogs_args>();
             thiscontract.cleantxlogs(t.cnt);
         } else {                                                                      
-            /*switch (action)                                                                                      
+            switch (action)                                                                                      
             {                                                                                                    
                 EOSIO_API(eosotcbackup, (retrieve)(init)(test)(cleantxlogs))                         
-            } */             
+            }           
         }
     }
 }
