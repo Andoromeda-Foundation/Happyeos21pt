@@ -7,6 +7,13 @@ function getTokenLists() {
         {
             "name": "HPY",
             "contract": "happyeosslot"
+        },
+                {
+            "name": "PUB",
+            "contract": "tokendapppub"
+        },        {
+            "name": "TPT",
+            "contract": "tokendapppub"
         }
     ]
 }
