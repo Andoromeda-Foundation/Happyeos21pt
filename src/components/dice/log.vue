@@ -41,7 +41,7 @@ export default {
     },
     methods: {
       getLogs: async function() {
-        const result = await request.get('http://api.happyeosslot.com/api/dice/logs');
+        const result = await request.get('https://api.happyeosslot.com/api/dice/logs');
         this.logs = result.body;
       },
     }

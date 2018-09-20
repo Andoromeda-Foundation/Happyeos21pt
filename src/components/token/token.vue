@@ -64,7 +64,7 @@ export default {
     },
     methods: {
       fetch: async function() {
-        const result = await request.get(`http://api.happyeosslot.com/api/price/${this.symbol}`);
+        const result = await request.get(`https://api.happyeosslot.com/api/price/${this.symbol}`);
         this.chartData.rows = result.body;
       },
       buy: async function() {
