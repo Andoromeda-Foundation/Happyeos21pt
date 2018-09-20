@@ -2,7 +2,7 @@
     <el-row :gutter="20" class="otc-view" style="margin-left: 0;margin-right: 0;">
       <el-col :span="5">
         <el-card title="Token List">
-          <h1 class="title">目前可交易的币</h1>
+          <h1 class="title">市场</h1>
           <el-table :data="tokenLists"
             @row-click="clickTokenRow"
             stripe style="width: 100%">
@@ -93,7 +93,7 @@ export default {
     },
     jumpToDiffrentToken(tokenContract, tokenSymbol) {
       this.$router.push({
-        name: 'OTCExchange',
+        name: 'OTC',
         params: {
           tokenContract,
           tokenSymbol

@@ -30,7 +30,7 @@ export default {
   },
   computed: {
     inExchangeFor() {
-      return `以...兑换 ${this.currentToken.tokenSymbol}`
+      return `${this.currentToken.tokenSymbol} 市场`
     },
   },
   async created() {
