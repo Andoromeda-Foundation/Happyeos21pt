@@ -9,7 +9,7 @@
             <el-button class="btn" type="text"
             v-else disabled="">登录后采取行动</el-button>
         </div>
-        <p class="description"> 以 </p> <p class="text item"> {{order.ask.quantity}} <p class="description">购买</p><p class="text item"> {{order.bid.quantity}}</p>
+        <p class="description"> 以 </p> <p class="text item"> {{order.ask.quantity}} @ {{order.ask.contract}} <p class="description">购买</p><p class="text item"> {{order.bid.quantity}} @ {{order.bid.contract}}</p>
         <p class="description">单价: </p><p class="text item"> {{(order.ask.quantity.split(" ")[0]/order.bid.quantity.split(" ")[0])| numFilter }} {{order.ask.quantity.split(" ")[1]}}/{{order.bid.quantity.split(" ")[1]}} </p>
         <!-- <p class="text item">单价: {{order.get_price()}} </p> -->
         <!-- get_price() not working, why? TODO -->
