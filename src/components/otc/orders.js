@@ -25,7 +25,8 @@ export async function getOrders(ask_token_contract = "eosio.token") {
             "code": "eosotcbackup",
             "table": "order",
             "scope": ask_token_contract,
-            "json": true
+            "json": true,
+            "limit": 65536
         },
         withCredentials: false
     })
