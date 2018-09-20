@@ -96,6 +96,9 @@
         <token-display :code="'happyeosslot'" :game="'dice'" :symbol="'hpy'"></token-display>
         <!-- <token-display :code="'dicemaster11'" :game="'dice'" :symbol="'dmt'"></token-display> -->
 
+        <!-- log -->
+        <dice-log></dice-log>
+
         <!-- 弹出 -->
         <el-dialog
           :title="$t('HPY Token Giveaway!')"
@@ -112,11 +115,13 @@
 
 <script>
 import * as store from '../../store.js';
-import tokenDisplay from '../../components/token/token';
+import tokenDisplay from '../../components/token/token.vue';
+import log from './log.vue';
 
 export default {
     components: {
       'token-display': tokenDisplay,
+      'dice-log': log,
     },
     data() {
       return {
