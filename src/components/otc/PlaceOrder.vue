@@ -2,6 +2,7 @@
     <el-card title="OTC" >
             <div slot="header" class="clearfix">
               <h1 class="title">挂单</h1>
+              <el-alert title="不知道怎么办？" description="请加入我们的讨论QQ群：474639439" type="info" show-icon></el-alert>
             </div>
             <span  style="margin-left: 30px;">
               出价币合约: <el-input v-model="bid_token_contract" class="bet-amount-input"></el-input>
