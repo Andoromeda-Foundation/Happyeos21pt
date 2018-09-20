@@ -60,7 +60,7 @@ export default {
       setTimeout(() => {
         store.getTokenInfo(this.code, this.symbol);
         this.fetch();
-      }, 2500);
+      }, 500);
     },
     methods: {
       fetch: async function() {

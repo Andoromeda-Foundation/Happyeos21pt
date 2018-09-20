@@ -33,10 +33,8 @@ export default {
       };
     },
     created() {
-        setTimeout(() => {
-            setInterval(() => {
-                this.getLogs().then();
-            }, 2000);
+        setInterval(() => {
+            this.getLogs().then();
         }, 2000);
     },
     methods: {
