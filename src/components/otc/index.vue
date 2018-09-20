@@ -93,7 +93,7 @@ export default {
     },
     jumpToDiffrentToken(tokenContract, tokenSymbol) {
       this.$router.push({
-        name: 'OTCExchange',
+        name: 'OTC',
         params: {
           tokenContract,
           tokenSymbol
