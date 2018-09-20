@@ -114,6 +114,10 @@ export function getBalance(code, token, name) {
 
 export function getTokenInfo(code, token) {
   // 获取token发行量
+  if (!store.scatter) {
+    setScatter();
+  }
+
   store.scatter.getTableRows(true, code, code, 'market', '0').then((result) => {
     if (result && result.rows && result.rows[0]) {
       store[token].bancorBalance = parseFloat(result.rows[0].deposit.balance.split(' ', 1)[0]).toFixed(4);

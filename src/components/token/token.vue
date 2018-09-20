@@ -58,13 +58,13 @@ export default {
     },
     mounted: function() {
       setTimeout(() => {
-        store.getTokenInfo(this.code, this.symbol);
         this.fetch();
-      }, 2500);
+        store.getTokenInfo(this.code, this.symbol);
+      }, 1000);
     },
     methods: {
       fetch: async function() {
-        const result = await request.get(`http://api.happyeosslot.com/api/price/${this.symbol}`);
+        const result = await request.get(`https://api.happyeosslot.com/api/price/${this.symbol}`);
         this.chartData.rows = result.body;
       },
       buy: async function() {
