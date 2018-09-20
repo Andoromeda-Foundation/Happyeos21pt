@@ -58,9 +58,9 @@ export default {
     },
     mounted: function() {
       setTimeout(() => {
-        store.getTokenInfo(this.code, this.symbol);
         this.fetch();
-      }, 500);
+        store.getTokenInfo(this.code, this.symbol);
+      }, 1000);
     },
     methods: {
       fetch: async function() {
