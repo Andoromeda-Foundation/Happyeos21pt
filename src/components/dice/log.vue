@@ -15,7 +15,7 @@
             <el-col :span="4">{{log.range}} {{log.direction === 'big' ? '↑' : '↓'}}</el-col>
             <el-col :span="4">{{log.betAmount}} EOS</el-col>
             <el-col :span="4">{{log.roll}}</el-col>
-            <el-col :span="4" v-if="log.roll && log.roll < log.under" class="success">{{log.payout}} EOS</el-col>
+            <el-col :span="4" v-if="log.roll && ((log.direction === 'big' && log.roll > log.range) || (log.direction === 'small' && log.roll < log.range))" class="success">{{log.resultAmount}} EOS</el-col>
         </el-row>
     </div>
 </template>
