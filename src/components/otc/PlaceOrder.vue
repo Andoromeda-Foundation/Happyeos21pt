@@ -20,7 +20,7 @@
                 </el-col>
                 <el-col :span="8" class="account-info-section">
                   <el-button type="primary" class="login-button" @click="initIdentity()" v-if="!store.account"> 登录 </el-button>
-                  <el-button type="primary" class="login-button" @click="ask_order()" v-else v-loading="loading"> 发出交易 </el-button>
+                  <el-button type="primary" class="login-button" @click="ask_order()" v-else > 发出交易 </el-button>
                 </el-col>
             </el-row>
         </el-card>
