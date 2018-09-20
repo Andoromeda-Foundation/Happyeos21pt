@@ -13,7 +13,7 @@ export default {
   LOGIN: '登录',
   'Enter Your Custom Seed': '输入自定义种子',
   Update_Client_Seed: '更新',
-  Pull_Server_Seed: '拉取',  
+  Pull_Server_Seed: '拉取',
   'Provably Fair Betting': '可验证的公平博彩',
   'fair-1': '由于所有投注都是通过我们在EOS区块链上的智能合约进行的，所以你不可能玩不公平的游戏。',
   'fair-2': '您与我们一起下的每一个赌注都受到我们新颖的随机生成技术的保护。 您可以提交自己的种子，或留空。 您的投注将在智能合约中收到一个唯一的ID，该ID将由我们的服务器使用预定的密钥签署。',
@@ -39,7 +39,7 @@ export default {
   'ALL BETS': '所有投注',
   Time: '时间',
   Bettor: '投注者',
-  'Roll Under': '小于该数获胜',
+  'Roll Range': '下注范围',
   Bet: '投注',
   Roll: '掷',
   Payout: '赔率',
@@ -65,7 +65,7 @@ export default {
   Network: '网络',
   'Contract Name': '合约名称',
   'Client Seed': 'Client Seed',
-  'Server Seed': 'Server Seed',  
+  'Server Seed': 'Server Seed',
 
   // OTC
   'Ask Asset': '挂单',

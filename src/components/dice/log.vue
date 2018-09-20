@@ -2,59 +2,45 @@
     <div id="log">
         <div class="title">{{$t('ALL BETS')}}</div>
         <el-row>
-            <el-col :span="4">{{$t('Time')}}</el-col>
+            <el-col :span="4">{{$t('NO.')}}</el-col>
             <el-col :span="4">{{$t('Bettor')}}</el-col>
-            <el-col :span="4">{{$t('Roll Under')}}</el-col>
+            <el-col :span="4">{{$t('Roll Range')}}</el-col>
             <el-col :span="4">{{$t('Bet')}}</el-col>
             <el-col :span="4">{{$t('Roll')}}</el-col>
             <el-col :span="4">{{$t('Payout')}}</el-col>
         </el-row>
         <el-row v-for="(log, index) in logs" :class="{'log-item': true, 'gray': index%2 == 1}">
-            <el-col :span="4">{{log.time}}</el-col>
-            <el-col :span="4">{{log.bettor}}</el-col>
-            <el-col :span="4">{{log.under}}</el-col>
-            <el-col :span="4">{{log.bet}} EOS</el-col>
+            <el-col :span="4">#{{log.id}}</el-col>
+            <el-col :span="4">{{log.account}}</el-col>
+            <el-col :span="4">{{log.range}} {{log.direction === 'big' ? '↑' : '↓'}}</el-col>
+            <el-col :span="4">{{log.betAmount}} EOS</el-col>
             <el-col :span="4">{{log.roll}}</el-col>
-            <el-col :span="4" v-if="log.roll < log.under" class="success">{{log.payout}} EOS</el-col>
+            <el-col :span="4" v-if="log.roll && ((log.direction === 'big' && log.roll > log.range) || (log.direction === 'small' && log.roll < log.range))" class="success">{{log.resultAmount}} EOS</el-col>
         </el-row>
     </div>
 </template>
 
 <script>
+import * as store from '../../store.js';
 import Eos from 'eosjs';
+import * as request from 'superagent';
 
 export default {
     data() {
       return {
-          exampleLog: {
-              time: '17:21:12',
-              bettor: 'gu3tcmbvgyge',
-              under: 29,
-              bet: 10,
-              roll: 14,
-              payout: 31.24,
-          },
           logs: [],
-          eos: null,
+          store: store.store,
       };
     },
     created() {
-        // setTimeout(() => {
-        //     this.setEos();
-        //     setInterval(() => {
-        //         this.getLogs();
-        //     }, 2000);
-        // }, 2000);
+        setInterval(() => {
+            this.getLogs().then();
+        }, 2000);
     },
     methods: {
-      setEos: function () {
-        this.eos = scatter.eos(window.data.config.networks.kylin, Eos, {});
-        this.getLogs();
-      },
-      getLogs: function() {
-        this.eos.getActions('happyeosdice', -1, 20).then((result) => {
-            console.log(result);
-        });
+      getLogs: async function() {
+        const result = await request.get('https://api.happyeosslot.com/api/dice/logs');
+        this.logs = result.body;
       },
     }
 }
