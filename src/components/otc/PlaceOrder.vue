@@ -29,7 +29,6 @@
 <script>
 import * as store from "../../store.js";
 export default {
-  
     data: () => ({
       store: store.store,
       ask: "",
@@ -43,40 +42,9 @@ export default {
       return { tokenContract, tokenSymbol };
     }
   },
-  async created() {
-    this.tokenLists = getTokenLists();
-  },
-  watch: {
-    range(newRange, oldRange) {
-      if (newRange < 6) {
-        this.range = 6;
-      } else if (newRange > 93) {
-        this.range = 93;
-      }
-    }
-  },
   methods: {
-      queryCoin(){
-          this.jumpToDiffrentToken(this.contractBySelf,this.coinBySelf)
-      },
     initIdentity() {
       store.initIdentity();
-    },
-    jumpToDiffrentToken(tokenContract, tokenSymbol) {
-      this.$router.push({
-        name: 'OTCExchange',
-        params: {
-          tokenContract,
-          tokenSymbol
-        }
-      })
-    },
-    clickTokenRow(row, event, column) {
-      console.info(row.contract)
-      this.jumpToDiffrentToken(row.contract, row.name)
-    },
-    switchView(t) {
-      // this.currentToken = t;
     },
     async ask_order() {
       const { bid_token_contract, ask_token_contract, ask, bid } = this;
@@ -107,56 +75,6 @@ export default {
         });
       }
     },
-    roll: function() {
-      this.loading = true;
-      let memo = `bet ${
-        this.choose === "small" ? this.range + 100 : this.range
-      } ${this.store.seed}`;
-      const referral = this.store.referral;
-      if (referral) {
-        memo += ` ${referral}`;
-      }
-      this.store.scatter
-        .transfer(
-          this.store.account.name,
-          "happyeosdice",
-          `${this.betAmount.toFixed(4)} EOS`,
-          memo
-        )
-        .then(() => {
-          // 轮询查找结果
-          const r = setInterval(() => {
-            this.store.scatter
-              .getTableRows(
-                true,
-                "happyeosdice",
-                this.store.account.name,
-                "result",
-                "0"
-              )
-              .then(data => {
-                const ans = data.rows[0].roll_number;
-                // roll点值为0-99
-                if (ans < 100) {
-                  clearInterval(r);
-                  this.loading = false;
-                  if (
-                    (this.choose === "small" && ans < this.range) ||
-                    (this.choose === "big" && ans > this.range)
-                  ) {
-                    this.roll_success(ans);
-                  } else {
-                    this.roll_fail(ans);
-                  }
-                }
-              });
-          }, 1000);
-        })
-        .catch(err => {
-          console.error(err);
-          alert("项目出错了，快联系开发者！");
-        });
-    }
   }
 };
 </script>
