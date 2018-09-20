@@ -90,12 +90,12 @@ export function setIdentity(identity) {
 export function updateBalance() {
   getBalance('eosio.token', 'eos');
   getBalance('happyeosslot', 'hpy');
-  getBalance('dicemaster11', 'dmt');
+//  getBalance('dicemaster11', 'dmt');
 }
 
 export function getAllTokensInfo() {
   getTokenInfo('happyeosslot', 'hpy');
-  getTokenInfo('dicemaster11', 'dmt');
+//  getTokenInfo('dicemaster11', 'dmt');
 }
 
 export function getBalance(code, token, name) {
