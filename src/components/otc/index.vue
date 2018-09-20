@@ -31,6 +31,8 @@
         </el-card>
       </el-col>
       <el-col :span="13">
+        <el-alert title="新手入门，不知道怎么办？" description="请加入我们的讨论QQ群：474639439" 
+        type="info" show-icon style="margin-bottom: 10px"/>
         <MarketView class="market-container" :currentToken="getTokenDetailByRoute" />
       </el-col>
       <el-col :span="6">
