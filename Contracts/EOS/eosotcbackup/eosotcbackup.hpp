@@ -15,25 +15,31 @@ class eosotcbackup : public contract
 {
 public:
     eosotcbackup(account_name self) : 
-        contract(self),
-        txlogs(_self, _self) {
+        contract(self) {
     }
 
-    void init(); void clean(); void test();
+    // @abi action
+    void init();    
+    // @abi action    
+    void clean();
+    // @abi action 
+    void test();
+    // @abi action    
+    void retrieve(account_name owner, uint64_t order_id, extended_asset ask);    
     void ask(account_name owner, extended_asset bid, extended_asset ask);
     void take(account_name owner, uint64_t order_id, extended_asset bid, extended_asset ask);
-    void retrieve(account_name owner, uint64_t order_id, extended_asset ask);
 
+    // @abi action    
+    void transfer(account_name   from,
+                  account_name   to,
+                    asset quantity,
+                    string         memo);  
+    
     void onTransfer(account_name   from,
                     account_name   to,
                     extended_asset quantity,
                     string         memo);  
-
-    void transfer(account_name from,
-                  account_name to,
-                  asset        quantity,
-                  string       memo);                 
-
+              
     // @abi table
     struct order {
         uint64_t id;
@@ -50,25 +56,18 @@ public:
     typedef eosio::multi_index<N(order), order, 
         indexed_by<N(byprice), const_mem_fun<order, real_type, &order::get_price>>
     > order_index;
-
+    
     // @abi table
-    struct txlog {
+    struct rec_ask {
         uint64_t id;
-        account_name bidder; // 买方 
-        account_name asker; // 卖方
+        account_name owner;
         extended_asset bid; // 提供
         extended_asset ask; // 需求
-        time timestamp; // 时间戳         
-
-        uint64_t primary_key() const {return id;}
-        uint64_t get_timestamp() const {return timestamp;} 
-        EOSLIB_SERIALIZE(txlog, (id)(bidder)(asker)(bid)(ask)(timestamp))        
+        time timestamp; // 时间戳     
     };
-    typedef eosio::multi_index<N(txlog), txlog, 
-        indexed_by<N(bytimestamp), const_mem_fun<txlog, uint64_t, &txlog::get_timestamp>>
-    > txlogs_index;
-    txlogs_index txlogs;
 
-    void cleantxlogs(uint64_t cnt);
-    void insert_txlog(account_name bidder, account_name asker, extended_asset bid, extended_asset ask);   
+    // @abi action    
+    void askreceipt(const rec_ask& ask);
+    // @abi action    
+    void takereceipt(const rec_ask& take);    
 };

@@ -1,6 +1,14 @@
 <template>
     <el-row :gutter="20" class="otc-view" style="margin-left: 0;margin-right: 0;">
-      <el-col :span="5">
+      <el-col :span="24" class="bj">
+        <el-card>
+          <img src="https://i.loli.net/2018/09/20/5ba371b74dbdc.png" alt="搬家">
+          <h1 class="title">我们搬家啦～</h1>
+          <h2 class="subtitle">为了更好地提供服务，OTC 业务已经迁移到 <a href="https://kyubey.network/otc">kyubey.network</a></h2>
+          <h2 class="subtitle"> 3秒内跳转，如果没跳转，可点击上方链接 </h2>
+        </el-card>
+              </el-col>
+      <!-- <el-col :span="5">
         <el-card title="Token List">
           <h1 class="title">市场</h1>
           <el-table :data="tokenLists"
@@ -14,28 +22,19 @@
               label="合约地址">
             </el-table-column>
           </el-table>
-           <!--   <el-form ref="form" :model="customTokenForm" label-width="80px">
-                <el-form-item label="TODO 自定义币对">
-                  <el-input v-model="customTokenForm.name"></el-input>
-                </el-form-item>
-                <el-form-item label="活动区域">
-                  <el-select v-model="customTokenForm.region" placeholder="请选择活动区域">
-                    <el-option label="区域一" value="shanghai"></el-option>
-                    <el-option label="区域二" value="beijing"></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-form>-->
           <el-input v-model="contractBySelf" placeholder="请输入合约地址"></el-input>
           <el-input v-model="coinBySelf" placeholder="请输入币名"></el-input>
           <el-button type="primary" @click="queryCoin">查询</el-button>
         </el-card>
       </el-col>
       <el-col :span="13">
+        <el-alert title="新手入门，不知道怎么办？" description="请加入我们的讨论QQ群：474639439" 
+        type="info" show-icon style="margin-bottom: 10px"/>
         <MarketView class="market-container" :currentToken="getTokenDetailByRoute" />
       </el-col>
       <el-col :span="6">
         <PlaceOrderView />
-      </el-col>
+      </el-col> -->
 
     </el-row>
 </template>
@@ -73,6 +72,9 @@ export default {
     }
   },
   async created() {
+    setTimeout(() => {
+      window.location.href = 'https://kyubey.network/Home/OTC'
+    }, 3000)
     this.tokenLists = getTokenLists();
   },
   watch: {
@@ -203,6 +205,9 @@ export default {
 }
 .otc-view {
   margin: 2rem auto;
+}
+.bj {
+  text-align: center
 }
 </style>
 

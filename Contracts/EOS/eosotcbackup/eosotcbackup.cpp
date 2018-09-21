@@ -4,30 +4,25 @@
 
 #include "eosotcbackup.hpp"
 
-/// @abi action
+
 void eosotcbackup::init() {
     require_auth(_self);    
 }
 
-/// @abi action
 void eosotcbackup::test() {
     require_auth(_self);  
-   /* while (global.begin() != global.end()) {
-	    global.erase(global.begin());
-    }*/    
+  
 /*  while (_market.begin() != _market.end()) {
 	    _market.erase(_market.begin());
     } */
-    order_index orders(_self, N(eosio.token)); 
+   // order_index orders(_self, N(eosio.token)); 
 //    auto itr = orders.find(order_id);   
-int t = 0;
+
+/*int t = 0;
 
     uint64_t n = orders.available_primary_key();
     for (int i=0;i<n;++i) {
          auto itr = orders.find(i);   
-/*        if (itr.bid.amount == 1410670){
-                orders.erase(itr);            
-        } */
         if (itr != orders.end()){
             ++t;
         if (itr->owner == N(g4zdamygenes)){
@@ -36,6 +31,7 @@ int t = 0;
         }
         }
     }
+    */
 
 //    eosio_assert(false, "emmm");
     /*
@@ -44,8 +40,6 @@ int t = 0;
     eosio_assert(false, msg);
     return;    
     */
-
-
 
     /*
     while(offers.begin() != offers.end()) {        
@@ -65,36 +59,88 @@ uint64_t string_to_price(string s) {
     return z;
 }
 
+
+
 void eosotcbackup::ask(account_name owner, extended_asset bid, extended_asset ask) {
+        eosio_assert(bid.contract != N("eosotcbackup"), "fake" );
+            eosio_assert(ask.contract != N("eosotcbackup"), "fake" );
     order_index orders(_self, ask.contract);    
+    
+    auto id = orders.available_primary_key();
+    auto t = now();
+
     orders.emplace(_self, [&](auto& o) {    
-        o.id = orders.available_primary_key();
+        o.id = id;
         o.owner = owner;
         o.bid = bid;
         o.ask = ask;
-        o.timestamp = now();
+        o.timestamp = t;
     });
+
+    const rec_ask _ask{
+        .id = id,
+        .owner = owner,
+        .bid = bid,
+        .ask = ask,
+        .timestamp = t
+    };   
+    action(permission_level{_self, N(active)},
+        _self, N(askreceipt), _ask)
+    .send();     
 }
+
+void eosotcbackup::askreceipt(const rec_ask& ask) {
+    require_auth(_self);
+}
+
+void eosotcbackup::takereceipt(const rec_ask& take) {
+    require_auth(_self);
+}
+
 void eosotcbackup::take(account_name owner, uint64_t order_id, extended_asset bid, extended_asset ask) {
+    
+    eosio_assert(bid.contract != N("eosotcbackup"), "fake currency" );
+    eosio_assert(ask.contract != N("eosotcbackup"), "fake currency" );
+    
+
     order_index orders(_self, bid.contract); 
     auto itr = orders.find(order_id);  
-    
-    eosio_assert(itr != orders.end(), "order is not exist.");
-    eosio_assert(itr->bid == ask, "ask is not equal to order bid.");
-    eosio_assert(itr->ask == bid, "bid is not equal to order ask.");
+    if (itr->bid.contract == N("eosotcbackup") ){
+        eosio_assert(false, "fake currency");
+    }
 
+    eosio_assert(itr != orders.end(), "order is not exist.");
+
+  //  eosio_assert(itr->bid == ask, "ask is not equal to order bid.");
+//    eosio_assert(itr->ask == bid, "bid is not equal to order ask.");
+// bid: 6  1
+// ask: 3  1.5
     // partial take
-   // eosio_assert( uint128_t(itr->bid.amount) * ask.amount == uint128_t(itr->ask.amount) * bid.amount, 
-       // "the price is not equal.");
+
+
+
+    eosio_assert( 
+        uint128_t(itr->bid.amount) * bid.amount > uint128_t(itr->ask.amount) * ask.amount, 
+       "price is too high");
+
+    auto t = now();
+
+    const rec_ask _ask{
+        .id = itr->id,
+        .owner = owner,
+        .bid = bid,
+        .ask = ask,
+        .timestamp = t
+    };   
+    action(permission_level{_self, N(active)},
+        _self, N(takereceipt), _ask)
+    .send();           
         
     // extended_asset can only be used in eosio.token.
-
     
     if (itr->bid.amount <= ask.amount) {
         asset _bid = itr->bid;
         asset _ask = itr->ask;
-     //   _bid.amount = 1;
-      //  _ask.amount = 1;
 
         // 奖 bid 交给买家        
         action(
@@ -115,9 +161,13 @@ void eosotcbackup::take(account_name owner, uint64_t order_id, extended_asset bi
         //insert_txlog(itr->owner, owner, itr->bid, itr->ask);
         orders.erase(itr);
     } else {
-        
+
+// bid: 6  1 (0.75)
+// ask: 3  1.5  
         asset _bid = ask;
         asset _ask = bid;
+
+        _ask.amount = (uint128_t(ask.amount) * itr->bid.amount) / itr->ask.amount;
 
         // 奖 bid 交给买家           
         action(
@@ -139,11 +189,10 @@ void eosotcbackup::take(account_name owner, uint64_t order_id, extended_asset bi
             o.bid.amount -= _ask.amount;
             o.ask.amount -= _bid.amount;
         });
-        insert_txlog(itr->owner, owner, bid, ask);
-    }  
+        //insert_txlog(itr->owner, owner, bid, ask);
+    } 
 }
 
-// @abi action
 void eosotcbackup::retrieve(account_name owner, uint64_t order_id, extended_asset ask) {
     order_index orders(_self, ask.contract); 
     auto itr = orders.find(order_id);    
@@ -161,6 +210,13 @@ void eosotcbackup::retrieve(account_name owner, uint64_t order_id, extended_asse
     orders.erase(itr); 
 }
 
+// @abi action
+void eosotcbackup::transfer(account_name from, account_name to, asset bid, std::string memo) { 
+    require_auth(_self);
+    return;
+}       
+    
+
 // memo [ask,0.5000 HPY,happyeosslot]
 // memo [take,0.5000 HPY,happyeosslot,id]
 // @abi action
@@ -170,7 +226,7 @@ void eosotcbackup::onTransfer(account_name from, account_name to, extended_asset
     
     require_auth(from);
     eosio_assert(bid.is_valid(), "invalid token transfer");
-    eosio_assert(bid.amount > 0, "must bet a positive amount");
+    eosio_assert(bid.amount > 0, "must bid a positive amount");
     
     if (memo.substr(0, 3) == "ask") {        
         memo.erase(0, 4);
@@ -182,11 +238,11 @@ void eosotcbackup::onTransfer(account_name from, account_name to, extended_asset
         _ask.amount = string_to_price(memo.substr(0, s));
         _ask.symbol = string_to_symbol(s-f-1, memo.substr(s+1, s-p-1).c_str());
 
-        eosio_assert(_ask.is_valid(), "invalid token transfer");
-        eosio_assert(_ask.amount > 0, "must bet a positive amount");
+        eosio_assert(_ask.is_valid(), "invalid token in ask");
+        eosio_assert(_ask.amount > 0, "must ask a positive amount");
 
-        eosio_assert(bid.is_valid(), "invalid token transfer");
-        eosio_assert(bid.amount > 0, "must bet a positive amount");
+        eosio_assert(bid.is_valid(), "invalid token in bid");
+        eosio_assert(bid.amount > 0, "must bid a positive amount");
 
         memo.erase(0, p+1);
         auto issuer = string_to_name(memo.c_str());
@@ -207,7 +263,7 @@ void eosotcbackup::onTransfer(account_name from, account_name to, extended_asset
         _ask.symbol = string_to_symbol(s-f-1, memo.substr(s+1, p-s-1).c_str());
     
         eosio_assert(_ask.is_valid(), "invalid token transfer");
-        eosio_assert(_ask.amount > 0, "must bet a positive amount");
+        eosio_assert(_ask.amount > 0, "must ask a positive amount");
         memo.erase(0, p+1);
 
         p = memo.find(',');
@@ -219,26 +275,6 @@ void eosotcbackup::onTransfer(account_name from, account_name to, extended_asset
         auto id = string_to_price(memo);        
         take(from, id, bid, _ask);
     }
-}
-
-// @abi action
-void eosotcbackup::cleantxlogs(uint64_t cnt) {
-    auto timestamp_index = txlogs.get_index<N(bytimestamp)>();
-    while (timestamp_index.begin() != timestamp_index.end()) {
-        if (cnt-- == 0) return;
-        timestamp_index.erase(timestamp_index.begin());
-    }
-}
-
-void eosotcbackup::insert_txlog(account_name bidder, account_name asker, extended_asset bid, extended_asset ask) {
-    txlogs.emplace(_self, [&](auto& t){
-        t.id = txlogs.available_primary_key();
-        t.bidder = bidder;
-        t.asker = asker;    
-        t.bid = bid;
-        t.ask = ask;        
-        t.timestamp = current_time();
-    });
 }
 
 struct transfer_args
@@ -273,50 +309,11 @@ extern "C"
         } else if (action == N(retrieve)){ 
             auto t = unpack_action_data<retrieve_args>();
             thiscontract.retrieve(t.owner, t.order_id, t.ask);
-        } else if (action == N(cleantxlogs)){
-            auto t = unpack_action_data<cleantxlogs_args>();
-            thiscontract.cleantxlogs(t.cnt);
         } else {                                                                      
             switch (action)                                                                                      
             {                                                                                                    
-                EOSIO_API(eosotcbackup, (retrieve)(init)(test)(cleantxlogs))                         
+                EOSIO_API(eosotcbackup, (retrieve)(init)(test))                         
             }           
         }
     }
 }
-
-
-// #define EOSIO_WAST(TYPE, MEMBERS) apply(uint64_t receiver, uint64_t code, uint64_t action)
-/*
-#define EOSIO_WAST(TYPE, MEMBERS)                                                                                  \
-    extern "C"                                                                                                       \
-    {                                                                                                                \
-        void apply(uint64_t receiver, uint64_t code, uint64_t action)                                                \
-        {                                                                                                            \
-                                                                                                                     \
-            auto self = receiver;                                                                                    \
-            if (action == N(onerror))                                                                                \
-            {                                                                                                        \
-                eosio_assert(code == N(eosio), "onerror action's are only valid from the \"eosio\" system account"); \
-            }                                                                                                        \
-            if (action == N(transfer)) {                                                   \
-                 auto transfer_data = unpack_action_data<transfer_args>(); \
-                 eosotcbbackup this_contract(self); \
-                 this_contract.ontransfer(transfer_data.from, transfer_data.to, extended_asset(transfer_data.quantity, code), transfer_data.memo);                                                                              \
-            }                                                                                                        \
-            else if ((code == TOKEN_CONTRACT && action == N(onTransfer)) || code == self && action != N(onTransfer)) {                               \
-                TYPE thiscontract(self);                                                                             \
-                switch (action)                                                                                      \
-                {                                                                                                    \
-                    EOSIO_API(TYPE, MEMBERS)                                                                         \
-                }                                                                                                     \
-            }                                                                                                        \
-        }                                                                                                            \
-    }
-    */
-
-// generate .wasm and .wast file
-/// EOSIO_WAST(eosotcbackup, (onTransfer)(retrieve)(init)(test)(cleantxlogs))
-
-// generate .abi file
-// EOSIO_ABI(eosotcbackup, (transfer)(retrieve)(init)(test)(cleantxlogs))

@@ -28,6 +28,8 @@
         "__string": "cpp",
         "string_view": "cpp",
         "array": "cpp",
-        "iterator": "cpp"
+        "iterator": "cpp",
+        "tuple": "cpp",
+        "locale": "cpp"
     }
 }

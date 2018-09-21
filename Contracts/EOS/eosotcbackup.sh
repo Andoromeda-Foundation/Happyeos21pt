@@ -3,14 +3,17 @@
 # -u https://api-kylin.eosasia.one
 
 cleos wallet unlock --password PW5JaGpLtoM1vtD1WxiAC4RDsr82FRUczmKgocw1KJZqVahB4LZ1u
-# /usr/local/eosio/bin/eosiocpp -g eosotcbackup/eosotcbackup.abi eosotcbackup/eosotcbackup.cpp
+/usr/local/eosio/bin/eosiocpp -g eosotcbackup/eosotcbackup.abi eosotcbackup/eosotcbackup.cpp
 /usr/local/eosio/bin/eosiocpp -o eosotcbackup/eosotcbackup.wast eosotcbackup/eosotcbackup.cpp
 
 # Set Contract
 cleos -u http://api-direct.eosasia.one set contract eosotcbackup eosotcbackup -p eosotcbackup@active
 
-cleos -u http://api-direct.eosasia.one push action eosotcbackup test '[ ]' -p eosotcbackup@active
+#cleos -u http://api-direct.eosasia.one push action eosotcbackup retrieve '[ "wqeosram1111", 50, "200000.0000 TPT @ tokendappub" ]' -p eosotcbackup@active
+cleos -u http://api-direct.eosasia.one push action eosotcbackup test '[ "" ]' -p eosotcbackup@active
 
+#eosowangfeng TPT
+#cleos -u http://api-direct.eosasia.one push action sieosmainnet transfer '[ "sieosmainnet", "jacklighteos", "1.9000 EOS", "eosowangfeng TPT"]' -p sieosmainnet@active
 
 # ask order
 #cleos -u http://api-direct.eosasia.one push action eosio.token transfer '[ "minakokojima", "eosotcbackup", "0.0001 EOS", "ask,0.0010 HPY,happyeosslot" ]' -p minakokojima@active
@@ -28,6 +31,10 @@ cleos -u http://api-direct.eosasia.one push action eosotcbackup test '[ ]' -p eo
 
 # Query Table
 # cleos -u https://api-kylin.eosasia.one get table happyeosslot happyeosslot accounts
+
+
+cleos -u http://api-direct.eosasia.one get table eosotcbackup eosotcbackup txlog
+
 
 # cleos -u https://api-kylin.eosasia.one get table eosotcbackup happyeosslot order
 

@@ -1,6 +1,8 @@
 <template>
     <div>
       <el-card class="box-card">
+        <el-alert title="警告" description="留意币属合约，谨防上当受骗" 
+        type="warning" show-icon style="margin-bottom: 10px"/>
         <div slot="header" class="clearfix">
           <h1 class="title"> {{inExchangeFor}} </h1>
         </div>
@@ -71,57 +73,6 @@ export default {
           message: error.message
         });
       }
-    },
-
-    roll: function() {
-      this.loading = true;
-      let memo = `bet ${
-        this.choose === "small" ? this.range + 100 : this.range
-      } ${this.store.seed}`;
-      const referral = this.store.referral;
-      if (referral) {
-        memo += ` ${referral}`;
-      }
-      this.store.scatter
-        .transfer(
-          this.store.account.name,
-          "happyeosdice",
-          `${this.betAmount.toFixed(4)} EOS`,
-          memo
-        )
-        .then(() => {
-          // 轮询查找结果
-          const r = setInterval(() => {
-            this.store.scatter
-              .getTableRows(
-                true,
-                "happyeosdice",
-                this.store.account.name,
-                "result",
-                "0"
-              )
-              .then(data => {
-                const ans = data.rows[0].roll_number;
-                // roll点值为0-99
-                if (ans < 100) {
-                  clearInterval(r);
-                  this.loading = false;
-                  if (
-                    (this.choose === "small" && ans < this.range) ||
-                    (this.choose === "big" && ans > this.range)
-                  ) {
-                    this.roll_success(ans);
-                  } else {
-                    this.roll_fail(ans);
-                  }
-                }
-              });
-          }, 1000);
-        })
-        .catch(err => {
-          console.error(err);
-          alert("项目出错了，快联系开发者！");
-        });
     }
   }
 };

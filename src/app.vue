@@ -4,6 +4,7 @@
     <div id="game">
       <router-view />
     </div>
+    <footer> 客服讨论QQ群：474639439 </footer>
   </div>
 </template>
 
