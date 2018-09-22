@@ -77,7 +77,7 @@ void eosotcbackup::ask(account_name owner, extended_asset bid, extended_asset as
         o.timestamp = t;
     });
 
-    const rec_ask _ask{
+    const rec _rec{
         .id = id,
         .owner = owner,
         .bid = bid,
@@ -85,15 +85,11 @@ void eosotcbackup::ask(account_name owner, extended_asset bid, extended_asset as
         .timestamp = t
     };   
     action(permission_level{_self, N(active)},
-        _self, N(askreceipt), _ask)
+        _self, N(receipt), _rec)
     .send();     
 }
 
-void eosotcbackup::askreceipt(const rec_ask& ask) {
-    require_auth(_self);
-}
-
-void eosotcbackup::takereceipt(const rec_ask& take) {
+void eosotcbackup::receipt(const rec& recept) {
     require_auth(_self);
 }
 
@@ -124,23 +120,21 @@ void eosotcbackup::take(account_name owner, uint64_t order_id, extended_asset bi
        "price is too high");
 
     auto t = now();
-
-    const rec_ask _ask{
-        .id = itr->id,
-        .owner = owner,
-        .bid = bid,
-        .ask = ask,
-        .timestamp = t
-    };   
-    action(permission_level{_self, N(active)},
-        _self, N(takereceipt), _ask)
-    .send();           
-        
-    // extended_asset can only be used in eosio.token.
     
     if (itr->bid.amount <= ask.amount) {
         asset _bid = itr->bid;
         asset _ask = itr->ask;
+
+        const rec _rec{
+            .id = itr->id,
+            .owner = owner,
+            .bid = itr->bid,
+            .ask = itr->ask,
+            .timestamp = t
+        };   
+        action(permission_level{_self, N(active)},
+            _self, N(receipt), _rec)
+        .send();          
 
         // 奖 bid 交给买家        
         action(
@@ -158,16 +152,22 @@ void eosotcbackup::take(account_name owner, uint64_t order_id, extended_asset bi
                 std::string("trade success"))
         ).send();        
 
-        //insert_txlog(itr->owner, owner, itr->bid, itr->ask);
         orders.erase(itr);
     } else {
-
-// bid: 6  1 (0.75)
-// ask: 3  1.5  
         asset _bid = ask;
+        bid.amount = (uint128_t(ask.amount) * itr->bid.amount) / itr->ask.amount;
         asset _ask = bid;
 
-        _ask.amount = (uint128_t(ask.amount) * itr->bid.amount) / itr->ask.amount;
+        const rec _rec{
+            .id = itr->id,
+            .owner = owner,
+            .bid = ask,
+            .ask = bid,
+            .timestamp = t
+        };   
+        action(permission_level{_self, N(active)},
+            _self, N(receipt), _rec)
+        .send();           
 
         // 奖 bid 交给买家           
         action(
@@ -189,7 +189,6 @@ void eosotcbackup::take(account_name owner, uint64_t order_id, extended_asset bi
             o.bid.amount -= _ask.amount;
             o.ask.amount -= _bid.amount;
         });
-        //insert_txlog(itr->owner, owner, bid, ask);
     } 
 }
 
@@ -199,15 +198,24 @@ void eosotcbackup::retrieve(account_name owner, uint64_t order_id, extended_asse
     eosio_assert(itr != orders.end(), "order is not exist.");
     eosio_assert(itr->owner == owner, "not the owner.");
 
-    asset _bid = itr->bid;
+    const rec _rec{
+        .id = itr->id,
+        .owner = itr->owner,
+        .bid = itr->bid,
+        .ask = itr->ask,
+        .timestamp = now()
+    };   
+    action(permission_level{_self, N(active)},
+        _self, N(receipt), _rec)
+    .send();  
 
     action(
         permission_level{_self, N(active)},
         itr->bid.contract, N(transfer),
-        make_tuple(_self, owner, _bid,
+        make_tuple(_self, owner, itr->bid,
             std::string("order retrieve"))
     ).send();
-    orders.erase(itr); 
+    orders.erase(itr);
 }
 
 // @abi action
@@ -292,11 +300,6 @@ struct retrieve_args
     extended_asset ask;
 };
 
-struct cleantxlogs_args
-{
-    uint64_t cnt;
-};
-
 extern "C"
 {
     void apply(uint64_t receiver, uint64_t code, uint64_t action)
@@ -306,10 +309,10 @@ extern "C"
         if (action == N(transfer)) {
             auto transfer_data = unpack_action_data<transfer_args>();
             thiscontract.onTransfer(transfer_data.from, transfer_data.to, extended_asset(transfer_data.quantity, code), transfer_data.memo);
-        } else if (action == N(retrieve)){ 
+        } /*else if (action == N(retrieve)){ 
             auto t = unpack_action_data<retrieve_args>();
             thiscontract.retrieve(t.owner, t.order_id, t.ask);
-        } else {                                                                      
+        } */ else {                                                                      
             switch (action)                                                                                      
             {                                                                                                    
                 EOSIO_API(eosotcbackup, (retrieve)(init)(test))                         

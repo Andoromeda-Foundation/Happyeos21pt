@@ -24,10 +24,12 @@ public:
     void clean();
     // @abi action 
     void test();
-    // @abi action    
-    void retrieve(account_name owner, uint64_t order_id, extended_asset ask);    
+
     void ask(account_name owner, extended_asset bid, extended_asset ask);
     void take(account_name owner, uint64_t order_id, extended_asset bid, extended_asset ask);
+
+    // @abi action    
+    void retrieve(account_name owner, uint64_t order_id, extended_asset ask);    
 
     // @abi action    
     void transfer(account_name   from,
@@ -58,7 +60,7 @@ public:
     > order_index;
     
     // @abi table
-    struct rec_ask {
+    struct rec {
         uint64_t id;
         account_name owner;
         extended_asset bid; // 提供
@@ -67,7 +69,5 @@ public:
     };
 
     // @abi action    
-    void askreceipt(const rec_ask& ask);
-    // @abi action    
-    void takereceipt(const rec_ask& take);    
+    void receipt(const rec& recepit);      
 };
