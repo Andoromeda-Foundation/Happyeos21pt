@@ -205,14 +205,17 @@ void eosotcbackup::retrieve(account_name owner, uint64_t order_id, extended_asse
         .ask = itr->ask,
         .timestamp = now()
     };   
+    
     action(permission_level{_self, N(active)},
         _self, N(receipt), _rec)
     .send();  
 
+    asset _bid = itr->bid;
+
     action(
         permission_level{_self, N(active)},
         itr->bid.contract, N(transfer),
-        make_tuple(_self, owner, itr->bid,
+        make_tuple(_self, owner, _bid,
             std::string("order retrieve"))
     ).send();
     orders.erase(itr);
