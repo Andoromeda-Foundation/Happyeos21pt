@@ -30,6 +30,8 @@
         "array": "cpp",
         "iterator": "cpp",
         "tuple": "cpp",
-        "locale": "cpp"
+        "locale": "cpp",
+        "queue": "cpp",
+        "ios": "cpp"
     }
 }
