@@ -8582,12 +8582,12 @@
     (call $_ZN6kyubey6marketC2Ev
      (tee_local $5
       (call $_Znwj
-       (i32.const 56)
+       (i32.const 64)
       )
      )
     )
    )
-   (i32.store offset=40
+   (i32.store offset=48
     (get_local $5)
     (get_local $6)
    )
@@ -8606,6 +8606,10 @@
    (i64.store offset=32
     (get_local $5)
     (i64.const 1397703940)
+   )
+   (i64.store offset=40
+    (get_local $5)
+    (i64.const 0)
    )
    (call $eosio_assert
     (i32.const 1)
@@ -8684,7 +8688,7 @@
      (i32.const 8)
     )
    )
-   (i32.store offset=44
+   (i32.store offset=52
     (get_local $5)
     (tee_local $1
      (call $db_store_i64
@@ -9165,12 +9169,12 @@
     (call $_ZN6kyubey6marketC2Ev
      (tee_local $6
       (call $_Znwj
-       (i32.const 56)
+       (i32.const 64)
       )
      )
     )
    )
-   (i32.store offset=40
+   (i32.store offset=48
     (get_local $6)
     (get_local $0)
    )
@@ -9183,7 +9187,7 @@
      (get_local $4)
     )
    )
-   (i32.store offset=44
+   (i32.store offset=52
     (get_local $6)
     (get_local $1)
    )
@@ -9202,7 +9206,7 @@
    (i32.store offset=12
     (get_local $8)
     (tee_local $7
-     (i32.load offset=44
+     (i32.load offset=52
       (get_local $6)
      )
     )
@@ -12726,7 +12730,7 @@
   )
   (call $eosio_assert
    (i32.eq
-    (i32.load offset=40
+    (i32.load offset=48
      (get_local $1)
     )
     (get_local $0)
@@ -12746,13 +12750,24 @@
    (get_local $1)
    (tee_local $7
     (i64.add
+     (i64.mul
+      (i64.div_u
+       (i64.sub
+        (i64.const 10000)
+        (i64.load offset=40
+         (get_local $1)
+        )
+       )
+       (i64.const 10000)
+      )
+      (i64.load
+       (i32.load offset=4
+        (get_local $3)
+       )
+      )
+     )
      (i64.load offset=24
       (get_local $1)
-     )
-     (i64.load
-      (i32.load offset=4
-       (get_local $3)
-      )
      )
     )
    )
@@ -12762,9 +12777,14 @@
     (get_local $1)
    )
   )
+  (set_local $6
+   (i64.load offset=8
+    (get_local $1)
+   )
+  )
   (i64.store offset=8
    (get_local $1)
-   (tee_local $5
+   (tee_local $7
     (i64.trunc_u/f64
      (call $sqrt
       (f64.convert_u/i64
@@ -12781,13 +12801,13 @@
    (get_local $1)
    (i64.div_u
     (i64.mul
-     (get_local $5)
-     (get_local $5)
+     (get_local $7)
+     (get_local $7)
     )
     (i64.const 2000000000000)
    )
   )
-  (set_local $6
+  (set_local $5
    (i64.load
     (i32.add
      (get_local $1)
@@ -12798,7 +12818,12 @@
   (call $eosio_assert
    (i64.lt_u
     (i64.add
-     (get_local $5)
+     (tee_local $6
+      (i64.sub
+       (get_local $7)
+       (get_local $6)
+      )
+     )
      (i64.const 4611686018427387903)
     )
     (i64.const 9223372036854775807)
@@ -12807,7 +12832,7 @@
   )
   (set_local $7
    (i64.shr_u
-    (get_local $6)
+    (get_local $5)
     (i64.const 8)
    )
   )
@@ -12905,11 +12930,11 @@
      (get_local $3)
     )
    )
-   (get_local $6)
+   (get_local $5)
   )
   (i64.store
    (get_local $8)
-   (get_local $5)
+   (get_local $6)
   )
   (call $eosio_assert
    (i64.eq
@@ -12997,7 +13022,7 @@
    )
   )
   (call $db_update_i64
-   (i32.load offset=44
+   (i32.load offset=52
     (get_local $1)
    )
    (get_local $2)
@@ -14419,7 +14444,7 @@
   )
   (call $eosio_assert
    (i32.eq
-    (i32.load offset=40
+    (i32.load offset=48
      (get_local $1)
     )
     (get_local $0)
@@ -14437,36 +14462,39 @@
   )
   (i64.store offset=8
    (get_local $1)
-   (tee_local $4
+   (tee_local $7
     (i64.sub
-     (tee_local $6
-      (i64.load offset=8
-       (get_local $1)
-      )
+     (i64.load offset=8
+      (get_local $1)
      )
-     (tee_local $7
-      (i64.load
-       (i32.load offset=4
-        (get_local $3)
-       )
+     (i64.load
+      (i32.load offset=4
+       (get_local $3)
       )
      )
     )
-   )
-  )
-  (i64.store offset=24
-   (get_local $1)
-   (i64.div_u
-    (i64.mul
-     (get_local $4)
-     (get_local $4)
-    )
-    (i64.const 2000000000000)
    )
   )
   (set_local $4
    (i64.load
     (get_local $1)
+   )
+  )
+  (set_local $6
+   (i64.load offset=24
+    (get_local $1)
+   )
+  )
+  (i64.store offset=24
+   (get_local $1)
+   (tee_local $7
+    (i64.div_u
+     (i64.mul
+      (get_local $7)
+      (get_local $7)
+     )
+     (i64.const 2000000000000)
+    )
    )
   )
   (set_local $5
@@ -14478,23 +14506,30 @@
    )
   )
   (call $eosio_assert
-   (i32.const 1)
-   (i32.const 288)
-  )
-  (set_local $6
-   (i64.div_u
-    (i64.mul
-     (get_local $7)
-     (i64.sub
-      (i64.shl
-       (get_local $6)
-       (i64.const 1)
+   (i64.lt_u
+    (i64.add
+     (tee_local $6
+      (i64.mul
+       (i64.div_u
+        (i64.sub
+         (i64.const 10000)
+         (i64.load offset=40
+          (get_local $1)
+         )
+        )
+        (i64.const 10000)
+       )
+       (i64.sub
+        (get_local $6)
+        (get_local $7)
+       )
       )
-      (get_local $7)
      )
+     (i64.const 4611686018427387903)
     )
-    (i64.const 2000000000000)
+    (i64.const 9223372036854775807)
    )
+   (i32.const 288)
   )
   (set_local $7
    (i64.shr_u
@@ -14688,7 +14723,7 @@
    )
   )
   (call $db_update_i64
-   (i32.load offset=44
+   (i32.load offset=52
     (get_local $1)
    )
    (get_local $2)

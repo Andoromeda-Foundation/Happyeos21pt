@@ -68,8 +68,7 @@ class kyubey : public token {
             }
 
             void update_progress(uint64_t new_progress) {
-                eosio_assert(0 <= new_progress && new_progress <= 10000);
-                                
+                eosio_assert(new_progress <= 10000, "out of range");                                
                 progress = new_progress;
             }
 
