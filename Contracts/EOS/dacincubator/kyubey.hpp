@@ -31,9 +31,6 @@ class kyubey : public token {
         kyubey(account_name self) :
             token(self),
             _market(_self, _self) {}
-
- //       const uint64_t init_dummy_supply;     
-   //     const uint64_t init_dummy_balance;
         
         void buy(account_name account, asset in) {    
             asset out;
@@ -62,22 +59,38 @@ class kyubey : public token {
             uint64_t id = 0;
             asset supply;
             asset balance;
+            uint64_t progress;
+                         
             uint64_t primary_key() const { return id; }
+            
+            void fee(uint64_t& x) {
+                x *= (10000 - progress) / 10000;
+            }
+
+            void update_progress(uint64_t new_progress) {
+                eosio_assert(0 <= new_progress && new_progress <= 10000);
+                                
+                progress = new_progress;
+            }
 
             asset buy(uint64_t in) {
+                fee(in);
                 balance.amount += in;
                 uint64_t new_supply = sqrt(balance.amount * 2 * 10000 * K);
                 uint64_t delta_supply = new_supply - supply.amount;
                 supply.amount = new_supply;
                 balance.amount = (supply.amount * supply.amount) / 2 / 10000 / K;
-                return asset(new_supply, supply.symbol);
+                return asset(delta_supply, supply.symbol);
             } 
 
             asset sell(uint64_t in) {
-                uint64_t eos_return = (((supply.amount << 1) - in) * in / 2 / 10000 / K);
+                //uint64_t eos_return = (((supply.amount << 1) - in) * in / 2 / 10000 / K);
                 supply.amount -= in;
-                balance.amount = (supply.amount * supply.amount) / 2 / 10000 / K;
-                return asset(eos_return, balance.symbol);
+                uint64_t new_balance = (supply.amount * supply.amount) / 2 / 10000 / K;
+                uint64_t delta_balance = balance.amount - new_balance;
+                balance.amount = new_balance;
+                fee(delta_balance);
+                return asset(delta_balance, balance.symbol);
             }
 
             EOSLIB_SERIALIZE(market, (supply)(balance))

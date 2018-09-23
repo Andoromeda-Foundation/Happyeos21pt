@@ -4,8 +4,23 @@
 
 #include "dacincubator.hpp"
 
+
+
 void dacincubator::init() {
     require_auth(_self);    
+
+    if (_market.begin() == _market.end()) {
+        const uint64_t init_dummy_supply = 2000000ll * 10000ll;
+        const uint64_t init_dummy_balance = 20000ll * 10000ll;
+        _market.emplace(_self, [&](auto &m) {
+            m.supply.amount = init_dummy_supply;
+            m.supply.symbol = KBY_SYMBOL;
+            m.balance.amount = init_dummy_balance;
+            m.balance.symbol = EOS_SYMBOL;
+            m.progress = 0;
+        });
+        create(_self, asset(21000000ll * 10000ll, KBY_SYMBOL));
+    }    
 }
 
 void dacincubator::test() {
