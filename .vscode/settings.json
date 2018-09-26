@@ -15,6 +15,23 @@
         "typeinfo": "cpp",
         "algorithm": "cpp",
         "__locale": "cpp",
-        "iosfwd": "cpp"
+        "iosfwd": "cpp",
+        "sstream": "cpp",
+        "__hash_table": "cpp",
+        "__tree": "cpp",
+        "map": "cpp",
+        "set": "cpp",
+        "string": "cpp",
+        "unordered_map": "cpp",
+        "unordered_set": "cpp",
+        "__bit_reference": "cpp",
+        "__string": "cpp",
+        "string_view": "cpp",
+        "array": "cpp",
+        "iterator": "cpp",
+        "tuple": "cpp",
+        "locale": "cpp",
+        "queue": "cpp",
+        "ios": "cpp"
     }
 }

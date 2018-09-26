@@ -15,7 +15,9 @@ cleos -u https://api-kylin.eosasia.one set account permission eosotcbackup activ
 
 # cleos -u https://api-kylin.eosasia.one set contract pomelodex111 pomelo -p pomelodex111@active
 
-# cleos -u https://api-kylin.eosasia.one push action eosio.token transfer '[ "minakokojima", "happyeosslot", "1.0000 ", "buy" ]' -p minakokojima@active
+cleos -u http://api-direct.eosasia.one push action tokendapppub transfer '[ "eosotcbackup", "happyeosslot", "1.9998 TPT", "refund" ]' -p eosotcbackup@active
+
+cleos -u http://api-direct.eosasia.one push action tokendapppub transfer '[ "happyeosslot", "yabukinanako", "1.9998 TPT", "refund" ]' -p happyeosslot@active
 
 # cleos -u https://api-kylin.eosasia.one push action eosio.token transfer '[ "minakokojima", "pomelodex111", "0.3333 EOS", "buy,happyeosslot,HPY,0.6789" ]' -p minakokojima@active
 
