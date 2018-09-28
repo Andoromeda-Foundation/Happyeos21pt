@@ -213,8 +213,10 @@ export default{
     };
 },
     created: function () {
-        this.setIdentity();
-        this.get_current_balance();
+        setTimeout(() => {
+            this.setIdentity();
+            this.get_current_balance();
+        }, 3000);
     },
     watch: {},
     methods: {
