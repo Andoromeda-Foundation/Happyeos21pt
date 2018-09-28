@@ -135,7 +135,7 @@
 import Chance from "chance";
 import Clipboard from "clipboard";
 import * as store from "../store.js";
-import ElDropdownItem from "../../node_modules/element-ui/packages/dropdown/src/dropdown-item";
+import ElDropdownItem from "element-ui/packages/dropdown/src/dropdown-item";
 
 export default {
     components: {ElDropdownItem},

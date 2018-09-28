@@ -180,7 +180,7 @@
 import * as store from '../../store.js';
 import config from '../../config.js';
 import Eos from 'eosjs';
-import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
+import ElButton from "element-ui/packages/button/src/button";
 
 export default{
     components: {ElButton},
