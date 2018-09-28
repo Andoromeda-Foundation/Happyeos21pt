@@ -166,20 +166,24 @@ export default {
   display: block;
 }
 #section-1 {
+  min-width: 1440px;
   background: url('../../assets/index/background-1.png');
   background-size: contain;
   height: 777px;
 }
 #section-2 {
+  min-width: 1440px;
   height: 977px;
   background-color: #201529;
 }
 #section-3 {
+  min-width: 1440px;
   background: url('../../assets/index/background-2.png');
   background-size: contain;
   height: 977px;
 }
 #section-4 {
+  min-width: 1440px;
   height: 577px;
   background-color: #201529;
 }

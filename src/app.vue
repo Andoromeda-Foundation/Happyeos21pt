@@ -29,6 +29,7 @@ export default {
 <style>
 #app {
   font-family: Poppins, sans-serif;
+  min-width: 1440px;
 }
 #game {
   background: url('./assets/background_2.png');
