@@ -36,7 +36,6 @@ export default {
   background-repeat: repeat repeat;
   display: flex;
   flex-direction: column;
-  letter-spacing: 0.5px;
 }
 #footer {
   padding: 20px;
