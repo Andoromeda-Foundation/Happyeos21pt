@@ -4,6 +4,7 @@ import diceGame from './components/dice/game.vue';
 import blackJackGame from './components/blackJack/game.vue';
 import OTCView from './components/otc';
 import slot from './components/slot/slot.vue'
+import index from './components/index/index.vue';
 Vue.use(Router);
 
 export default new Router({
@@ -40,10 +41,16 @@ export default new Router({
             name: 'Dice',
             path: '/dice',
             component: diceGame,
-        },{
-           name: 'Slot',
+        },
+        {
+            name: 'Slot',
             path: '/slot',
-            component:slot
-        }
+            component: slot
+        },
+        {
+            name: 'INDEX',
+            path: '/index',
+            component: index
+         }
     ],
 });
