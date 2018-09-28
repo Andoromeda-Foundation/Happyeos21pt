@@ -472,7 +472,7 @@ export default {
   text-align: left;
 }
 .qa-display {
-  margin-top: 65px;
+  margin: 65px auto auto auto;
   background: #000000;
   width: 1307px;
   height: 546px;
