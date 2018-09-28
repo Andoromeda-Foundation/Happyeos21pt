@@ -88,6 +88,7 @@
           </div>
         </div>
         <div id="section-4">
+          <div class="container">
           <div class="declare"><span>DECLARATIVE INFORMATION: </span>Great products and services don’t just happen. Behind them lies a development process that starts with careful consideration of market needs, the competitive environment, company resources.</div>
           <div id="section-4-footer">
             <div class="blocks">
@@ -131,6 +132,7 @@
             </div>
           </div>
         </div>
+      </div>
     </div>
 </template>
 
@@ -162,8 +164,8 @@ export default {
   width: 1440px;
   margin-left: auto;
   margin-right: auto;
-  width: 1440px;
   display: block;
+  /* position: relative; */
 }
 #section-1 {
   min-width: 1440px;
@@ -195,6 +197,7 @@ export default {
   -webkit-text-fill-color: transparent;
   text-align: left;
   position: relative;
+  display: inline;
   top: 407px;
   left: 184px;
 }
@@ -206,6 +209,7 @@ export default {
   -webkit-text-fill-color: transparent;
   text-align: left;
   position: relative;
+  display: inline;
   top: 389px;
   left: 243px;
 }
@@ -217,6 +221,7 @@ export default {
   -webkit-text-fill-color: transparent;
   text-align: left;
   position: relative;
+  display: inline;
   top: 50px;
   left: 384px;
 }
@@ -228,8 +233,8 @@ export default {
   -webkit-text-fill-color: transparent;
   text-align: left;
   position: relative;
-  top: 59px;
-  left: 473px;
+  display: inline;
+  top: 140px;
 }
 #contact-icon-container {
   margin-top: 453px;
@@ -434,6 +439,7 @@ export default {
 }
 
 .game-row-container {
+  margin-top: 150px;
 }
 .game-column-container {
   margin-top: 132px;
@@ -533,6 +539,7 @@ export default {
   margin-right: auto;
   position: relative;
   top: 70px;
+  display: block;
 }
 .declare span {
   color: #51396f;
