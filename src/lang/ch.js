@@ -66,6 +66,7 @@ export default {
   'Contract Name': '合约名称',
   'Client Seed': 'Client Seed',
   'Server Seed': 'Server Seed',
+  'PREDICT RESULTS': '预测结果',
 
   // OTC
   'Ask Asset': '挂单',

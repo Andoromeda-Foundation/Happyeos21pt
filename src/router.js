@@ -9,54 +9,55 @@ import index from './components/index/index.vue';
 Vue.use(Router);
 
 export default new Router({
-    scrollBehavior: () => ({ y: 0 }),
-    routes: [
-        {
-            name: 'Home',
-            path: '/',
-            redirect: {
-                name: 'Dice'
-            }
+  scrollBehavior: () => ({ y: 0 }),
+  routes: [
+    {
+      name: 'Home',
+      path: '/',
+      redirect: {
+        name: 'Dice',
+      },
+    },
+    {
+      name: 'OTCEOS',
+      path: '/otc',
+      redirect: {
+        name: 'OTC',
+        params: {
+          tokenContract: 'eosio.token',
+          tokenSymbol: 'EOS',
         },
-        {
-            name: 'OTCEOS',
-            path: '/otc',
-            redirect: {
-                name: 'OTC', params: {
-                    tokenContract: 'eosio.token',
-                    tokenSymbol: 'EOS'
-                }
-            }
-        },
-        {
-            name: 'OTC',
-            path: '/otc/:tokenContract/:tokenSymbol',
-            component: OTCView,
-        },
-        {
-            name: 'BlackJack',
-            path: '/blackjack',
-            component: blackJackGame,
-        },
-        {
-            name: 'Dice',
-            path: '/dice',
-            component: diceGame,
-        },
-        {
-            name: 'NewDice',
-            path: '/newDice',
-            component: newDiceGame,
-        },
-        {
-            name: 'Slot',
-            path: '/slot',
-            component: slot
-        },
-        {
-            name: 'INDEX',
-            path: '/index',
-            component: index
-         }
-    ],
+      },
+    },
+    {
+      name: 'OTC',
+      path: '/otc/:tokenContract/:tokenSymbol',
+      component: OTCView,
+    },
+    {
+      name: 'BlackJack',
+      path: '/blackjack',
+      component: blackJackGame,
+    },
+    {
+      name: 'Dice',
+      path: '/dice',
+      component: diceGame,
+    },
+    {
+      name: 'NewDice',
+      path: '/newDice',
+      component: newDiceGame,
+    },
+    {
+      name: 'Slot',
+      path: '/slot',
+      component: slot,
+    },
+    {
+      name: 'Index',
+      path: '/index',
+      component: index,
+    },
+  ],
 });

@@ -16,139 +16,105 @@
       <el-row>
         <el-col :span="8" class="dice-player-info">
           <el-row>
-            <el-col :span="12">
+            <el-col :span="10">
               <img src="../../assets/newDice/avatar.png">
             </el-col>
-            <el-col :span="12" class="assets">
-              <div style="margin-bottom: 21px;">RMS <span style="color: red;">Lv4</span></div>
+            <el-col :span="14" class="assets">
+              <div style="margin-bottom: 21px;">
+                <span v-if="store.account">{{store.account.name}}</span>
+                <span v-else>UNKNOWN</span> <span style="color: red;">Lv x</span>
+              </div>
               <div>GAINS:</div>
-              <div>500EOS; 1200TPT</div>
+              <div>xxx EOS; xxx TPT</div>
             </el-col>
           </el-row>
           <div class="info">
-            <div>总游戏次数：625 times</div>
-            <div style="margin-bottom: 21px;">本次游戏次数：17 times</div>
-            <div>Jetpack使用次数：2</div>
-            <div>Jetpack剩余使用次数：2</div>
+            <div>总游戏次数：xxx times</div>
+            <div style="margin-bottom: 21px;">本次游戏次数：xx times</div>
+            <div>Jetpack使用次数：x</div>
+            <div>Jetpack剩余使用次数：x</div>
           </div>
         </el-col>
-
+        <el-col :span="8" class="dice-dashboard">
+          <div style="margin-top: 40px;">JETPACK: xx%</div>
+          <img src="../../assets/newDice/dashboard.png">
+          <div style="margin-top: 20px;">LEVEL OF RISK：xxx</div>
+        </el-col>
+        <el-col :span="8">
+          <div class="predict-info" style="margin-top: 104px;">
+            <div class="title">{{$t('PREDICT RESULTS')}}</div>
+            <div class="number">{{choose === 'small' ? `${range + 1} - 99` : `1 - ${range - 1}`}}</div>
+          </div>
+          <div class="predict-info" style="margin-top: 39px;">
+            <div class="title">{{$t('PAYOUT ON WIN')}}</div>
+            <div class="number">{{payOnWin}} EOS</div>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row class="dice-payout">
+        <el-col :span="8" class="section">
+          <div class="title">{{$t('WIN CHANCE')}}</div>
+          <div class="content">{{choose === 'small' ? range : 99 - range}} %</div>
+        </el-col>
+        <el-col :span="8" class="section">
+          <div class="title">{{$t('PAYOUT')}}</div>
+          <div class="content">{{payout}} X</div>
+        </el-col>
+        <el-col :span="8" class="section">
+          <div class="title">{{$t('BET AMOUNT')}}</div>
+          <div class="content">{{betAmount}} EOS</div>
+        </el-col>
       </el-row>
     </div>
-  </div>
-    <div>
-        <div class="game-container">
-            <!-- 第一行 -->
-            <el-row style="padding: 20px;" :gutter="20">
-                <el-col :span="14">
-                    <div class="tip-text">{{$t('BET AMOUNT')}}</div>
-                    <div class="bet-amount-container">
-                        <el-row class="bet-amount">
-                            <el-col :span="12" class="amount">
-                                <img class="navbar-coin" src="../../assets/eos-logo.png">
-                                <span class="display-text" style="margin-left: 30px;">
-                                  <el-input v-model.number="betAmount" class="bet-amount-input" @change="changeBetAmount"></el-input>
-                                </span>
-                            </el-col>
-                            <el-col :span="4" class="amount-button tip-text">
-                                <span @click="amountTimes(0.5)">1/2</span>
-                            </el-col>
-                            <el-col :span="4" class="amount-button tip-text">
-                                <span @click="amountTimes(2)">2X</span>
-                            </el-col>
-                            <el-col :span="4" class="amount-button tip-text">
-                                <span @click="amountMax()">MAX</span>
-                            </el-col>
-                        </el-row>
-                    </div>
-                </el-col>
-                <el-col :span="10">
-                    <div class="tip-text">{{$t('PAYOUT ON WIN')}}</div>
-                    <div class="payout-on-win-container">
-                        <img class="navbar-coin" src="../../assets/eos-logo.png">
-                        <span class="display-text">{{payOnWin}}</span>
-                    </div>
-                </el-col>
-            </el-row>
-
-            <!-- 第二行 -->
-            <el-row class="choose-info" :gutter="20">
-                <el-col :span="6" :offset="6" >
-                  <el-badge is-dot style="width: 100%" :hidden="choose != 'small'">
-                    <div :class="['choose-info-section', choose === 'small' ? 'choose-text' : 'big-display-text']" @click="choose = 'small'">{{$t('Small')}}</div>
-                  </el-badge>
-                </el-col>
-                <el-col :span="6">
-                  <el-badge is-dot style="width: 100%" :hidden="choose != 'big'">
-                    <div :class="['choose-info-section', choose === 'big' ? 'choose-text' : 'big-display-text']" @click="choose = 'big'">{{$t('Big')}}</div>
-                  </el-badge>
-                </el-col>
-            </el-row>
-
-            <!-- 第三行 -->
-            <el-row class="roll-info">
-                <el-col :span="8" class="roll-info-section">
-                    <div class="tip-text" v-if="choose === 'small'">{{$t('ROLL UNDER TO WIN')}}</div>
-                    <div class="tip-text" v-else>{{$t('ROLL OVER TO WIN')}}</div>
-                    <div class="big-display-text">{{range}}{{choose === 'small' ? '↓' : '↑'}}</div>
-                </el-col>
-                <el-col :span="8" class="roll-info-section">
-                    <div class="tip-text">{{$t('PAYOUT')}}</div>
-                    <div class="big-display-text">{{payout}} x</div>
-                </el-col>
-                <el-col :span="8" class="roll-info-section">
-                    <div class="tip-text">{{$t('WIN CHANCE')}}</div>
-                    <div class="big-display-text">{{choose === 'small' ? range : 99 - range}} %</div>
-                </el-col>
-            </el-row>
-
-            <!-- 第四行 -->
-            <el-row class="account-info">
-                <el-col :span="8" class="account-info-section">
-                    <div class="account-container">
-                        <img class="navbar-coin" src="../../assets/eos-logo.png">
-                        <span class="display-text">{{store.eos.balance}}</span>
-                    </div>
-                </el-col>
-                <el-col :span="8" class="account-info-section">
-                  <el-button type="primary" class="login-button" @click="initIdentity()" v-if="!store.account">{{$t('LOGIN')}}</el-button>
-                  <el-button type="primary" class="login-button" @click="roll()" v-else v-loading="loading">{{$t('ROLL DICE')}}</el-button>
-                </el-col>
-                <el-col :span="8" class="account-info-section">
-                    <div class="account-container">
-                        <img class="navbar-coin" src="../../assets/HPY_Token.png">
-                        <span class="display-text">{{store.hpy.balance}}</span>
-                        <i class="el-icon-question" @click="isShowBetDialog = !isShowBetDialog" style="cursor: pointer;"></i>
-                    </div>
-                </el-col>
-            </el-row>
-        </div>
+    <div class="dice-game-button">
+      <el-row>
+        <el-col :span="12" :offset="8">
+          <div class="bet-amount-container">
+              <el-row class="bet-amount">
+                  <el-col :span="12" class="amount">
+                      <img class="navbar-coin" src="../../assets/eos-logo.png">
+                      <span class="display-text" style="margin-left: 30px;">
+                        <el-input v-model.number="betAmount" class="bet-amount-input" @change="changeBetAmount"></el-input>
+                      </span>
+                  </el-col>
+                  <el-col :span="4" class="amount-button tip-text">
+                      <span @click="amountTimes(0.5)">1/2</span>
+                  </el-col>
+                  <el-col :span="4" class="amount-button tip-text">
+                      <span @click="amountTimes(2)">2X</span>
+                  </el-col>
+                  <el-col :span="4" class="amount-button tip-text">
+                      <span @click="amountMax()">MAX</span>
+                  </el-col>
+              </el-row>
+          </div>
+        </el-col>
+        <el-col :span="4" class="dice-game-balance">
+          <div style="margin-top: 7px;">Balance</div>
+          <div>{{store.eos.balance}} EOS</div>
+        </el-col>
+      </el-row>
+      <div class="dice-game-slider-wrapper">
+        <div :class="['direction-info', choose === 'small' ? 'direction-active' : 'direction-disable']" @click="choose = 'small'">LEFT</div>
         <div class="slider-wrapper">
             <span>0</span>
             <el-slider v-model="range" class="range" :min="0" :max="99"></el-slider>
             <span>99</span>
         </div>
-
-        <!-- 买卖token及K线 -->
-        <token-display :code="'happyeosslot'" :game="'dice'" :symbol="'hpy'"></token-display>
-        <!-- <token-display :code="'dicemaster11'" :game="'dice'" :symbol="'dmt'"></token-display> -->
-
-        <!-- log -->
-        <dice-log></dice-log>
-
-        <!-- 弹出 -->
-        <el-dialog
-          :title="$t('HPY Token Giveaway!')"
-          :visible.sync="isShowBetDialog"
-          width="30%"
-          center>
-          <img src="../../assets/HPY_Token.png" style="width: 40%; display: block; margin: auto;">
-          <p>{{$t('bet-1')}}</p>
-          <p>{{$t('bet-2')}} <a href="https://happyeosslot.com/" target="_blank">https://happyeosslot.com/</a></p>
-          <p>{{$t('bet-3')}}</p>
-        </el-dialog>
+        <div :class="['direction-info', choose === 'big' ? 'direction-active' : 'direction-disable']" @click="choose = 'big'">RIGHT</div>
+      </div>
+      <div class="bet-button">
+        <div class="bet-button-board">
+          <el-button type="primary" class="button" @click="initIdentity()" v-if="!store.account">{{$t('LOGIN')}}</el-button>
+          <el-button type="primary" class="button" @click="roll()" v-else v-loading="loading">{{$t('ROLL DICE')}}</el-button>
+        </div>
+      </div>
     </div>
-    </div>
+
+    <!-- log -->
+    <dice-log></dice-log>
+  </div>
+</div>
 </template>
 
 <script>
@@ -262,15 +228,6 @@ export default {
 </script>
 
 <style>
-.game-container {
-  width: 655px;
-  height: 386px;
-  margin: 60px auto 20px auto;
-  font-size: 18px;
-  border-radius: 5px;
-  background-color: #4b4848;
-  align-items: center;
-}
 .slider-wrapper {
   padding: 10px;
   background-color: #4b484888;
@@ -318,64 +275,12 @@ export default {
   margin-left: 10px;
   vertical-align: middle;
 }
-.payout-on-win-container {
-  background-color: #3f3e3e;
-  height: 43px;
-  border-radius: 0.3em;
-  padding: 4px;
-  display: flex;
-  align-items: center;
-}
-.payout-on-win-container span {
-  display: block;
-  width: 100%;
-  text-align: center;
-}
-.roll-info {
-  background-color: #3f3e3e;
-  border-radius: 0.3em;
-  height: 87px;
-  margin: 0 20px;
-}
-.roll-info-section {
-  text-align: center;
-  padding: 10px;
-}
-.choose-info {
-  margin-bottom: 20px;
-}
-.choose-info-section {
-  background-color: #3f3e3e;
-  height: 70px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.3em;
-  padding: 4px;
-}
-.account-info {
-  height: 87px;
-  margin: 0 20px;
-  font-size: 20px;
-  display: flex;
-  align-items: center;
-}
-.account-container {
-  display: flex;
-  align-items: center;
-}
-.account-container span {
-  display: block;
-  width: 100%;
-  text-align: center;
-}
 .bet-amount-input input {
   background-color: #4b4848;
   border: 0;
   color: white;
   font-size: 1.2em;
 }
-
 @font-face {
   font-family: 'FZXS16--GB1-0';
   src: url('../../assets/fonts/FangZhengXiangSu16.ttf') format('truetype');
@@ -461,5 +366,120 @@ export default {
   letter-spacing: 0;
   line-height: 21px;
   text-align: left;
+}
+.predict-info .title {
+  font-family: 'FZXS16--GB1-0';
+  font-size: 14px;
+  color: #ffffff;
+  letter-spacing: 0;
+  text-align: left;
+  display: block;
+  text-align: center;
+}
+.predict-info .number {
+  font-family: 'FZXS16--GB1-0';
+  font-size: 14px;
+  color: #000000;
+  letter-spacing: 0;
+  text-align: left;
+  background-color: #d8d8d8;
+  border-radius: 8px;
+  width: 126px;
+  height: 41px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 12px auto auto auto;
+}
+.dice-dashboard {
+  text-align: center;
+}
+.dice-dashboard img {
+  width: 193px;
+  height: 193px;
+  margin-top: 20px;
+}
+.dice-payout {
+  background: #d8d8d8;
+  border-radius: 8px;
+  width: 767px;
+  height: 84px;
+  display: block;
+  margin: 20px auto auto auto;
+}
+.dice-payout .section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+}
+.dice-payout .section .title {
+  font-family: 'FZXS16--GB1-0';
+  font-size: 14px;
+  color: #000000;
+  letter-spacing: 0;
+}
+.dice-payout .section .content {
+  font-family: Impact;
+  font-size: 20px;
+  color: #000000;
+  letter-spacing: 0;
+  margin-top: 7px;
+}
+.dice-game-button {
+  background: #000000;
+  width: 806px;
+  height: 230px;
+  display: block;
+  margin: 13px auto auto auto;
+  padding: 14px;
+}
+.dice-game-balance div {
+  text-align: center;
+}
+.dice-game-slider-wrapper {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+.dice-game-slider-wrapper .direction-info {
+  width: 55px;
+  height: 55px;
+  border-radius: 100%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  font-family: Impact;
+  font-size: 14px;
+  letter-spacing: 0;
+  border: 1px solid;
+}
+.bet-button .bet-button-board {
+  border: 1px solid #003433;
+  padding: 2px;
+  width: 192px;
+  height: 47px;
+  margin: 17px auto auto auto;
+}
+.bet-button .bet-button-board .button {
+  border: 2px solid #003433;
+  width: 192px;
+  height: 47px;
+  font-family: Impact;
+  font-size: 14px;
+  color: #00fff7;
+  letter-spacing: 0.5px;
+  text-align: center;
+  background-color: black;
+  border-radius: 0;
+}
+.direction-disable {
+  color: #8c8c8c;
+  border-color: #8c8c8c;
+}
+.direction-active {
+  color: #00fffa;
+  border-color: #007b79;
 }
 </style>
