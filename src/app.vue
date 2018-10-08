@@ -4,7 +4,7 @@
     <div id="game">
       <router-view />
     </div>
-    <footer> 客服讨论QQ群：474639439 </footer>
+    <footer id="footer"> 客服讨论QQ群：474639439 </footer>
   </div>
 </template>
 
@@ -29,6 +29,7 @@ export default {
 <style>
 #app {
   font-family: Poppins, sans-serif;
+  min-width: 1440px;
 }
 #game {
   background: url('./assets/background_2.png');
@@ -36,7 +37,10 @@ export default {
   background-repeat: repeat repeat;
   display: flex;
   flex-direction: column;
-  font-weight: 600;
-  letter-spacing: 0.5px;
+}
+#footer {
+  padding: 20px;
+  display: block;
+  text-align: center;
 }
 </style>

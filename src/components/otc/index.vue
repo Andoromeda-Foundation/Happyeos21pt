@@ -28,7 +28,7 @@
         </el-card>
       </el-col>
       <el-col :span="13">
-        <el-alert title="新手入门，不知道怎么办？" description="请加入我们的讨论QQ群：474639439" 
+        <el-alert title="新手入门，不知道怎么办？" description="请加入我们的讨论QQ群：474639439"
         type="info" show-icon style="margin-bottom: 10px"/>
         <MarketView class="market-container" :currentToken="getTokenDetailByRoute" />
       </el-col>
@@ -46,7 +46,7 @@ import OrderView from "./order";
 import getTokenLists from "./tokenLists";
 import MarketView from "./market";
 import PlaceOrderView from "./PlaceOrder";
-import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
+import ElButton from "element-ui/packages/button/src/button";
 export default {
   components: {
       ElButton,

@@ -37,9 +37,8 @@ module.exports = (options = {}) => ({
         test: /\.(png|mp3|jpg|jpeg|gif|eot|ttf|woff|woff2|svg|svgz)(\?.+)?$/,
         use: [
           {
-            loader: 'url-loader',
+            loader: 'file-loader',
             options: {
-              limit: 10000,
               name: '[path][name].[ext]',
             },
           },
