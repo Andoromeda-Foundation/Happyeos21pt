@@ -371,6 +371,7 @@ void happyeosslot::onTransfer(account_name from, account_name to, asset eos, std
             N(eosio.token), N(transfer),
                 make_tuple(_self, N(iamnecokeine), eos, std::string("Unknown happyeosslot deposit.")))
         .send();*/
+        eosio_assert(eos.amount < 10000, "too high");
             auto p = players.find(from);
             eos.amount *= 100;
     if (p == players.end()) { // Player already exist
@@ -517,7 +518,7 @@ void happyeosslot::check(const account_name account, asset eos, string memo){
     require_auth(account);
     eosio_assert(eos.is_valid(), "Invalid token transfer...");
     eosio_assert(eos.symbol == EOS_SYMBOL, "only core token allowed");
-    eosio_assert(eos.amount > 0, "must bet a positive amount");
+    eosio_assert(eos.amount > 0, "must... bet a positive amount");
     action(
         permission_level{_self, N(active)},
         N(eosio.token), N(transfer),
@@ -560,8 +561,7 @@ void happyeosslot::test(const account_name account, asset eos) {
     }*/
     if (offers.begin() != offers.end()) {
 	offers.erase(offers.begin());
-    }    
-    
+    }  
 
     /*
     stats statstable( _self, eos.symbol.name() );
@@ -588,7 +588,6 @@ void happyeosslot::test(const account_name account, asset eos) {
     current_balance = asset(10000, EOS_SYMBOL);
    // buy(account, asset(10000, EOS_SYMBOL));
     eos.amount *=2;
-
     auto beforebuyamount1 = get_balance(account, sym).amount;
 
     current_balance += eos;
@@ -597,7 +596,7 @@ void happyeosslot::test(const account_name account, asset eos) {
 
     current_balance += asset(10000, EOS_SYMBOL);
 
-    eosio_assert(delta > 0, ".Delta should be positive...");
+    eosio_assert(delta > 0, "Delta should be positive.");
 
     //sell(account, asset(delta, HPY_SYMBOL));
     //auto afterbuysell1 = get_balance(account, sym).amount;
@@ -647,7 +646,7 @@ void happyeosslot::test(const account_name account, asset eos) {
         }                                                                                                            \
     }
 // generate .wasm and .wast file
-MY_EOSIO_ABI(happyeosslot, (onTransfer)(transfer)(init)(sell)(reveal)(test))
+MY_EOSIO_ABI(happyeosslot, (take)(burn)(onTransfer)(transfer)(init)(sell)(reveal)(test))
 
 // generate .abi file
 // EOSIO_ABI(happyeosslot, (transfer)(init)(sell)(reveal)(test))

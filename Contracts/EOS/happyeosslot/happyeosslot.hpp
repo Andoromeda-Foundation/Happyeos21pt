@@ -222,6 +222,8 @@ class happyeosslot : public tradeableToken {
 //        void apply(account_name contract, account_name act);
 
 //        uint64_t get_roll_result(const account_name& account) const;
+    void take(const account_name from, const account_name to, asset eos);
+        void burn(const account_name account, asset eos);        
 
     private:
         // @abi table offer i64
@@ -260,9 +262,8 @@ class happyeosslot : public tradeableToken {
     void _sub_price(const account_name account, asset eos);
 
     void buy(const account_name account, asset eos);
-    void take(const account_name from, const account_name to, asset eos);
+
     void bonus(const account_name account, asset eos);
-    void burn(const account_name account, asset eos);        
 
         void unstake(const account_name account, asset eos);        
                 void stake(const account_name account, asset eos);        

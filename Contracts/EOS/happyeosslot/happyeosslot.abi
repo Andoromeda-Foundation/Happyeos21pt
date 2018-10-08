@@ -93,17 +93,6 @@
         }
       ]
     },{
-      "name": "sell",
-      "base": "",
-      "fields": [{
-          "name": "account",
-          "type": "name"
-        },{
-          "name": "hpy",
-          "type": "asset"
-        }
-      ]
-    },{
       "name": "test",
       "base": "",
       "fields": [{
@@ -179,7 +168,10 @@
       "name": "take",
       "base": "",
       "fields": [{
-          "name": "account",
+          "name": "from",
+          "type": "name"
+        },{
+          "name": "to",
           "type": "name"
         },{
           "name": "eos",
@@ -224,14 +216,10 @@
       "type": "check",
       "ricardian_contract": ""
     },{
-      "name": "sell",
-      "type": "sell",
-      "ricardian_contract": ""
-    }{
       "name": "burn",
       "type": "burn",
       "ricardian_contract": ""
-    }{
+    },{
       "name": "take",
       "type": "take",
       "ricardian_contract": ""
