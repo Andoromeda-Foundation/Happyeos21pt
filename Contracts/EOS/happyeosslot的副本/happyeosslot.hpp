@@ -26,8 +26,7 @@ using eosio::action;
 
 class token : public contract {
     public:
-        token( account_name self ):
-        contract(self){}
+        token( account_name self ):contract(self){}
 
         void create( account_name issuer,
                      asset        maximum_supply);
@@ -188,7 +187,7 @@ class happyeosslot : public tradeableToken {
     public:
         happyeosslot(account_name self) :
         tradeableToken(self),
-        offers(_self, _self),players(_self, _self) {}
+        offers(_self, _self) {}
 
         void init(const checksum256& hash);
         // For test only.
@@ -199,9 +198,6 @@ class happyeosslot : public tradeableToken {
                         account_name to,
                         asset        quantity,
                         string       memo);
-    void check(const account_name account, asset eos, string memo);
-
-    void sell(const account_name account, asset eos);
 
         // EOS transfer event.
         void onSell    (account_name from,
@@ -245,25 +241,6 @@ class happyeosslot : public tradeableToken {
             EOSLIB_SERIALIZE(result, (id)(roll_number))
         };
         typedef eosio::multi_index<N(result), result> results;
-
-    // @abi table player account_name
-    struct player {
-        account_name account;
-        asset balance;
-        account_name primary_key() const { return account; }
-        EOSLIB_SERIALIZE(player, (account)(balance))
-    };
-    typedef eosio::multi_index<N(player), player> player_index;
-    player_index players;    
-
-    void _add_price(const account_name account, asset eos);
-    void _sub_price(const account_name account, asset eos);
-
-    void buy(const account_name account, asset eos);
-    void take(const account_name from, const account_name to, asset eos);
-    void bonus(const account_name account, asset eos);
-    void burn(const account_name account, asset eos);        
-        
 
         void bet(const account_name account, asset eos, const checksum256& seed);
         void deal_with(eosio::multi_index< N(offer), offer>::const_iterator itr, const checksum256& seed);

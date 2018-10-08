@@ -2,7 +2,9 @@
 cleos wallet unlock --password PW5JaGpLtoM1vtD1WxiAC4RDsr82FRUczmKgocw1KJZqVahB4LZ1u
 /usr/local/eosio/bin/eosiocpp -o happyeosslot/happyeosslot.wast happyeosslot/happyeosslot.cpp
 
-# cleos -u http://api-direct.eosasia.one set contract happyeosslot happyeosslot -p happyeosslot@active
+
+
+cleos -u http://api-direct.eosasia.one set contract happyeosslot happyeosslot -p happyeosslot@active
 # cleos -u http://api-direct.eosasia.one get table happyeosslot happyeosslot offer
 
 # cleos -u http://api-direct.eosasia.one set contract happyeosslot happyeosslot -p happyeosslot@active

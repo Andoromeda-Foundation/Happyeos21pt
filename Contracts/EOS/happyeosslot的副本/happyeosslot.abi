@@ -2,17 +2,6 @@
   "version": "eosio::abi/1.0",
   "types": [],
   "structs": [{
-      "name": "player",
-      "base": "",
-      "fields": [{
-          "name": "account",
-          "type": "name"
-        },{
-          "name": "balance",
-          "type": "asset"
-        }
-      ]
-    },{
       "name": "account",
       "base": "",
       "fields": [{
@@ -123,20 +112,6 @@
         }
       ]
     },{
-      "name": "check",
-      "base": "",
-      "fields": [{
-          "name": "account",
-          "type": "name"
-        },{
-          "name": "eos",
-          "type": "asset"
-        },{
-          "name": "memo",
-          "type": "string"
-        }
-      ]
-    },{
       "name": "transfer",
       "base": "",
       "fields": [{
@@ -186,27 +161,9 @@
       "name": "reveal",
       "type": "reveal",
       "ricardian_contract": ""
-    },{
-      "name": "check",
-      "type": "check",
-      "ricardian_contract": ""
     }
   ],
-  "tables": [
-    
-    {
-      "name": "player",
-      "index_type": "i64",
-      "key_names": [
-        "account"
-      ],
-      "key_types": [
-        "name"
-      ],
-      "type": "player"
-    },
-    
-    {
+  "tables": [{
       "name": "accounts",
       "type": "account",
       "index_type": "i64",
@@ -260,7 +217,6 @@
       "type": "result"
     }
   ],
-
   "ricardian_clauses": [],
   "error_messages": [],
   "abi_extensions": []
