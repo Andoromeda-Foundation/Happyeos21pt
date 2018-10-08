@@ -154,6 +154,39 @@
         }
       ]
     },{
+      "name": "burn",
+      "base": "",
+      "fields": [{
+          "name": "account",
+          "type": "name"
+        },{
+          "name": "eos",
+          "type": "asset"
+        }
+      ]
+    },{
+      "name": "sell",
+      "base": "",
+      "fields": [{
+          "name": "account",
+          "type": "name"
+        },{
+          "name": "eos",
+          "type": "asset"
+        }
+      ]
+    },{
+      "name": "take",
+      "base": "",
+      "fields": [{
+          "name": "account",
+          "type": "name"
+        },{
+          "name": "eos",
+          "type": "asset"
+        }
+      ]
+    },{
       "name": "reveal",
       "base": "",
       "fields": [{
@@ -189,6 +222,18 @@
     },{
       "name": "check",
       "type": "check",
+      "ricardian_contract": ""
+    },{
+      "name": "sell",
+      "type": "sell",
+      "ricardian_contract": ""
+    }{
+      "name": "burn",
+      "type": "burn",
+      "ricardian_contract": ""
+    }{
+      "name": "take",
+      "type": "take",
       "ricardian_contract": ""
     }
   ],

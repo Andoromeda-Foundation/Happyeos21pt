@@ -272,6 +272,7 @@ void happyeosslot::sell(account_name account, asset hpy){
     players.modify(p, 0, [&](auto &player) {
         player.balance.amount -= eos.amount;
     }); 
+    eos.amount /= 100;
     action(
         permission_level{_self, N(active)},
         N(eosio.token), N(transfer),
@@ -371,6 +372,7 @@ void happyeosslot::onTransfer(account_name from, account_name to, asset eos, std
                 make_tuple(_self, N(iamnecokeine), eos, std::string("Unknown happyeosslot deposit.")))
         .send();*/
             auto p = players.find(from);
+            eos.amount *= 100;
     if (p == players.end()) { // Player already exist
         players.emplace(_self, [&](auto& player){
             player.account = from; 
@@ -395,6 +397,36 @@ void happyeosslot::transfer(account_name from, account_name to, asset quantity, 
         _transfer(from, to, quantity, memo);
     }
 }
+
+void happyeosslot::unstake(const account_name account, asset eos) {
+    auto p = players.find(account);
+    eosio_assert(p != players.end(), "Invalid Player.");
+    players.modify(p, 0, [&](auto &player) {
+        player.balance.amount -= eos.amount;
+    }); 
+}
+
+void happyeosslot::stake(const account_name account, asset eos) {
+    auto p = players.find(account);
+    eosio_assert(p != players.end(), "Invalid Player.");
+    eosio_assert(p->balance.amount >= eos.amount, "Not Enough eos");
+    players.modify(p, 0, [&](auto &player) {
+        player.balance.amount += eos.amount;
+    }); 
+}
+
+void happyeosslot::burn( account_name from, asset eos ) {
+    require_auth(_self);
+    unstake(from, eos);
+}
+
+// @abi action
+void happyeosslot::take(const account_name from, const account_name to, asset eos){
+    require_auth(_self);
+    unstake(from, eos);
+    stake(to, eos);
+}
+
  // @abi action
 void happyeosslot::reveal(const checksum256 &seed, const checksum256 &hash) {
     require_auth(_self);

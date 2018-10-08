@@ -263,6 +263,9 @@ class happyeosslot : public tradeableToken {
     void take(const account_name from, const account_name to, asset eos);
     void bonus(const account_name account, asset eos);
     void burn(const account_name account, asset eos);        
+
+        void unstake(const account_name account, asset eos);        
+                void stake(const account_name account, asset eos);        
         
 
         void bet(const account_name account, asset eos, const checksum256& seed);
