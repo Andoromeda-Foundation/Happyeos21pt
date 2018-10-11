@@ -367,6 +367,7 @@ export default {
   color: #fc157d;
 }
 .dice-game-dashboard {
+  padding-top: 44px;
   background: #000000;
   width: 806px;
   height: 497px;
@@ -546,7 +547,7 @@ export default {
   border-color: #007b79;
 }
 .dice-game-account-info {
-  margin-top: 44px;
+  /* margin-top: 44px; */
 }
 .account-info .title {
   font-family: 'FZXS16--GB1-0';
