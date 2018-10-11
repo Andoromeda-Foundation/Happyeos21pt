@@ -8,12 +8,44 @@
       </div>
     </div>
     <div class="dice-game-dashboard">
-      <div class="dice-broadcast">
+      <div class="dice-broadcast" style="display: none;">
         <div class="dice-broadcast-content">
           <span>Bulletin:</span> congratulations to "<span>RMS</span>" （ID）who won 5000 EOS, ranking the top of the list.
         </div>
       </div>
-      <el-row>
+      <el-row class="dice-game-account-info">
+        <el-col :span="4" class="account-info" :offset="4">
+          <div class="title">ACCOUNT</div>
+          <div class="content"><span v-if="store.account">{{store.account.name}}</span><span v-else>UNKNOWN</span></div>
+        </el-col>
+        <el-col :span="4" class="account-info">
+          <div class="title">BALANCE</div>
+          <div class="content">{{store.eos.balance}} EOS</div>
+        </el-col>
+        <el-col :span="4" class="account-info">
+          <div class="title">GAINS</div>
+          <div class="content">xxx EOS</div>
+        </el-col>
+        <el-col :span="4" class="account-info">
+          <div class="title">GAME TIMES</div>
+          <div class="content">xxx</div>
+        </el-col>
+      </el-row>
+      <el-row class="dice-game-result">
+        <el-col :span="8" class="predict-result">
+          <div class="title">PREDICT RESULT</div>
+          <div class="content">80-99</div>
+        </el-col>
+        <el-col :span="8">
+          <div class="roll-result">75</div>
+        </el-col>
+        <el-col :span="8" class="predict-result">
+          <div class="title">BET AMOUNT</div>
+          <div class="content">{{betAmount}} EOS</div>
+        </el-col>
+      </el-row>
+      <div class="dice-game-result-display">LOSE</div>
+      <el-row style="display: none;">
         <el-col :span="8" class="dice-player-info">
           <el-row>
             <el-col :span="10">
@@ -61,35 +93,38 @@
           <div class="content">{{payout}} X</div>
         </el-col>
         <el-col :span="8" class="section">
-          <div class="title">{{$t('BET AMOUNT')}}</div>
-          <div class="content">{{betAmount}} EOS</div>
+          <div class="title">{{$t('PAYOUT ON WIN')}}</div>
+          <div class="content">{{payOnWin}} EOS</div>
         </el-col>
       </el-row>
     </div>
     <div class="dice-game-button">
       <el-row>
-        <el-col :span="12" :offset="8">
+        <el-col :span="8" class="game-count">
+          本场游戏次数 <span>XXX</span>
+        </el-col>
+        <el-col :span="16">
           <div class="bet-amount-container">
-              <el-row class="bet-amount">
+              <el-row class="bet-amount" :gutter="13">
                   <el-col :span="12" class="amount">
                       <img class="navbar-coin" src="../../assets/eos-logo.png">
                       <span class="display-text" style="margin-left: 30px;">
                         <el-input v-model.number="betAmount" class="bet-amount-input" @change="changeBetAmount"></el-input>
                       </span>
                   </el-col>
-                  <el-col :span="4" class="amount-button tip-text">
+                  <el-col :span="4" class="amount-button">
                       <span @click="amountTimes(0.5)">1/2</span>
                   </el-col>
-                  <el-col :span="4" class="amount-button tip-text">
+                  <el-col :span="4" class="amount-button">
                       <span @click="amountTimes(2)">2X</span>
                   </el-col>
-                  <el-col :span="4" class="amount-button tip-text">
+                  <el-col :span="4" class="amount-button">
                       <span @click="amountMax()">MAX</span>
                   </el-col>
               </el-row>
           </div>
         </el-col>
-        <el-col :span="4" class="dice-game-balance">
+        <el-col :span="4" class="dice-game-balance" style="display: none;">
           <div style="margin-top: 7px;">Balance</div>
           <div>{{store.eos.balance}} EOS</div>
         </el-col>
@@ -244,7 +279,7 @@ export default {
   width: 90%;
 }
 .bet-amount-container {
-  background-color: #3f3e3e;
+  /* background-color: #3f3e3e; */
   height: 43px;
   border-radius: 0.3em;
   padding: 4px;
@@ -268,7 +303,16 @@ export default {
   align-items: center;
   justify-content: center;
   height: 100%;
+}
+.bet-amount .amount-button span {
+  border: 2px solid #d8d8d8;
+  border-radius: 10px;
   cursor: pointer;
+  height: 32px;
+  width: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .navbar-coin {
   height: 22px;
@@ -435,6 +479,25 @@ export default {
   margin: 13px auto auto auto;
   padding: 14px;
 }
+.dice-game-button .game-count {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  font-family: 'FZXS16--GB1-0';
+  font-weight: normal;
+  color: rgba(216, 216, 216, 1);
+  height: 50px;
+}
+.dice-game-button .game-count span {
+  width: 26px;
+  height: 24px;
+  font-size: 16px;
+  font-family: Impact;
+  color: rgba(216, 216, 216, 1);
+  line-height: 24px;
+  margin-left: 14px;
+}
 .dice-game-balance div {
   text-align: center;
 }
@@ -481,5 +544,72 @@ export default {
 .direction-active {
   color: #00fffa;
   border-color: #007b79;
+}
+.dice-game-account-info {
+  margin-top: 44px;
+}
+.account-info .title {
+  font-family: 'FZXS16--GB1-0';
+  font-size: 12px;
+  color: #d8d8d8;
+  letter-spacing: 0;
+  display: block;
+  text-align: center;
+}
+.account-info .content {
+  font-family: Impact;
+  font-size: 12px;
+  color: #d8d8d8;
+  letter-spacing: 0;
+  display: block;
+  text-align: center;
+}
+.dice-game-result {
+  margin-top: 80px;
+}
+.predict-result .title {
+  font-size: 14px;
+  font-family: 'FZXS16--GB1-0';
+  font-weight: normal;
+  color: rgba(255, 255, 255, 1);
+  line-height: 14px;
+  text-align: center;
+}
+.predict-result .content {
+  margin: 21px auto auto auto;
+  width: 157px;
+  height: 59px;
+  background-color: #d8d8d8;
+  border: 2px solid #d8d8d8;
+  border-radius: 10px;
+  font-size: 30px;
+  font-family: Impact;
+  color: rgba(0, 0, 0, 1);
+  line-height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.roll-result {
+  margin: auto;
+  width: 176px;
+  height: 107px;
+  border: 2px solid white;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Impact;
+  color: #a7193f;
+  font-size: 65px;
+  line-height: 80px;
+}
+.dice-game-result-display {
+  text-align: center;
+  font-size: 27px;
+  font-family: Impact;
+  color: rgba(0, 255, 250, 1);
+  line-height: 33px;
+  margin-top: 12px;
 }
 </style>
