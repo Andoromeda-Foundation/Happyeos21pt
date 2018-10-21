@@ -33,6 +33,8 @@
         "locale": "cpp",
         "queue": "cpp",
         "ios": "cpp",
-        "random": "cpp"
+        "random": "cpp",
+        "optional": "cpp",
+        "stack": "cpp"
     }
 }
