@@ -1,6 +1,7 @@
-
 cleos wallet unlock --password PW5JaGpLtoM1vtD1WxiAC4RDsr82FRUczmKgocw1KJZqVahB4LZ1u
+
 /usr/local/eosio/bin/eosiocpp -o happyeosslot/happyeosslot.wast happyeosslot/happyeosslot.cpp
+/usr/local/eosio/bin/eosiocpp -g happyeosdice/happyeosslot.abi happyeosslot/happyeosslot.cpp 
 
 #cleos -u http://api-direct.eosasia.one get table happyeosslot happyeosslot player
 # cleos -u http://api-direct.eosasia.one push action happyeosslot burn '["minakokojimo", "1.0000 HPY"]' -p minakokojima@active
