@@ -47,6 +47,11 @@ class happyeosdice : public kyubey {
         void reveal( const checksum256 &seed, const checksum256 &hash);
 
         // @abi action
+        void reveal2();        
+
+        void reveal3(account_name from, uint64_t bet_number, uint64_t amount);  
+
+        // @abi action
         void betreceipt(const rec_bet& rec);
         // @abi action
         void receipt(const rec_reveal& rec);        
@@ -96,6 +101,7 @@ class happyeosdice : public kyubey {
         void send_referal_bonus(const account_name referal, asset eos);
         void bet(const account_name account, const account_name referal, asset eos, const checksum256& seed, const uint64_t bet_number);
         void deal_with(eosio::multi_index< N(offer), offer>::const_iterator itr, const checksum256& seed);
+        
         void set_roll_result(const account_name account, uint64_t roll_number);
 
         uint64_t get_bonus(uint64_t seed) const;
@@ -106,8 +112,11 @@ class happyeosdice : public kyubey {
             auto g = global.get(0);
             global.modify(g, 0, [&](auto &g) {
                g.defer_id += 1;
-            });        
-            return g.defer_id;
+            });      
+            global.modify(g, 0, [&](auto &g) {
+               g.defer_id += 1;
+            });               
+            return g.defer_id + 1;
         }
 
         template <typename... Args>
@@ -126,7 +135,7 @@ extern "C" {
             return;
         }
         if (code != receiver) return;
-        switch (action) { EOSIO_API(happyeosdice, (transfer)(init)(test)(reveal) ) };
+        switch (action) { EOSIO_API(happyeosdice, (transfer)(init)(test)(reveal)) };
         eosio_exit(0);
     }
 }

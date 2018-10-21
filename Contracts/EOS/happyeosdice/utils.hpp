@@ -84,8 +84,8 @@ struct rec_bet {
     asset amount;
 //    uint8_t only_odd;
 //    uint8_t only_even;    
-    uint8_t roll_above;
-    uint8_t roll_under;
+    int8_t roll_above;
+    int8_t roll_under;
     checksum256 server_hash;
     checksum256 client_seed;
 };
@@ -93,14 +93,14 @@ struct rec_bet {
 struct rec_reveal {
     account_name player;
     asset amount;
+    asset payout;
 //    uint8_t only_odd;
 //    uint8_t only_even;    
     uint8_t roll_above;
     uint8_t roll_under;
     uint8_t random_roll;
     checksum256 server_seed;
-    checksum256 client_seed;
-    asset payout;  
+    checksum256 client_seed; 
 };
 
 struct rec_buy {

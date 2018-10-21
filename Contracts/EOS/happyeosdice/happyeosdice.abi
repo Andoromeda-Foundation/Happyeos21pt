@@ -196,6 +196,9 @@
           "name": "amount",
           "type": "asset"
         },{
+          "name": "payout",
+          "type": "asset"
+        },{
           "name": "roll_above",
           "type": "uint8"
         },{
@@ -210,9 +213,6 @@
         },{
           "name": "client_seed",
           "type": "checksum256"
-        },{
-          "name": "payout",
-          "type": "asset"
         }
       ]
     },{

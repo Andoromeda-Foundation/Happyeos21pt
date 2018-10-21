@@ -1,21 +1,34 @@
 # -u https://api-kylin.eosasia.one 
 cleos wallet unlock --password PW5JaGpLtoM1vtD1WxiAC4RDsr82FRUczmKgocw1KJZqVahB4LZ1u
-
 #/usr/local/eosio/bin/eosiocpp -g happyeosdice/happyeosdice.abi happyeosdice/happyeosdice.cpp happyeosdice/eosio.token.cpp
 #/usr/local/eosio/bin/eosiocpp -g happyeosdice/happyeosdice.abi happyeosdice/happyeosdice.cpp happyeosdice/eosio.token.cpp
 
 /usr/local/eosio/bin/eosiocpp -o happyeosdice/happyeosdice.wast happyeosdice/happyeosdice.cpp
+
+cleos -u http://api.eosbeijing.one set contract happyeosdice happyeosdice -p happyeosdice@active
+cleos -u http://api.eosbeijing.one set contract happyeosdice happyeosdice -p happyeosdice@active
+
+#cleos -u http://api.eosbeijing.one push action happyeosdice reveal2 '[]' -p happyeosdice@active
+#cleos -u http://api.eosbeijing.one push action happyeosdice reveal '["28349b1d4bcdc9905e4ef9719019e55743c84efa0c5e9a0b077f0b54fcd84905", "D533f24d6f28ddcef3f066474f7b8355383e485681ba8e793e037f5cf36e4883"]' -p happyeosdice@active
+
+
 # cleos -u http://api-direct.eosasia.one push action happyeosdice init '["07359f2ae9669d3991e49bb0bafbc60b2d0efe98cbc38f95682df182561d5947"]' -p happyeosdice@active
 
+#cleos -u https://api-kylin.eosasia.one push action happyeosdice init '["9993a3fa2e1f0d628a1bb9b27b7522ad29aa72881a1a36e39c2af301e86228d3"]' -p happyeosdice@active
 
+#cleos -u http://api.eosbeijing.one push action happyeosdice init '["D533f24d6f28ddcef3f066474f7b8355383e485681ba8e793e037f5cf36e4883"]' -p happyeosdice@active
 
-cleos -u http://api-direct.eosasia.one set contract happyeosdice happyeosdice -p happyeosdice@active
+#cleos -u http://api-direct.eosasia.one push action happyeosdice reveal '["28349b1d4bcdc9905e4ef9719019e55743c84efa0c5e9a0b077f0b54fcd84905", "D533f24d6f28ddcef3f066474f7b8355383e485681ba8e793e037f5cf36e4883"]' -p happyeosdice@active
+
+#cleos -u http://api-direct.eosasia.one get table happyeosdice happyeosdice offer
+
+#cleos -u http://api-direct.eosasia.one push action eosio.token transfer '[ "happyeosdice", "minakokojima", "95.0000 EOS", "" ]' -p happyeosdice@active
+#cleos -u http://api-direct.eosasia.one set contract happyeosdice happyeosdice -p happyeosdice@active
 
 
 # cleos -u http://api-direct.eosasia.one push action happyeosdice test '["minakokojima", "1.0000 EOS"]' -p happyeosdice@active
 #cleos -u http://api-direct.eosasia.one set contract happyeosdice happyeosdice -p happyeosdice@active
 #cleos -u https://api-kylin.eosasia.one push action happyeosdice test '["minakokojima", "1.0000 EOS"]' -p happyeosdice@active
-#cleos -u https://api-kylin.eosasia.one push action happyeosdice init '["9993a3fa2e1f0d628a1bb9b27b7522ad29aa72881a1a36e39c2af301e86228d3"]' -p happyeosdice@active
 
 #cleos -u http://api-direct.eosasia.one push action eosio.token transfer '[ "minakokojima", "happyeosdice", "0.1000 EOS", "bet 50" ]' -p minakokojima@active
 

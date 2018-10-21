@@ -182,6 +182,10 @@ class tradeableToken : public token {
         };
         typedef eosio::multi_index<N(global), global> global_index;
         global_index global;  
+  
+
+
+
 };
 
 class happyeosslot : public tradeableToken {
