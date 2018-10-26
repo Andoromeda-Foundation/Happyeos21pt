@@ -2,6 +2,17 @@
   "version": "eosio::abi/1.0",
   "types": [],
   "structs": [{
+      "name": "player",
+      "base": "",
+      "fields": [{
+          "name": "account",
+          "type": "name"
+        },{
+          "name": "balance",
+          "type": "asset"
+        }
+      ]
+    },{
       "name": "account",
       "base": "",
       "fields": [{
@@ -82,17 +93,6 @@
         }
       ]
     },{
-      "name": "sell",
-      "base": "",
-      "fields": [{
-          "name": "account",
-          "type": "name"
-        },{
-          "name": "hpy",
-          "type": "asset"
-        }
-      ]
-    },{
       "name": "test",
       "base": "",
       "fields": [{
@@ -112,6 +112,20 @@
         }
       ]
     },{
+      "name": "check",
+      "base": "",
+      "fields": [{
+          "name": "account",
+          "type": "name"
+        },{
+          "name": "eos",
+          "type": "asset"
+        },{
+          "name": "memo",
+          "type": "string"
+        }
+      ]
+    },{
       "name": "transfer",
       "base": "",
       "fields": [{
@@ -126,6 +140,42 @@
         },{
           "name": "memo",
           "type": "string"
+        }
+      ]
+    },{
+      "name": "burn",
+      "base": "",
+      "fields": [{
+          "name": "account",
+          "type": "name"
+        },{
+          "name": "eos",
+          "type": "asset"
+        }
+      ]
+    },{
+      "name": "sell",
+      "base": "",
+      "fields": [{
+          "name": "account",
+          "type": "name"
+        },{
+          "name": "eos",
+          "type": "asset"
+        }
+      ]
+    },{
+      "name": "take",
+      "base": "",
+      "fields": [{
+          "name": "from",
+          "type": "name"
+        },{
+          "name": "to",
+          "type": "name"
+        },{
+          "name": "eos",
+          "type": "asset"
         }
       ]
     },{
@@ -161,9 +211,35 @@
       "name": "reveal",
       "type": "reveal",
       "ricardian_contract": ""
+    },{
+      "name": "check",
+      "type": "check",
+      "ricardian_contract": ""
+    },{
+      "name": "burn",
+      "type": "burn",
+      "ricardian_contract": ""
+    },{
+      "name": "take",
+      "type": "take",
+      "ricardian_contract": ""
     }
   ],
-  "tables": [{
+  "tables": [
+    
+    {
+      "name": "player",
+      "index_type": "i64",
+      "key_names": [
+        "account"
+      ],
+      "key_types": [
+        "name"
+      ],
+      "type": "player"
+    },
+    
+    {
       "name": "accounts",
       "type": "account",
       "index_type": "i64",
@@ -217,6 +293,7 @@
       "type": "result"
     }
   ],
+
   "ricardian_clauses": [],
   "error_messages": [],
   "abi_extensions": []

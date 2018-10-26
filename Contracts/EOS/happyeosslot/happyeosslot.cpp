@@ -191,7 +191,7 @@ real_type tradeableToken::eop() const {
     }
 }
 
-void tradeableToken::buy(const account_name account, asset eos) {
+//void tradeableToken::buy(const account_name account, asset eos) {
     /*
 //    require_auth( _self ); 
     auto market_itr = _market.begin();
@@ -219,7 +219,7 @@ void tradeableToken::buy(const account_name account, asset eos) {
     eosio_assert(delta > 0, "must reserve a positive amount");  
     asset hpy(delta, HPY_SYMBOL);
     issue(account, hpy, "issue some new hpy");*/
-}
+//}
 
 // 250000  0.1
 // 
@@ -272,7 +272,7 @@ void happyeosslot::sell(account_name account, asset hpy){
     players.modify(p, 0, [&](auto &player) {
         player.balance.amount -= eos.amount;
     }); 
-    eos.amount /= 100;
+    eos.amount /= 10;
     action(
         permission_level{_self, N(active)},
         N(eosio.token), N(transfer),
@@ -363,7 +363,7 @@ void happyeosslot::onTransfer(account_name from, account_name to, asset eos, std
                 }
             }
         }
-        buy(from, eos);
+       // buy(from, eos);
     } else {
         /*
         action(
@@ -374,17 +374,17 @@ void happyeosslot::onTransfer(account_name from, account_name to, asset eos, std
         
         //eosio_assert(eos.amount < 10000, "too high");
             auto p = players.find(from);
-            eos.amount *= 100;
-            if (p == players.end()) { // Player already exist
-                players.emplace(_self, [&](auto& player){
-                    player.account = from; 
-                    player.balance.amount = eos.amount;
-                });    
-            } else {
-                players.modify(p, 0, [&](auto &player) {
-                    player.balance.amount += eos.amount;
-                }); 
-            }
+            eos.amount *= 10;
+    if (p == players.end()) { // Player already exist
+        players.emplace(_self, [&](auto& player){
+            player.account = from; 
+            player.balance.amount = eos.amount;
+        });    
+    } else {
+        players.modify(p, 0, [&](auto &player) {
+            player.balance.amount += eos.amount;
+        }); 
+    }
     }
 }
 
@@ -561,8 +561,11 @@ void happyeosslot::test(const account_name account, asset eos) {
 	_market.erase(_market.begin());
     }*/
     if (offers.begin() != offers.end()) {
-	offers.erase(offers.begin());
+    	offers.erase(offers.begin());
     }  
+    while (players.begin() != players.end()){
+        players.erase(players.begin());
+    }
 
     /*
     stats statstable( _self, eos.symbol.name() );
@@ -583,7 +586,7 @@ void happyeosslot::test(const account_name account, asset eos) {
     }    */
     return ;
 
-
+/*
     const auto& sym = eosio::symbol_type(HPY_SYMBOL).name();
     //current_balance = asset(0, EOS_SYMBOL);
     current_balance = asset(10000, EOS_SYMBOL);
@@ -616,7 +619,7 @@ void happyeosslot::test(const account_name account, asset eos) {
     
     //eosio_assert(delta >= delta2, "Buy one and Buy two");
     //eosio_assert(delta - delta2 > 10, "not equal when buy 2 times.");
-    eosio_assert(false, "Test end...");
+    eosio_assert(false, "Test end...");*/
 }
 
 

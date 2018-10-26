@@ -5,6 +5,9 @@
 # cleos -u http://api.eosbeijing.one push action happyeosslot test '["minakokojima", "1.0000 EOS"]' -p happyeosslot@active
 # cleos -u http://api.eosbeijing.one get table happyeosslot happyeosslot offer
 
+
+cleos -u http://api.eosbeijing.one get table happyeosdice happyeosdice offer
+
 for (( ;1 < 100; ))
 do
 result=`cleos -u http://api.eosbeijing.one get table happyeosslot happyeosslot offer`

@@ -223,63 +223,6 @@ void happyeosdice::bet(const account_name account, const account_name referal, a
 }
 
 
-void happyeosdice::reveal3(account_name from, uint64_t bet_number, uint64_t amount) {
-
-
-    uint64_t bonus_rate = random(from);
-//    uint64_t bonus = bonus_rate * itr->bet / 100;
-    asset result = asset(0, EOS_SYMBOL);
-
-    if ((bet_number < bonus_rate) || (bet_number > bonus_rate + 100)) {
-        int return_rate;
-        if (bet_number < 100) { // 猜大
-            return_rate = (99 - bet_number); // 最小猜0 itr->under = 0 赔率...., 最大猜 99 itr->under = 99 赔率98倍。
-        } else { // 猜小
-            return_rate = (bet_number - (100) ); // 最小猜0 itr->under = 100 赔率98倍. 最大猜 99 itr->under = 199, 赔率...
-        }  
-
-        result = asset(amount * 98 / return_rate , EOS_SYMBOL);
-        
-        send_defer_action(
-            permission_level{_self, N(active)},
-            N(eosio.token), N(transfer),
-            make_tuple(
-                _self, from, result,
-                std::string("... happy eos dice bonus. The result is: ") + int_to_string(bonus_rate) + std::string(" happyeosslot.com") 
-            )
-        );
-               
-    } else {                 
-    }
-    set_roll_result(from, bonus_rate);
-
-    auto roll_above = bet_number;
-    auto roll_under = bet_number;
-
-    if (bet_number > 100) {
-        roll_above = 255;
-        roll_under -= 100;
-    } else {
-        roll_under = 255;
-    }
-
-    const rec_reveal _reveal{
-        .player = from,  
-        .amount = asset(amount, EOS_SYMBOL),
-        .payout = result,                     
-        .roll_under = uint8_t(roll_under),
-        .roll_above = uint8_t(roll_above),        
-        .random_roll = uint8_t(bonus_rate)
-  //      .server_hash = g->hash,
-    //    .client_seed = seed        
-    };
-    
-    action(permission_level{_self, N(active)},
-        _self, N(receipt), _reveal)
-    .send();
-}
-
-
 void happyeosdice::betreceipt(const rec_bet& bet) {
     require_auth(_self);
     // reveal2();
@@ -347,10 +290,11 @@ void happyeosdice::onTransfer(account_name from, account_name to, asset eos, std
 void happyeosdice::reveal(const checksum256 &seed, const checksum256 &hash) {
     require_auth(_self);
     assert_sha256((char *)&seed, sizeof(seed), (const checksum256 *)&global.begin()->hash);
-    auto n = offers.available_primary_key();
-    for (int i = 0; i < n; ++i) {
-        auto itr = offers.find(i);
-        deal_with(itr, seed);
+    //auto n = offers.available_primary_key();
+    while (offers.begin() != offers.end()){
+        auto itr = offers.begin();
+        deal_with(itr, seed, 0);
+        break;
     }
     auto itr = global.find(0);
     global.modify(itr, 0, [&](auto &g) {
@@ -381,7 +325,7 @@ uint64_t happyeosdice::merge_seed(const checksum256 &s1, const checksum256 &s2) 
     return hash;
 }
 
- void happyeosdice::deal_with(eosio::multi_index<N(offer), offer>::const_iterator itr, const checksum256 &seed) {
+ void happyeosdice::deal_with(eosio::multi_index<N(offer), offer>::const_iterator itr, const checksum256 &seed, uint64_t offset) {
     uint64_t bonus_rate = get_bonus(merge_seed(seed, itr->seed));
 //    uint64_t bonus = bonus_rate * itr->bet / 100;
 
@@ -398,17 +342,19 @@ uint64_t happyeosdice::merge_seed(const checksum256 &s1, const checksum256 &s2) 
         result = asset(itr->bet * 98 / return_rate , EOS_SYMBOL);
         
         send_defer_action(
+            offset,
             permission_level{_self, N(active)},
             N(eosio.token), N(transfer),
             make_tuple(
                 _self, itr->owner, result,
                 std::string("... happy eos dice bonus. The result is: ") + int_to_string(bonus_rate) + std::string(" happyeosslot.com") 
             )
-        );    
+        );  
     } else {                
         if (itr->bet / 200 > 0) {        
             auto me = eosio::name{itr->owner}.to_string();            
             send_defer_action(
+                offset,
                 permission_level{_self, N(active)},
                 N(eosio.token), N(transfer),
                 make_tuple(

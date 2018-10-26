@@ -35,6 +35,11 @@
         "ios": "cpp",
         "random": "cpp",
         "optional": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "bitset": "cpp",
+        "memory": "cpp",
+        "system_error": "cpp",
+        "utility": "cpp",
+        "cmath": "cpp"
     }
 }

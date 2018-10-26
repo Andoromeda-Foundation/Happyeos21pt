@@ -47,11 +47,6 @@ class happyeosdice : public kyubey {
         void reveal( const checksum256 &seed, const checksum256 &hash);
 
         // @abi action
-        void reveal2();        
-
-        void reveal3(account_name from, uint64_t bet_number, uint64_t amount);  
-
-        // @abi action
         void betreceipt(const rec_bet& rec);
         // @abi action
         void receipt(const rec_reveal& rec);        
@@ -100,7 +95,7 @@ class happyeosdice : public kyubey {
         
         void send_referal_bonus(const account_name referal, asset eos);
         void bet(const account_name account, const account_name referal, asset eos, const checksum256& seed, const uint64_t bet_number);
-        void deal_with(eosio::multi_index< N(offer), offer>::const_iterator itr, const checksum256& seed);
+        void deal_with(eosio::multi_index< N(offer), offer>::const_iterator itr, const checksum256& seed, uint64_t offset);
         
         void set_roll_result(const account_name account, uint64_t roll_number);
 
@@ -110,20 +105,18 @@ class happyeosdice : public kyubey {
 
         uint64_t get_next_defer_id() {
             auto g = global.get(0);
+            auto t = g.defer_id + 1;
             global.modify(g, 0, [&](auto &g) {
                g.defer_id += 1;
-            });      
-            global.modify(g, 0, [&](auto &g) {
-               g.defer_id += 1;
-            });               
-            return g.defer_id + 1;
+            });              
+            return t;
         }
 
         template <typename... Args>
-        void send_defer_action(Args&&... args) {
+        void send_defer_action(uint64_t offset, Args&&... args) {
             transaction trx;
             trx.actions.emplace_back(std::forward<Args>(args)...);
-            trx.send(get_next_defer_id(), _self, false);
+            trx.send(get_next_defer_id() + offset, _self, false);
         }
 };
 

@@ -190,9 +190,9 @@ real_type tradeableToken::eop() const {
         return 1;
     }
 }
-
+/*
 void tradeableToken::buy(const account_name account, asset eos) {
-    /*
+    
 //    require_auth( _self ); 
     auto market_itr = _market.begin();
     int64_t delta;
@@ -218,9 +218,9 @@ void tradeableToken::buy(const account_name account, asset eos) {
     });
     eosio_assert(delta > 0, "must reserve a positive amount");  
     asset hpy(delta, HPY_SYMBOL);
-    issue(account, hpy, "issue some new hpy");*/
+    issue(account, hpy, "issue some new hpy");
 }
-
+*/
 // 250000  0.1
 // 
 
@@ -363,7 +363,7 @@ void happyeosslot::onTransfer(account_name from, account_name to, asset eos, std
                 }
             }
         }
-        buy(from, eos);
+//        buy(from, eos);
     } else {
         /*
         action(
@@ -375,16 +375,16 @@ void happyeosslot::onTransfer(account_name from, account_name to, asset eos, std
         //eosio_assert(eos.amount < 10000, "too high");
             auto p = players.find(from);
             eos.amount *= 100;
-    if (p == players.end()) { // Player already exist
-        players.emplace(_self, [&](auto& player){
-            player.account = from; 
-            player.balance.amount = eos.amount;
-        });    
-    } else {
-        players.modify(p, 0, [&](auto &player) {
-            player.balance.amount += eos.amount;
-        }); 
-    }
+            if (p == players.end()) { // Player already exist
+                players.emplace(_self, [&](auto& player){
+                    player.account = from; 
+                    player.balance.amount = eos.amount;
+                });    
+            } else {
+                players.modify(p, 0, [&](auto &player) {
+                    player.balance.amount += eos.amount;
+                }); 
+            }
     }
 }
 
